@@ -1,0 +1,12 @@
+.nav{
+    color: midnightblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,13 +1,12 @@
-import './App.css';
+import './App.css'
+import Main from './components/Main/Main'
 
-const App = () => {
+function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Rice Bowl App</h1>
-      </header>
+        <Main />
     </div>
   );
-};
+}
 
 export default App;

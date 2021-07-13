@@ -1,8 +1,15 @@
-### Node Express template project
+### Rice Bowl Recipe
 
-This project is based on a GitLab [Project Template](https://docs.gitlab.com/ee/gitlab-basics/create-project.html).
+To get started for front-end: 
+1. Run `npm install` in root directory.
+2. Navigate to the `client` directory and run `npm install`.
+3. Run `npm start` in the `client` directory to start the web-app in development mode at [http://localhost:3000](http://localhost:3000). 
+   <br/>Open [http://localhost:3000](http://localhost:3000) in browser to view changes as the code is being edited.
 
-Improvements can be proposed in the [original project](https://gitlab.com/gitlab-org/project-templates/express).
+### Linting with ESLINT
+
+To run linting on the `client` directory, call `npm run lint` in the root directory.
+This will ensure a consistent code style for this project.
 
 ### CI/CD with Auto DevOps
 

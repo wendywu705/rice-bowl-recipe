@@ -16,3 +16,7 @@
     font-family: "Hokuto", Times, serif;
     font-size: large;
 }
+
+.Title > h1{
+    padding-right: 0.3em;
+}

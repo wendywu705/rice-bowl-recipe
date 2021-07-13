@@ -3,7 +3,7 @@
 To get started for front-end: 
 1. Run `npm install` in root directory.
 2. Navigate to the `client` directory and run `npm install`.
-3. Run `npm start` in the `client` directory to start the web-app in development mode at [http://localhost:3000](http://localhost:3000). 
+3. Run `npm start` or `node ./bin/www` in the `client` directory to start the web-app in development mode at [http://localhost:3000](http://localhost:3000). 
    <br/>Open [http://localhost:3000](http://localhost:3000) in browser to view changes as the code is being edited.
 
 ### Linting with ESLINT

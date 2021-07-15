@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Unica+One&display=swap');
+
 .Form {
     width: 100%;
     display: flex;
@@ -6,7 +8,7 @@
     padding: 0.5em;
     background-color: white;
     color: black;
-    font-family: "Hokuto", Times, serif;
+    font-family: "Unica One", serif;
     font-size: x-large;
 }
 
@@ -23,16 +25,18 @@ form{
 }
 
 input, textarea{
+    font-family: "Calibri", serif;
     text-align: left;
-    color: mediumvioletred;
+    color: black;
     padding: 0.5em;
     width: 100%;
     margin-bottom: 1em;
-    font-size: large;
+    font-size: medium;
+    border-radius: 10px; /*rounding textbox corners*/
 }
 
 textarea{
-    height: 15em;
+    height: 10em;
 }
 
 .Ingredients input{
@@ -40,21 +44,25 @@ textarea{
     height: 10em;
 }
 
-.Time input, .Serving-Size input{
-    margin-left: 1.5em;
-    margin-right: 0.2em;
-    width: 10%;
+.Time, .Serving-Size, .Rating{
+    color:green;
 }
 
-.Serving-Size{
-    margin-left: 3em;
+.Time input, .Serving-Size input, .Rating input{
+    margin-left: 1em;
+    margin-right: 0.5em;
+    width: 5%;
+}
+
+.Serving-Size, .Rating {
     margin-right: 0.2em;
 }
 
 .Submit{
+    background-color: lemonchiffon;
     color: black;
-    /*display: flex;*/
-    /*justify-content: center;*/
+    display: flex;
+    justify-content: center;
     align-items: center;
-    width: 30%;
+    width: 10%;
 }

@@ -1,5 +1,5 @@
 <br />
-<p align="center">
+<div align="center">
   <a href="./public/images/white_blue_bg.png">
     <img width="100%" src="./public/images/white_blue_bg.png" alt="ricebowl logo">
   </a>
@@ -18,7 +18,7 @@
     ·
     <a href="https://csil-git1.cs.surrey.sfu.ca/xza172/rice-bowl-recipe/-/issues">Request Feature</a>
   </p>
-</p>
+</div>
 
 ## 📖 Project Overview
 

@@ -1,4 +1,24 @@
-# Rice Bowl Recipe
+<br />
+<p align="center">
+  <a href="./public/images/white_blue_bg.png">
+    <img width="60%" src="./public/images/white_blue_bg.png" alt="ricebowl logo">
+  </a>
+
+  <h3 align="center">A web application for analyzing collecting food recipes.</h3>
+
+  <p align="center">
+    Built for Simon Fraser University course CMPT 470.
+    <br />
+    <a href="https://csil-git1.cs.surrey.sfu.ca/xza172/rice-bowl-recipe/-/blob/master/README.md"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://csil-git1.cs.surrey.sfu.ca/xza172/rice-bowl-recipe/-/blob/master/README.md">View Demo</a>
+    ·
+    <a href="https://csil-git1.cs.surrey.sfu.ca/xza172/rice-bowl-recipe/-/issues">Report Bug</a>
+    ·
+    <a href="https://csil-git1.cs.surrey.sfu.ca/xza172/rice-bowl-recipe/-/issues">Request Feature</a>
+  </p>
+</p>
 
 ## 📖 Project Overview
 

@@ -1,6 +1,6 @@
-import Title from '../../components/Header/Title'
+import Title from '../../components/Header/Title';
 import {Link} from "react-router-dom";
-import './Home.css'
+import './Home.css';
 
 function Home() {
     return (

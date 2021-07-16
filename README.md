@@ -1,4 +1,4 @@
-### Rice Bowl Recipe
+# Rice Bowl Recipe
 
 ## 📖 Project Overview
 

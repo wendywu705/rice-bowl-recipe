@@ -12,14 +12,14 @@ const {
 
 const PageLayout = () => {
   return (
-    <div>
+    <div style={{height:'100%'}}>
       <SideBar />
       <Layout 
         className="site-layout" 
         style={{ marginLeft: 280 }}
       >
         <Header 
-          className="site-layout-background" 
+          className="headerClass" 
           style={{ 
             padding: 0, 
             backgroundColor: 'white'
@@ -36,16 +36,18 @@ const PageLayout = () => {
             padding: 24, 
             textAlign: 'center' 
           }}>
-          main content
+          Put Page Content Here
         </div>
         </Content>
-        <Footer 
-        style={{ 
-          textAlign: 'center', 
-          position:'absolute', 
-          bottom:0, 
-          width:'100%' 
-        }}>470 Final Project ©2021</Footer>
+        {/* <Footer 
+          style={{ 
+            textAlign: 'center', 
+            position:'absolute', 
+            height: 100,
+            bottom:0, 
+            width:'100%' 
+          }}>470 Final Project ©2021
+        </Footer> */}
       </Layout>
 
     </div>

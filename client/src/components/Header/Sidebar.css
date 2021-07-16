@@ -1,0 +1,69 @@
+@font-face{
+    font-family: 'Hokuto';
+    src: local('Hokuto'), local('Hokuto, Regular'), url('Hokuto.otf');
+}
+
+.head{
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    padding: 0.5em;
+    align-items: baseline;
+}
+
+h1 {
+    color: white;
+    font-family: "Hokuto", Times, serif;
+}
+
+img{
+    margin-right: 2ex;
+    -webkit-filter: brightness(0) invert(1);
+    filter: brightness(0) invert(1);
+}
+
+.sidebar{
+    background: #FF8074;
+    width: 250px;
+    height: 100vh;
+    top: 0;
+}
+.navbar{
+    display: flex;
+    position: fixed;
+    justify-content: center;
+}
+
+.nav-items{
+    width: 100%;
+}
+
+.nav-text {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 8px 0px 8px 16px;
+    list-style: none;
+    height: 60px;
+}
+
+.nav-text a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 18px;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+.nav-text a:hover {
+    opacity: 0.6;
+    width: 100%;
+}
+
+
+span{
+    margin-left: 16px;
+}

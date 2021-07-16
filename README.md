@@ -1,7 +1,7 @@
 <br />
 <div align="center">
-  <a href="./public/images/white_blue_bg.png">
-    <img width="100%" src="./public/images/white_blue_bg.png" alt="ricebowl logo">
+  <a href="./public/images/blue_lblue_bg.png">
+    <img width="100%" src="./public/images/blue_lblue_bg.png" alt="ricebowl logo">
   </a>
 
   <h3 align="center">A web application for analyzing collecting food recipes.</h3>

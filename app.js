@@ -78,7 +78,14 @@ const checkAuth = (req, res, next) => {
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-//app.set('view engine', 'pug');
+
+// TODO: this part is to be delete
+app.set('view engine', 'ejs');
+app.get('/', (req, res) => {
+  res.render('index');
+});
+//////////////////////////////////
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -143,12 +150,6 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
-
-// ejs view engine set up
-app.set('view engine', 'ejs');
-app.get('/', (req, res) => {
-  res.render('index');
-});
 
 // Self-signed OpenSSL digitial certification for SSL/TLS/https connections
 // Note that this will be replaced with app.listen(), and SSL/TLS will be handled by Nginx

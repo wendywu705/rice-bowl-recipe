@@ -9,7 +9,11 @@
     background-color: white;
     color: black;
     font-family: "Unica One", serif;
-    font-size: x-large;
+    font-size: large;
+}
+
+.recipe-name-title, .url, .Categories {
+    width: 148%;
 }
 
 form{
@@ -29,7 +33,7 @@ input, textarea{
     text-align: left;
     color: black;
     padding: 0.5em;
-    width: 100%;
+    width: 340%;
     margin-bottom: 1em;
     font-size: medium;
     border-radius: 10px; /*rounding textbox corners*/
@@ -44,14 +48,24 @@ textarea{
     height: 10em;
 }
 
+.Prep{
+    color: darkred;
+}
+
+.Cook{
+    color: darkorchid;
+}
+
 .Time, .Serving-Size, .Rating{
     color:green;
 }
 
-.Time input, .Serving-Size input, .Rating input{
+.Prep input, .Cook input, .Serving-Size input, .Rating input{
+    /*display: flex;*/
+    /*justify-items: flex-end;*/
     margin-left: 1em;
     margin-right: 0.5em;
-    width: 5%;
+    width: 25%;
 }
 
 .Serving-Size, .Rating {
@@ -64,5 +78,5 @@ textarea{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 10%;
+    width: 20%;
 }

@@ -9,11 +9,20 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport'); // for authentication
 const { Strategy } = require('passport-google-oauth20'); // for authentication
 const cookieSession = require('cookie-session');
+const mongoose = require('mongoose');
 const recipeRouter = require('./routes/router.recipe');
 
 require('dotenv').config();
 
 const PORT = 9000 || process.env.PORT;
+const app = express();
+
+const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.hoifr.mongodb.net/recipes?retryWrites=true&w=majority`;
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  connectTimeoutMS: 5000,
+  useUnifiedTopology: true,
+});
 
 const config = {
   CLIENT_ID: process.env.CLIENT_ID,
@@ -47,15 +56,13 @@ passport.deserializeUser((id, done) => {
   done(null, id);
 });
 
-const app = express();
-
 app.use(helmet());
 app.use(
   cookieSession({
     name: 'session',
     maxAge: 24 * 60 * 60 * 1000,
     keys: [config.COOKIE_KEY_1, config.COOKIE_KEY_2],
-  })
+  }),
 );
 app.use(passport.initialize());
 app.use(passport.session());
@@ -82,8 +89,7 @@ app.set('view engine', 'ejs');
 app.get('/', (req, res) => {
   res.render('index');
 });
-//////////////////////////////////
-
+/// ///////////////////////////////
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -98,7 +104,7 @@ app.get(
   '/auth/google',
   passport.authenticate('google', {
     scope: ['email'],
-  })
+  }),
 );
 
 // The callback route for Google oauth to redirect to
@@ -111,7 +117,7 @@ app.get(
   }),
   (_req, _res) => {
     console.log('Google success');
-  }
+  },
 );
 
 // Logout route
@@ -141,7 +147,7 @@ https
       key: fs.readFileSync('key.pem'),
       cert: fs.readFileSync('cert.pem'),
     },
-    app
+    app,
   )
   .listen(PORT, () => {
     console.log(`[Server]: Listening on port: ${PORT}`);

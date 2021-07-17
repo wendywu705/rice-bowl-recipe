@@ -18,8 +18,10 @@ const mongoSchema = new Schema({
     unique: true,
   },
   displayName: String,
+  recipesOwned: [String],
+  recipesStarred: [String],
 });
 
-const User = mongoose.model('User', mongoSchema);
+const User = mongoose.model('users', mongoSchema);
 
 module.exports = User;

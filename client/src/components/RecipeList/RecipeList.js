@@ -35,26 +35,27 @@ function ReciepeList() {
                     </Link>
                 </ButtonGroup>
             </div>
+            <h1>Pinned</h1><hr></hr>
             <div className='pinned-recipe'>
-                <h1>Pinned</h1><hr></hr>
                 <CardGroup>
                     <Card body>
-                    <CardTitle tag="recipe">Recipe Title</CardTitle>
-                    <CardText>Rate, Reviews, ...</CardText>
+                        <CardTitle tag="recipe">Recipe Title</CardTitle>
+                        <CardText>Rate, Reviews, ...</CardText>
                     </Card>
                     <Card body>
-                    <CardTitle tag="recipe">Recipe Title</CardTitle>
-                    <CardText>Rate, Reviews, ...</CardText>
+                        <CardTitle tag="recipe">Recipe Title</CardTitle>
+                        <CardText>Rate, Reviews, ...</CardText>
                     </Card>
                     <Card body>
-                    <CardTitle tag="recipe">Recipe Title</CardTitle>
-                    <CardText>Rate, Reviews, ...</CardText>
+                        <CardTitle tag="recipe">Recipe Title</CardTitle>
+                        <CardText>Rate, Reviews, ...</CardText>
                     </Card>
                 </CardGroup>
             </div>
             <br/>
+            <h1>Browse</h1><hr></hr>
             <div className='browse-recipe'>
-                <h1>Browse</h1><hr></hr>
+                
             </div>
         </div>
     )

@@ -1,20 +1,22 @@
 .all-recipe{
     font-family: "Unica One", serif;
+    margin-left: 40vh;
+    margin-top: 5vh;
+    margin-right: 5vh;
 }
 
 .search-bar{
     width: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
     padding: 0.5em;
 }
 
 input[type=text]{
-    width: 40%;
+    width: 80%;
     box-sizing: border-box;
     padding: 12px 20px 12px 45px;
-    margin: 8px 10px;
+    margin: 8px;
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;

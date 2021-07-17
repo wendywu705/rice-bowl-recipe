@@ -4,7 +4,7 @@
     <img width="100%" src="./public/images/blue_lblue_bg.png" alt="ricebowl logo">
   </a>
 
-  <h3 align="center">A web application for analyzing collecting food recipes.</h3>
+  <h3 align="center">A web application for collecting food recipes.</h3>
 
   <p align="center">
     Built for Simon Fraser University course CMPT 470.

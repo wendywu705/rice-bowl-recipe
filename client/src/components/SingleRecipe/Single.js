@@ -8,81 +8,112 @@ import './Single.css';
 
 import {
   StarOutlined,
-  StarFilled,
   EditOutlined,
 } from '@ant-design/icons';
-import { mapLimit } from 'async';
 
 
 const SingleRecipe = () => {
   const [favourite, setFavourite] = useState(false);
+  const [ratio, setRatio] = useState(1);
 
-  // number of reviews 
-  let reviewNum = 55;
-  // image data
-  const pictureData = [
-    {
-      url: "https://www.carolinescooking.com/wp-content/uploads/2019/07/Japanese-milk-bread-tin-photo.jpg",
-      name: 'Bread 1'
-    },
-    {
-      url: "https://www.carolinescooking.com/wp-content/uploads/2021/01/Japanese-milk-bread-featured-pic-sq.jpg",
-      name: 'Bread 2'
-    },
-    {
-      url: "https://www.carolinescooking.com/wp-content/uploads/2019/07/Japanese-milk-bread-tin-picture.jpg",
-      name: 'Bread 3'
+  const foodData = {
+    'servingSize' : 5,
+    'editServing' : false,
+    'editRatio' : null,
+    'reviewAmt' : 99,
+    'favourite' : false,
+    'ingredients': 
+    [
+      {
+        'amt': '300',
+        'type': 'g',
+        'food': 'bread flour'
+      },
+      {
+        amt: 2,
+        type: 'tsp',
+        food: 'fast acting yeast'
+      },
+      {
+        amt: 120,
+        type: 'ml',
+        food: 'milk'
+      },
+      {
+        amt: 30,
+        type: 'g',
+        food: 'unsalted butter'
+      },
+      {
+        amt: 1,
+        type: 'tsp',
+        food: 'salt'
+      },
+      {
+        amt: 3, 
+        type: 'tbsp',
+        food: 'sugar'
+      },
+      {
+        amt: 1,
+        type: null,
+        food: 'egg'
+      }
+    ],
+    pictureData: [
+      {
+        url: "https://www.carolinescooking.com/wp-content/uploads/2019/07/Japanese-milk-bread-tin-photo.jpg",
+        name: 'Bread 1'
+      },
+      {
+        url: "https://www.carolinescooking.com/wp-content/uploads/2021/01/Japanese-milk-bread-featured-pic-sq.jpg",
+        name: 'Bread 2'
+      },
+      {
+        url: "https://www.carolinescooking.com/wp-content/uploads/2019/07/Japanese-milk-bread-tin-picture.jpg",
+        name: 'Bread 3'
+      }  
+    ]
+  }
+  const updateFavourite = () => {
+    setFavourite(favourite ? false : true);
+    foodData.favourite = favourite;
+    console.log(foodData)
+    
+    if (favourite) {
+      return false;
     }
-  ]
-  const foodData =[
-    {
-      amt: 300,
-      type: 'g',
-      food: 'bread flour'
-    },
-    {
-      amt: 2,
-      type: 'tsp',
-      food: 'fast acting yeast'
-    },
-    {
-      amt: 120,
-      type: 'ml',
-      food: 'milk'
-    },
-    {
-      amt: 30,
-      type: 'g',
-      food: 'unsalted butter'
-    },
-    {
-      amt: 1,
-      type: 'tsp',
-      food: 'salt'
-    },
-    {
-      amt: 3, 
-      type: 'tbsp',
-      food: 'sugar'
-    },
-    {
-      amt: 1,
-      type: null,
-      food: 'egg'
+    else {
+      return true;
     }
-  ]
+  }
+  const updateList = (value) => {
+    foodData.editRatio = (value / foodData.servingSize);
+    foodData.editServing = true;
+    // console.log(foodData)
 
+    return (+(value && value*ratio).toFixed(2));
+  }
+ 
   return (
     
     <div className='SingleContainer' style={{ margin:"10px 100px 0px 300px" }}>
+      {/* {console.log(foodData)} */}
       <div className='TitleContainer'>
         <h1>
           Recipe Name
         </h1>
         <StarOutlined className='starIcon'
-          style={favourite ? {color:'#1C94FC'} :  {color:'black'}}
-          onClick={() => setFavourite(favourite ? false:true)}
+          style={favourite ? {color:'#1C94FC'} : {color:'black'}}
+          // onClick={() => {
+          //   // foodData.favourite = favourite;
+          //   setFavourite(favourite ? false : true); 
+          //   // console.log(favourite)
+            
+          // }}
+          onClick={updateFavourite}
           />
+          {/* {console.log(foodData)} */}
       </div>
         <Divider style={{ marginTop:5, marginBottom:0}}/>
         <div className='underDivider'>
@@ -94,9 +125,8 @@ const SingleRecipe = () => {
             Edit
           </div>
         </div>
-        {/* Single Recipe goes here */}
         <Carousel className="imageGallery" style={{marginTop:100}}>
-          {pictureData && pictureData.map((data, index) => (
+          {foodData.pictureData && foodData.pictureData.map((data, index) => (
             <div>
               <img src={data.url} alt={index} />
               <p className="legend">{data.name}</p>
@@ -112,6 +142,7 @@ const SingleRecipe = () => {
                 min={1} 
                 max={10000} 
                 defaultValue={5} 
+                onChange={(value) => setRatio(value / foodData.servingSize)}
                 style={{
                   marginLeft:10,
                   width: 70
@@ -126,21 +157,23 @@ const SingleRecipe = () => {
                 starHoverColor='#E6F7FF'
                 starDimension='25px'
                 starSpacing='4px'
-                // changeRating={this.changeRating}
                 numberOfStars={5}
                 name='rating'           
               />
               <div className='ReviewAmt'>
-                {reviewNum} Reviews
+                {foodData.reviewAmt} Reviews
               </div>
 
             </div>
             <div className='IngredientList'>
               <h3 className='subHeader'>
                 Ingredients:
-                {foodData && foodData.map((data) => (
+                {foodData.ingredients && foodData.ingredients.map((data) => (
                   <div className='foodList'>
-                      {data.amt} {data.type ? data.type+" "+data.food : data.food }
+                    {/* {console.log(data.amt)}
+                    {console.log('list', updateList(data))} */}
+                    {updateList(data.amt)}
+                    {data.type ? " "+data.type+" "+data.food : " "+data.food}
                   </div>
                 ))}
               </h3>

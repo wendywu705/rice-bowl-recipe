@@ -9,11 +9,9 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport'); // for authentication
 const { Strategy } = require('passport-google-oauth20'); // for authentication
 const cookieSession = require('cookie-session');
+const recipeRouter = require('./routes/recipe');
 
 require('dotenv').config();
-
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
 
 const PORT = 9000 || process.env.PORT;
 
@@ -86,6 +84,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/recipes', recipeRouter);
+
 // Auth route to the Google oauth server
 app.get(
   '/auth/google',
@@ -102,7 +102,7 @@ app.get(
     successRedirect: '/',
     session: true,
   }),
-  (req, res) => {
+  (_req, _res) => {
     console.log('Google success');
   }
 );
@@ -121,25 +121,6 @@ app.get('/error', (req, res) => {
 
 app.get('/testauth', checkAuth, (req, res) => {
   res.send('You have succesfully found the secret auth page!');
-});
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
-});
-
-// error handler
-app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
 });
 
 module.exports = app;

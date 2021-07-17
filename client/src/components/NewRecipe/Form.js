@@ -3,16 +3,17 @@ import './Form.css';
 
 function Form() {
     const [state, setState] = React.useState({
-        recipeName: "",
-        recipeIngredients: "",
-        prepTimeHour: 0,
-        prepTimeMin: 0,
-        cookTimeHour:0,
-        cookTimeMin:0,
+        name: "",
+        ingredients: "",
+        prepHour: 0,
+        prepMin: 0,
+        cookHour:0,
+        cookMin:0,
         servingSize: 0,
-        recipeSteps: [],
-        recipeURL: "",
-        rating: 0,
+        directions: [],
+        url: "",
+        rating: 5,
+        category: "",
     })
     function handleChange(event) {
         const value = event.target.value;
@@ -26,29 +27,36 @@ function Form() {
             <div>
                 <h1 className= 'new-recipes-title'>New Recipe:</h1>
                 <form>
-                    <label>
+                    <label className = 'recipe-name-title'>
                         Recipe Name: <br/>
-                            <input type="text" name="recipeName" value={state.recipeName} onChange={handleChange} placeholder='Enter Recipe Title'/>
+                            <input type="text" name="name" value={state.name} onChange={handleChange} placeholder='Enter Recipe Title'/>
+                    </label> <br/>
+                    <label className='Category'>
+                        Categories: <br/>
+                        <input type="text" name="category" value={state.category} onChange={handleChange}
+                               placeholder='Enter Categories seperated by commas. eg) Chinese, Cake, Fish'/>
                     </label> <br/>
                     <label className='Ingredients'>
                         Recipe Ingredients: <br/>
-                        <textarea name="recipeIngredients" value={state.recipeIngredients} onChange={handleChange}
-                                  placeholder='3 cups of carrots &#13;1 cup of water &#13;5 cloves of garlic &#13;etc...'/>
+                        <textarea name="ingredients" value={state.ingredients} onChange={handleChange}
+                                  placeholder='quantity/unit/ingredient&#13;MUST HAVE UNITS&#13;3 cups carrots &#13;1 cup water &#13;5 cloves garlic &#13;etc...'/>
                     </label> <br/>
-                    <label className='Time'>
-                        Prep Time:
-                        <input type="number" name="prepTimeHour" value={state.prepTimeHour} onChange={handleChange} min="0"/>
-                    </label> hours
-                    <label className='Time'>
-                        <input type="number" name="prepTimeMin" value={state.prepTimeMin} onChange={handleChange} min="0"/>
-                    </label> minutes <br/>
-                    <label className='Time'>
-                        Cook Time:
-                        <input type="number" name="cookTimeHour" value={state.cookTimeHour} onChange={handleChange} min="0"/>
-                    </label> hours
-                    <label className='Time'>
-                        <input type="number" name="cookTimeMin" value={state.cookTimeMin} onChange={handleChange} min="0"/>
-                    </label> minutes <br/>
+                    <label className='Prep'>
+                        Prep Hours:
+                        <input type="number" name="prepHour" value={state.prepHour} onChange={handleChange} min="0"/>
+                    </label>
+                    <label className='Prep'>
+                        Prep Mins:
+                        <input type="number" name="prepMin" value={state.prepMin} onChange={handleChange} min="0"/>
+                    </label> <br/>
+                    <label className='Cook'>
+                        Cook Hours:
+                        <input type="number" name="cookHour" value={state.cookHour} onChange={handleChange} min="0"/>
+                    </label>
+                    <label className='Cook'>
+                        Cook Mins:
+                        <input type="number" name="cookMin" value={state.cookMin} onChange={handleChange} min="0"/>
+                    </label> <br/>
                     <label className='Serving-Size'>
                         Serving Size:
                         <input type="number" name="servingSize" value={state.servingSize} onChange={handleChange} min="0"/>
@@ -59,12 +67,12 @@ function Form() {
                     </label> <br/>
                     <label>
                         Recipe Steps: <br/>
-                        <textarea name="recipeSteps" value={state.recipeSteps} onChange={handleChange}
+                        <textarea name="directions" value={state.directions} onChange={handleChange}
                                   placeholder='Chop up all carrots and garlic. &#13;&#13;Pour water over the carrots and add along the chopped garlic.'/>
                     </label> <br/>
-                    <label>
+                    <label className='url'>
                         Video Clip: <br/>
-                        <input type="text" name="recipeURL" value={state.recipeURL} onChange={handleChange} placeholder='https://www.youtube.com/watch?v=dQw4w9WgXcQ'/>
+                        <input type="text" name="url" value={state.url} onChange={handleChange} placeholder='https://www.youtube.com/watch?v=dQw4w9WgXcQ'/>
                     </label> <br/>
                     <input className='Submit' type="submit" value="Submit" />
                 </form>

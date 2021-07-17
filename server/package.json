@@ -6,7 +6,7 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "test": "mocha",
-    "lint": "eslint ./client/src --fix && eslint ./ --fix"
+    "lint": "eslint ../client/src --fix && eslint ./ --fix"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",

@@ -1,0 +1,32 @@
+.logo {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0px 10px 0px;
+}
+
+.title {
+  font-family: "Hokuto";
+  font-size: 30px;
+  color: #1c94fc;
+  padding-left: 15px;  
+}
+
+.riceimage {
+  width: 50px;
+  height: 45px;
+}
+
+.ant-select {
+  border-radius: 25px ;
+}
+
+.itemClass {
+  padding-left: 40px !important;
+  font-size: large;
+  font-family: 'Unica One', cursive;  
+}
+
+.itemIcon {
+  font-size: 20px !important;
+}
+

@@ -79,7 +79,7 @@ const checkAuth = (req, res, next) => {
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 
-// TODO: this part is to be delete
+// TODO: this part is to be delete and connect to react front-end
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => {
   res.render('index');

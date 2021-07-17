@@ -4,6 +4,105 @@
     box-sizing: border-box;
 }
 
-/* #h1 {
-    font: ;
-} */
+h1 {
+    font-size: 40px;
+    font-family: 'Unica One', cursive;  
+    padding-top: 20px;
+    margin-bottom: 0;
+}
+
+.slide img{
+    width: auto !important;
+    height: 400px;
+}
+
+.thumb img, 
+.thumb {
+    height: 75px;
+    width: auto !important;
+}
+
+.carousel-root {
+    margin-left: -20px !important;
+    padding-top: 20px;
+}
+
+.legend {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+.TitleContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Slogan {
+    font-family: 'Abel', sans-serif;
+    font-size: 25px;
+    margin: 0;
+    line-height: 25px;
+}
+.underDivider {
+    display: flex;
+    padding-top: 10px;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.editContainer {
+    padding-right: 30px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.bottomContainer {
+    display: flex;
+}
+.leftContainer {
+    width: 30%;
+    padding-left: 30px;
+    /* background-color: blue; */
+}
+.rightContainer {
+    padding-left: 30px;
+    /* background-color: yellow; */
+}
+
+.starIcon {
+    /* font-size: 35 !important; */
+    font-size:xx-large;
+    padding-right: 30px;
+    /* width: 35px !important; */
+}
+
+.subHeader {
+    font-size: 30px;
+    font-family: 'Unica One', cursive;  
+
+}
+.ServingAmt {
+    font-family: 'Abel', sans-serif;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.Ratings {
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.ReviewAmt {
+    padding-left: 10px;
+    font-family: 'Abel', sans-serif;
+    font-size: 15px;
+}
+
+.foodList {
+    font-family: 'Abel', sans-serif;
+    font-size: 22px;
+}
+.IngredientList {
+    padding-top: 15px;
+}

@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport'); // for authentication
 const { Strategy } = require('passport-google-oauth20'); // for authentication
 const cookieSession = require('cookie-session');
-const recipeRouter = require('./routes/recipe');
+const recipeRouter = require('./routes/router.recipe');
 
 require('dotenv').config();
 

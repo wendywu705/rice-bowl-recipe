@@ -25,6 +25,7 @@ const verifyCallback = async (accessToken, refreshToken, profile, done) => {
   if (existingUser) {
     // The user is already registered with our database, return the existing profile.
     done(null, existingUser);
+    return;
   }
   const user = await new User({
     googleId: profile.id,

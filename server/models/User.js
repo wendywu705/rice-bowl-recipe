@@ -6,7 +6,6 @@ const mongoSchema = new Schema({
   googleId: {
     type: String,
     required: true,
-    unique: true,
   },
   createdAt: {
     type: Date,
@@ -14,7 +13,6 @@ const mongoSchema = new Schema({
   },
   email: {
     type: String,
-    require: true,
     unique: true,
   },
   displayName: String,

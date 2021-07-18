@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import './RecipeList.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, ButtonGroup, CardImg } from 'reactstrap';
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, ButtonGroup } from 'reactstrap';
 import { Card, Button, CardTitle, CardText, CardGroup } from 'reactstrap';
 import { Link } from "react-router-dom";
 import { AiOutlinePushpin, AiOutlineSave } from 'react-icons/ai';
 
-function ReciepeList() {
+function RecipeList() {
     const [dropdownOpen, setOpen] = useState(false);
     const toggle = () => setOpen(!dropdownOpen);
 
@@ -15,6 +15,7 @@ function ReciepeList() {
             <div className='search-bar'>
                 <h1>Your Recipes</h1>
                 <input
+                    className="search"
                     type="text"
                     id="header-search"
                     placeholder="Quick Find Recipe"
@@ -66,4 +67,4 @@ function ReciepeList() {
     )
 }
 
-export default ReciepeList
+export default RecipeList

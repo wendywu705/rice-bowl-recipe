@@ -32,13 +32,24 @@ router.get('/', async (req, res) => {
 router.post('/new', async (req, res) => {
   console.log('adding new recipe');
   try {
-    const maxIdRecipe = await RecipeModel.find().sort({ recipeId: -1 }).limit(1); // returns array
+    const maxIdRecipe = await RecipeModel.find()
+      .sort({ recipeId: -1 })
+      .limit(1); // returns array
     const newId = +maxIdRecipe[0].recipeId + 1;
     const { query } = req;
     const postReq = {};
-    postReq.category = query.category.replace(', ', ',').replace(' ,', ',').split(',');
-    postReq.ingredients = query.ingredients.replace('\r', '').split('\n').map((item) => splitIngredients(item));
-    postReq.directions = query.directions.replace(/[\r]/g, '').split('\n').filter((T) => T.length > 0);
+    postReq.category = query.category
+      .replace(', ', ',')
+      .replace(' ,', ',')
+      .split(',');
+    postReq.ingredients = query.ingredients
+      .replace('\r', '')
+      .split('\n')
+      .map((item) => splitIngredients(item));
+    postReq.directions = query.directions
+      .replace(/[\r]/g, '')
+      .split('\n')
+      .filter((T) => T.length > 0);
     postReq.votes = +1;
     postReq.recipeId = newId;
     postReq.time = {

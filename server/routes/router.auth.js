@@ -18,7 +18,7 @@ module.exports = (app) => {
   app.get(
     '/auth/google',
     passport.authenticate('google', {
-      scope: ['email'],
+      scope: ['profile', 'email'],
     })
   );
 
@@ -49,5 +49,9 @@ module.exports = (app) => {
   // Display error when log in fails
   app.get('/error', (req, res) => {
     res.send('Failed to log in');
+  });
+
+  app.get('/api/current_user', checkAuth, (req, res) => {
+    res.send(req.user);
   });
 };

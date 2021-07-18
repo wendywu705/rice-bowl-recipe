@@ -8,8 +8,6 @@ require('dotenv').config();
 const config = {
   CLIENT_ID: process.env.CLIENT_ID,
   CLIENT_SECRET: process.env.CLIENT_SECRET,
-  COOKIE_KEY_1: process.env.COOKIE_KEY_1,
-  COOKIE_KEY_2: process.env.COOKIE_KEY_2,
 };
 
 // Authorization secrets and callback URL to be used to create a new passport Strategy
@@ -19,7 +17,21 @@ const AUTH_OPTIONS = {
   clientSecret: config.CLIENT_SECRET,
 };
 
+// Save the session to the cookie
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+// Read the session from the cookie
+passport.deserializeUser((id, done) => {
+  User.findById(id).then((user) => {
+    done(null, user);
+  });
+});
+
 const verifyCallback = async (accessToken, refreshToken, profile, done) => {
+  console.log('Google accessToken', accessToken);
+  console.log('Google refreshToken', refreshToken);
   console.log('Google Profile', profile);
   const existingUser = await User.findOne({ googleId: profile.id });
   if (existingUser) {
@@ -30,19 +42,11 @@ const verifyCallback = async (accessToken, refreshToken, profile, done) => {
   const user = await new User({
     googleId: profile.id,
     createdAt: new Date(),
+    email: profile.emails[0].value,
+    displayName: profile.displayName,
   }).save();
   done(null, user);
 };
 
 // Create a new passport Strategy using the AUTH_OPTIONS
 passport.use(new Strategy(AUTH_OPTIONS, verifyCallback));
-
-// Save the session to the cookie
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-// Read the session from the cookie
-passport.deserializeUser((id, done) => {
-  done(null, id);
-});

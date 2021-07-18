@@ -13,7 +13,8 @@ router.use((req, res, next) => {
 });
 
 router.get('/current_user', async (req, res) => {
-  res.send(req.user);
+  console.log(req.profile);
+  res.send(req.profile);
 });
 
 module.exports = router;

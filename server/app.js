@@ -1,10 +1,8 @@
 const fs = require('fs');
-const path = require('path');
 const https = require('https'); // for serving SSL/HTTPS (placeholder until replaced by nginx)
 const helmet = require('helmet'); // for application security
 const logger = require('morgan');
 const express = require('express');
-const cookieParser = require('cookie-parser');
 const passport = require('passport'); // for authentication
 const cookieSession = require('cookie-session');
 const mongoose = require('mongoose');
@@ -31,6 +29,8 @@ mongoose.connect(uri, {
 });
 
 app.use(helmet());
+
+app.use(logger('dev'));
 app.use(
   cookieSession({
     name: 'session',
@@ -38,30 +38,14 @@ app.use(
     keys: [config.COOKIE_KEY_1, config.COOKIE_KEY_2],
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
 
 require('./routes/router.auth')(app);
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-
-// TODO: this part is to be delete and connect to react front-end
-app.set('view engine', 'ejs');
-app.get('/', (req, res) => {
-  res.render('index');
-});
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/recipes', recipeRouter);
 app.use('/user', userRouter);
-
-module.exports = app;
 
 // Self-signed OpenSSL digitial certification for SSL/TLS/https connections
 // Note that this will be replaced with app.listen(), and SSL/TLS will be handled by Nginx

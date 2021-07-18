@@ -14,32 +14,43 @@ import {
 
 const foodData = require('./ExampleData.json');
 
-let newFoodData = {
-  ...foodData
-}
+// let newFoodData = {
+//   ...foodData
+// }
 
 console.log('first new food data')
 const SingleRecipe = () => {
-  const [favourite, setFavourite] = useState(false);
-  const [ratio, setRatio] = useState(1);
-  const [review, setReview] = useState(false);
+  // const [favourite, setFavourite] = useState(false);
+  // const [ratio, setRatio] = useState(1);
+  // const [review, setReview] = useState(false);
+  const [newFoodData, setNewFoodData] = useState({...foodData});
+  let ratio = 1;
+
+  useEffect(() => {
+    // console.log('inuseeffect', newFoodData)
+  }, [newFoodData])
   
   const updateFavourite = (value) => {
-    setFavourite(favourite ? false : true);
-    newFoodData = {
-      ...foodData,
-      isFavourite: !favourite
+    // setFavourite(favourite ? false : true);
+    let newfav = !newFoodData.isFavourite
+    let tempfav = {
+      ...newFoodData,
+      isFavourite: newfav
+      // isFavourite: !favourite
     }
+    setNewFoodData(tempfav)
     console.log('in fav', newFoodData)
-    return (favourite ? false : true);
+    return (newfav);
+    // return (favourite ? false : true);
   }
 
   const updateList = (value) => {
-    newFoodData = {
+    let templist = {
       ...foodData,
       editRatio: ratio,
       editServing: true
     }
+    setNewFoodData(templist)
     return +(value && value*ratio).toFixed(2);
   }
 
@@ -49,19 +60,22 @@ const SingleRecipe = () => {
   }
 
   const updateRating = (newRating) => {
-    setReview(review ? false : true);
+    let hasreview = !newFoodData.haveReview
+    // setReview(review ? false : true);
     // console.log(newRating, newFoodData.haveReview)
     // console.log(newFoodData)
-    if (!newFoodData.haveReview){
+    if (!hasreview){
+    // if (!review){
       console.log('after')
 
-      let totalReview = newFoodData.reviewAmt + 1;
-      newFoodData = {
-        ...foodData,
+      // let totalReview = newFoodData.reviewAmt + 1;
+      let tempRating  = {
+        ...newFoodData,
         haveReview: true,
-        reviewAmt: totalReview,
+        // reviewAmt: totalReview,
         newRating: newAvg(newRating).toFixed(2)
       }
+      setNewFoodData(tempRating)
     }
     console.log('in update', newFoodData)
   }
@@ -73,7 +87,8 @@ const SingleRecipe = () => {
           Recipe Name
         </h1>
         <StarOutlined className='starIcon'
-          style={favourite ? {color:'#1C94FC'} : {color:'black'}}
+          style={newFoodData.isFavourite ? {color:'#1C94FC'} : {color:'black'}}
+          // style={favourite ? {color:'#1C94FC'} : {color:'black'}}
           onClick={(value) => updateFavourite(value)}
           />
       </div>
@@ -104,7 +119,8 @@ const SingleRecipe = () => {
                 min={1} 
                 max={10000} 
                 defaultValue={5} 
-                onChange={(value) => setRatio(value / newFoodData.servingSize)}
+                onChange={(value) => {ratio=value}}
+                // onChange={(value) => setRatio(value / newFoodData.servingSize)}
                 style={{
                   marginLeft:10,
                   width: 70
@@ -120,7 +136,7 @@ const SingleRecipe = () => {
                 widgetHoverColors="#E6F7FF"
                 widgetDimensions="25px"
                 widgetSpacings="4px"
-                changeRating={(value)=> updateRating(value)}
+                changeRating={(value) => updateRating(value)}
                 // changeRating={(value)=> setReview(value)}
               >
                 <Ratings.Widget />
@@ -132,7 +148,8 @@ const SingleRecipe = () => {
               {/* {console.log('after ratings', newFoodData)} */}
               <div className='ReviewAmt'>
                 {/* {console.log('reviewamt/ have reviewed', newFoodData.reviewAmt, review)} */}
-                {review ? newFoodData.reviewAmt +1 : newFoodData.reviewAmt} Review{((newFoodData.reviewAmt === 1 && review) || newFoodData.reviewAmt>1)? "s":null}
+                {newFoodData.haveReview ? newFoodData.reviewAmt+1 : newFoodData.reviewAmt} Review{((newFoodData.reviewAmt === 1 && newFoodData.haveReview) || newFoodData.reviewAmt>1)? "s":null}
+                {/* {review ? newFoodData.reviewAmt+1 : newFoodData.reviewAmt} Review{((newFoodData.reviewAmt === 1 && review) || newFoodData.reviewAmt>1)? "s":null} */}
               </div>
 
             </div>

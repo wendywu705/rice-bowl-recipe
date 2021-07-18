@@ -9,6 +9,7 @@
     "lint": "eslint ../client/src --fix && eslint ./ --fix"
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
     "cookie-parser": "~1.4.3",
     "cookie-session": "^1.4.0",
     "debug": "~2.6.9",

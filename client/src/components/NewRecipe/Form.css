@@ -12,14 +12,18 @@
     font-size: large;
 }
 
-.recipe-name-title, .url, .Categories {
-    width: 148%;
+.recipe-name-title, .url, .Category {
+    width: 35%;
 }
 
 form{
     justify-content: center;
     align-items: center;
     color: tomato;
+}
+
+label{
+    margin-top: 0.8em;
 }
 
 .new-recipes-title{
@@ -60,15 +64,19 @@ textarea{
     color:green;
 }
 
+.hidden input{
+    margin-left: 0.5em;
+    width: 25%;
+    margin-bottom: 1em;
+}
+
 .Prep input, .Cook input, .Serving-Size input, .Rating input{
-    /*display: flex;*/
-    /*justify-items: flex-end;*/
     margin-left: 1em;
     margin-right: 0.5em;
     width: 25%;
 }
 
-.Serving-Size, .Rating {
+.Serving-Size {
     margin-right: 0.2em;
 }
 
@@ -78,5 +86,9 @@ textarea{
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
+    padding: 0.6em;
     width: 20%;
+    font-size: large;
+    border-radius: 10px; /*rounding textbox corners*/
 }

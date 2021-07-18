@@ -1,4 +1,3 @@
-import Title from '../../components/Header/Title'
 import RecipeList from '../../components/RecipeList/RecipeList'
 import './Home.css'
 

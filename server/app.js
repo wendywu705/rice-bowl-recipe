@@ -46,6 +46,7 @@ app.use(passport.session());
 
 // Authentication routes
 require('./routes/router.auth')(app);
+require('./routes/router.gcs')(app);
 
 // Rest of the routes, after authentication
 app.use('/recipes', recipeRouter);

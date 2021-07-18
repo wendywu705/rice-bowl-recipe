@@ -1,0 +1,63 @@
+{
+  "servingSize" : 5,
+  "editServing" : false,
+  "editRatio" : null,
+  "isFavourite" : false,
+  "haveReview" : false,
+  "slogan" : "Recipe Slogan Goes Here",
+  "avgRating" : 5,
+  "newRating" : null,
+  "reviewAmt" : 1,
+  "ingredients" : 
+  [
+    {
+      "amt": 300,
+      "type": "g",
+      "food": "bread flour"
+    },
+    {
+      "amt": 2,
+      "type": "tsp",
+      "food": "fast acting yeast"
+    },
+    {
+      "amt": 120,
+      "type": "ml",
+      "food": "milk"
+    },
+    {
+      "amt": 30,
+      "type": "g",
+      "food": "unsalted butter"
+    },
+    {
+      "amt": 1,
+      "type": "tsp",
+      "food": "salt"
+    },
+    {
+      "amt": 3, 
+      "type": "tbsp",
+      "food": "sugar"
+    },
+    {
+      "amt": 1,
+      "type": null,
+      "food": "egg"
+    }
+  ],
+  "pictureData": [
+    {
+      "url": "https://www.carolinescooking.com/wp-content/uploads/2019/07/Japanese-milk-bread-tin-photo.jpg",
+      "name": "Bread 1"
+    },
+    {
+      "url": "https://www.carolinescooking.com/wp-content/uploads/2021/01/Japanese-milk-bread-featured-pic-sq.jpg",
+      "name": "Bread 2"
+    },
+    {
+      "url": "https://www.carolinescooking.com/wp-content/uploads/2019/07/Japanese-milk-bread-tin-picture.jpg",
+      "name": "Bread 3"
+    }  
+  ]
+}

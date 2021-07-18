@@ -1,9 +1,10 @@
-import { React, useState, useEffect, useToggle } from 'react';
+import { React, useState, useEffect } from 'react';
 
-import { Divider, InputNumber  } from 'antd';
+import { Divider, InputNumber } from 'antd';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import StarRatings from 'react-star-ratings';
+import Ratings from 'react-ratings-declarative';
 import './Single.css';
 
 import {
@@ -11,114 +12,75 @@ import {
   EditOutlined,
 } from '@ant-design/icons';
 
+const foodData = require('./ExampleData.json');
 
+let newFoodData = {
+  ...foodData
+}
+
+console.log('first new food data')
 const SingleRecipe = () => {
   const [favourite, setFavourite] = useState(false);
   const [ratio, setRatio] = useState(1);
-
-  const foodData = {
-    'servingSize' : 5,
-    'editServing' : false,
-    'editRatio' : null,
-    'reviewAmt' : 99,
-    'favourite' : false,
-    'ingredients': 
-    [
-      {
-        'amt': '300',
-        'type': 'g',
-        'food': 'bread flour'
-      },
-      {
-        amt: 2,
-        type: 'tsp',
-        food: 'fast acting yeast'
-      },
-      {
-        amt: 120,
-        type: 'ml',
-        food: 'milk'
-      },
-      {
-        amt: 30,
-        type: 'g',
-        food: 'unsalted butter'
-      },
-      {
-        amt: 1,
-        type: 'tsp',
-        food: 'salt'
-      },
-      {
-        amt: 3, 
-        type: 'tbsp',
-        food: 'sugar'
-      },
-      {
-        amt: 1,
-        type: null,
-        food: 'egg'
-      }
-    ],
-    pictureData: [
-      {
-        url: "https://www.carolinescooking.com/wp-content/uploads/2019/07/Japanese-milk-bread-tin-photo.jpg",
-        name: 'Bread 1'
-      },
-      {
-        url: "https://www.carolinescooking.com/wp-content/uploads/2021/01/Japanese-milk-bread-featured-pic-sq.jpg",
-        name: 'Bread 2'
-      },
-      {
-        url: "https://www.carolinescooking.com/wp-content/uploads/2019/07/Japanese-milk-bread-tin-picture.jpg",
-        name: 'Bread 3'
-      }  
-    ]
-  }
-  const updateFavourite = () => {
+  const [review, setReview] = useState(false);
+  
+  const updateFavourite = (value) => {
     setFavourite(favourite ? false : true);
-    foodData.favourite = favourite;
-    console.log(foodData)
-    
-    if (favourite) {
-      return false;
+    newFoodData = {
+      ...foodData,
+      isFavourite: !favourite
     }
-    else {
-      return true;
-    }
+    console.log('in fav', newFoodData)
+    return (favourite ? false : true);
   }
-  const updateList = (value) => {
-    foodData.editRatio = (value / foodData.servingSize);
-    foodData.editServing = true;
-    // console.log(foodData)
 
-    return (+(value && value*ratio).toFixed(2));
+  const updateList = (value) => {
+    newFoodData = {
+      ...foodData,
+      editRatio: ratio,
+      editServing: true
+    }
+    return +(value && value*ratio).toFixed(2);
   }
- 
+
+
+  const newAvg = (newValue) => {
+    return (newFoodData.avgRating + (newValue - newFoodData.avgRating )/(newFoodData.reviewAmt + 1));
+  }
+
+  const updateRating = (newRating) => {
+    setReview(review ? false : true);
+    // console.log(newRating, newFoodData.haveReview)
+    // console.log(newFoodData)
+    if (!newFoodData.haveReview){
+      console.log('after')
+
+      let totalReview = newFoodData.reviewAmt + 1;
+      newFoodData = {
+        ...foodData,
+        haveReview: true,
+        reviewAmt: totalReview,
+        newRating: newAvg(newRating).toFixed(2)
+      }
+    }
+    console.log('in update', newFoodData)
+  }
+
   return (
-    
     <div className='SingleContainer' style={{ margin:"10px 100px 0px 300px" }}>
-      {/* {console.log(foodData)} */}
       <div className='TitleContainer'>
         <h1>
           Recipe Name
         </h1>
         <StarOutlined className='starIcon'
           style={favourite ? {color:'#1C94FC'} : {color:'black'}}
-          // onClick={() => {
-          //   // foodData.favourite = favourite;
-          //   setFavourite(favourite ? false : true); 
-          //   // console.log(favourite)
-            
-          // }}
-          onClick={updateFavourite}
+          onClick={(value) => updateFavourite(value)}
           />
-          {/* {console.log(foodData)} */}
       </div>
         <Divider style={{ marginTop:5, marginBottom:0}}/>
         <div className='underDivider'>
           <div className="Slogan">
-            Recipe Slogan Goes Here
+            {newFoodData.slogan}
           </div>
           <div className="editContainer">
             <EditOutlined style={{marginRight:5}}/>
@@ -126,7 +88,7 @@ const SingleRecipe = () => {
           </div>
         </div>
         <Carousel className="imageGallery" style={{marginTop:100}}>
-          {foodData.pictureData && foodData.pictureData.map((data, index) => (
+          {newFoodData.pictureData && newFoodData.pictureData.map((data, index) => (
             <div>
               <img src={data.url} alt={index} />
               <p className="legend">{data.name}</p>
@@ -142,7 +104,7 @@ const SingleRecipe = () => {
                 min={1} 
                 max={10000} 
                 defaultValue={5} 
-                onChange={(value) => setRatio(value / foodData.servingSize)}
+                onChange={(value) => setRatio(value / newFoodData.servingSize)}
                 style={{
                   marginLeft:10,
                   width: 70
@@ -150,28 +112,35 @@ const SingleRecipe = () => {
               />
             </div>
             <div className='Ratings'>
-              <StarRatings
-                className='starRating'
-                rating={3.5}
-                starRatedColor='#1C94FC'
-                starHoverColor='#E6F7FF'
-                starDimension='25px'
-                starSpacing='4px'
-                numberOfStars={5}
-                name='rating'           
-              />
+              <Ratings
+                name="ratings"
+                rating={newFoodData.avgRating}
+                // rating={review ? newFoodData.newRating : newFoodData.avgRating}
+                widgetRatedColors="#1C94FC"
+                widgetHoverColors="#E6F7FF"
+                widgetDimensions="25px"
+                widgetSpacings="4px"
+                changeRating={(value)=> updateRating(value)}
+                // changeRating={(value)=> setReview(value)}
+              >
+                <Ratings.Widget />
+                <Ratings.Widget />
+                <Ratings.Widget />
+                <Ratings.Widget />
+                <Ratings.Widget />
+              </Ratings>
+              {/* {console.log('after ratings', newFoodData)} */}
               <div className='ReviewAmt'>
-                {foodData.reviewAmt} Reviews
+                {/* {console.log('reviewamt/ have reviewed', newFoodData.reviewAmt, review)} */}
+                {review ? newFoodData.reviewAmt +1 : newFoodData.reviewAmt} Review{((newFoodData.reviewAmt === 1 && review) || newFoodData.reviewAmt>1)? "s":null}
               </div>
 
             </div>
             <div className='IngredientList'>
               <h3 className='subHeader'>
                 Ingredients:
-                {foodData.ingredients && foodData.ingredients.map((data) => (
+                {newFoodData.ingredients && newFoodData.ingredients.map((data) => (
                   <div className='foodList'>
-                    {/* {console.log(data.amt)}
-                    {console.log('list', updateList(data))} */}
                     {updateList(data.amt)}
                     {data.type ? " "+data.type+" "+data.food : " "+data.food}
                   </div>
@@ -187,6 +156,7 @@ const SingleRecipe = () => {
           </div>
 
         </div>
+        {console.log('main', newFoodData)}
     </div>
   );
 };

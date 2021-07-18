@@ -18,7 +18,7 @@ const config = {
   COOKIE_KEY_2: process.env.COOKIE_KEY_2,
 };
 
-const PORT = 9000 || process.env.PORT;
+const PORT = process.env.PORT || 9000;
 const app = express();
 
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.hoifr.mongodb.net/recipes?retryWrites=true&w=majority`;
@@ -28,13 +28,15 @@ mongoose.connect(uri, {
   useUnifiedTopology: true,
 });
 
+// For security
 app.use(helmet());
 
+// For development logging
 app.use(logger('dev'));
 app.use(
   cookieSession({
     name: 'session',
-    maxAge: 24 * 60 * 60 * 1000,
+    maxAge: 24 * 60 * 60 * 1000, // 24 hour session
     keys: [config.COOKIE_KEY_1, config.COOKIE_KEY_2],
   })
 );
@@ -42,8 +44,10 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Authentication routes
 require('./routes/router.auth')(app);
 
+// Rest of the routes, after authentication
 app.use('/recipes', recipeRouter);
 app.use('/user', userRouter);
 

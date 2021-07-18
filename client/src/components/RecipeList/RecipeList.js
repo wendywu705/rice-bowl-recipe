@@ -6,6 +6,24 @@ import { Card, Button, CardTitle, CardText, CardGroup } from 'reactstrap';
 import { Link } from "react-router-dom";
 import { AiOutlinePushpin, AiOutlineSave } from 'react-icons/ai';
 
+
+// displayRecipes = (recipes) => {
+//     if (!recipes.length) return null;
+
+//     return recipes.map((recipe, index) => (
+//         <div key={index}>
+//             <h3>{recipe.name}</h3>
+//             <span>{recipe.category}</span>
+//             <p>{recipe.ingredients}</p>
+//             <span>{recipe.time}</span>
+//             <span>{recipe.servingSize}</span>
+//             <p>{recipe.directions}</p>
+//             <span>{recipe.meta}</span>
+//         </div>
+//     ))
+// }
+
+
 function ReciepeList() {
     const [dropdownOpen, setOpen] = useState(false);
     const toggle = () => setOpen(!dropdownOpen);
@@ -41,6 +59,10 @@ function ReciepeList() {
                         <CardTitle tag="recipe">Recipe Title</CardTitle>
                         <CardText>Rate, Reviews, ...</CardText>
                     </Card>
+                    <Card body>
+                        <CardTitle tag="recipe">Recipe Title</CardTitle>
+                        <CardText>Rate, Reviews, ...</CardText>
+                    </Card>
                 </CardGroup>
             </div>
             <br/><br/>
@@ -55,6 +77,7 @@ function ReciepeList() {
                         <DropdownItem>Rate</DropdownItem>
                         <DropdownItem>Prep Time</DropdownItem>                    
                         <DropdownItem>Total Time</DropdownItem>
+                        <DropdownItem>Serving Size</DropdownItem>
                     </DropdownMenu>
                 </ButtonDropdown>
             </div>

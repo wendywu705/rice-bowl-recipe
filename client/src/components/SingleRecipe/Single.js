@@ -1,27 +1,30 @@
-import { React, useState, useEffect } from 'react';
-
-import { Divider, InputNumber, Button, Modal } from 'antd';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { React, useState } from 'react';
 import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Ratings from 'react-ratings-declarative';
 import './Single.css';
+
+import { 
+  Divider, 
+  InputNumber, 
+  Button, 
+  Modal 
+} from 'antd';
 
 import {
   StarOutlined,
   EditOutlined,
   PlusOutlined,
+  LeftOutlined,
 } from '@ant-design/icons';
 
 const foodData = require('./ExampleData.json');
-
-
 
 const SingleRecipe = () => {
   const [newFoodData, setNewFoodData] = useState({...foodData});
   const [isVisible, setVisible] = useState(false);
   const foodTime = newFoodData.time[0];
   const steps = newFoodData.directions;
-  // console.log('steps', steps)
   const handleOK = () => {
     setVisible(false);
   }
@@ -96,9 +99,22 @@ const SingleRecipe = () => {
         margin:"10px 100px 0px 300px" 
       }}
     >
+      <Button 
+        ghost
+        type="link"
+        icon={<LeftOutlined />}
+        style={{
+          marginTop:10,
+          textAlign: 'left',
+          paddingLeft:0,
+          fontSize:20
+        }}
+      >
+        Back to ALL
+      </Button>
       <div className='TitleContainer'>
-        <h1>
-          Recipe Name
+        <h1 style={{paddingTop:10}}>
+          {newFoodData.name}
         </h1>
         <StarOutlined className='starIcon'
           style={newFoodData.isFavourite ? {color:'#1C94FC'} : {color:'black'}}
@@ -111,8 +127,16 @@ const SingleRecipe = () => {
             {newFoodData.slogan}
           </div>
           <div className="editContainer">
-            <EditOutlined style={{marginRight:5}}/>
-            Edit
+            <Button
+              type="link"
+              icon={<EditOutlined />}
+              style={{
+                fontSize: '17px',
+                lineHeight: '17px'
+              }}
+            >
+              Edit
+            </Button>
           </div>
         </div>
         <Carousel className="imageGallery" style={{marginTop:100}}>
@@ -273,7 +297,6 @@ const SingleRecipe = () => {
                 </li>
               ))}
             </ol>
-            {/* the rest */}
           </div>
 
         </div>

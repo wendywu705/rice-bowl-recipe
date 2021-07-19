@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import './Form.css';
-import placeholderImg from './no_image.jpeg';
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -109,7 +108,6 @@ function Form() {
     //if no image inserted
    if (!selectedFile){
       console.log('no image, using stock apron image')
-      selectedFile=placeholderImg;
       let defaultFileName = `c9f85699-7aae-45bf-b47e-5c1913f06d6a-no_image.jpeg`
       tempData = {
         ...state,

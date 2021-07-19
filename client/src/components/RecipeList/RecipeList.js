@@ -1,28 +1,30 @@
-import React, { Component } from 'react';
 import './RecipeList.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import { Card, Button, CardTitle, CardText, CardGroup } from 'reactstrap';
+import { Row, Col } from 'antd';
+import { Button } from 'reactstrap';
 import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { AiOutlinePushpin, AiOutlineSave } from 'react-icons/ai';
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 
 class ReciepeList extends Component {
     constructor(){
         super();
         this.state = {
-            response: String,
+            response: [],
             dropdownOpen: false,
         };
         this.toggle=this.toggle.bind(this);
     }
+    
     toggle(){
-        this.setState({dropdownOpen: !this.state.dropdownOpen});
+        this.setState({ dropdownOpen: !this.state.dropdownOpen });
     }
 
     componentDidMount(){
         this.callApi()
-            .then(res => this.setState({ response: res.express }))
+            .then(res => this.setState({ response: res }))
             .catch(err => console.log(err));
     }
 
@@ -36,11 +38,13 @@ class ReciepeList extends Component {
     
 
     render() {
+        const style = { color: '#ffffff', background: '#6495ED', padding: '75px 0 75px 10px', opacity: 0.8 };
+
         return(
             <div className='all-recipe'>
-                 <p>{this.state.response}</p>
                 <div className='search-bar'>
                     <h1>Your Recipes</h1>
+                    {/* TODO: serch function to be design */}
                     <input
                         type="text"
                         id="header-search"
@@ -52,33 +56,15 @@ class ReciepeList extends Component {
                     </Link>
                 </div>
                 <br/>
-                <div className='flex'><h1>Pinned</h1><div className="icons"><AiOutlinePushpin size={28} /></div></div>
+                <div className='flex'><h2>Pinned</h2><div className="icons"><AiOutlinePushpin size={28} /></div></div>
                 <hr></hr>
                 <div className='pinned-recipe'>
-                    <CardGroup>
-                        <Card body>
-                            <CardTitle tag="recipe">Recipe Title</CardTitle>
-                            <CardText>Rate, Reviews, ...</CardText>
-                        </Card>
-                        <Card body>
-                            <CardTitle tag="recipe">Recipe Title</CardTitle>
-                            <CardText>Rate, Reviews, ...</CardText>
-                        </Card>
-                        <Card body>
-                            <CardTitle tag="recipe">Recipe Title</CardTitle>
-                            <CardText>Rate, Reviews, ...</CardText>
-                        </Card>
-                        <Card body>
-                            <CardTitle tag="recipe">Recipe Title</CardTitle>
-                            <CardText>Rate, Reviews, ...</CardText>
-                        </Card>
-                    </CardGroup>
                 </div>
                 <br/><br/>
                 <div className='flex'>
-                    <h1>Saved Recipes</h1>
+                    <h2>Saved Recipes</h2>
                     <div className="icons"><AiOutlineSave size={28} /></div>
-                    <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.state.toggle}>
+                    <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                         <DropdownToggle caret outline color="primary">
                             Sort by
                         </DropdownToggle>
@@ -92,7 +78,14 @@ class ReciepeList extends Component {
                 </div>
                 <hr></hr>
                 <div className='saved-recipe'>
-                    <span>{this.state.response}</span>
+                    {/* TODO: Add links to each displayed recipe */}
+                    <Row gutter={[30, 20]}>
+                        {this.state.response.map(res =>
+                            <Col className="recipe-row" span={6}>
+                                <div style={style}><h5>{res.name}</h5></div>
+                            </Col>
+                        )}
+                    </Row>
                 </div>
             </div>
         )

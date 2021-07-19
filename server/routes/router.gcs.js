@@ -29,6 +29,7 @@ module.exports = (app) => {
     const blob = bucket.file(newFileName);
     const blobStream = blob.createWriteStream();
 
+    console.log(newFileName);
     blobStream.on('error', (err) => {
       console.log(err);
     });

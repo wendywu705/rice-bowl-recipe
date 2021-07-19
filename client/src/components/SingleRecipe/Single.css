@@ -2,6 +2,7 @@
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
+    font-family: 'Abel', sans-serif;
 }
 
 h1 {
@@ -63,28 +64,28 @@ h1 {
 .bottomContainer {
     display: flex;
 }
+
 .leftContainer {
-    width: 30%;
+    width: 750px;
     padding-left: 30px;
-    /* background-color: blue; */
 }
+
 .rightContainer {
     padding-left: 30px;
-    /* background-color: yellow; */
 }
 
 .starIcon {
-    /* font-size: 35 !important; */
     font-size:xx-large;
     padding-right: 30px;
-    /* width: 35px !important; */
 }
 
 .subHeader {
     font-size: 30px;
     font-family: 'Unica One', cursive;  
-
+    margin-bottom: 0px !important;
+    margin-top: 10px;
 }
+
 .ServingAmt {
     font-family: 'Abel', sans-serif;
     font-size: 25px;
@@ -108,6 +109,44 @@ h1 {
     font-family: 'Abel', sans-serif;
     font-size: 22px;
 }
+
 .IngredientList {
     padding-top: 15px;
+}
+
+.Timer {
+    display: flex;
+}
+
+.TimeName {
+    text-transform: uppercase;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    font-family: 'Unica One', cursive;  
+    margin-right: 30px;
+}
+
+.TimeNumber {
+    font-size: 20px;
+    padding-left: 10px;
+    text-transform: lowercase;
+}
+
+.directionContainer {
+    display: flex;
+    padding-bottom: 15px;
+}
+
+.stepContent {
+    font-family: 'Abel', sans-serif;
+    font-size: 20px;
+}
+.stepNumber {
+    font-size: 50px;
+    line-height: 50px;
+    font-weight: 600;
+    color: #1C94FC;
+    margin: 0px 30px 0px 30px;
+    font-family: 'Catamaran', sans-serif;
 }

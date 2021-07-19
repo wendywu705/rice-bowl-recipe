@@ -19,7 +19,7 @@ module.exports = (app) => {
     '/auth/google',
     passport.authenticate('google', {
       scope: ['profile', 'email'],
-    })
+    }),
   );
 
   // The callback route for Google oauth to redirect to
@@ -32,7 +32,7 @@ module.exports = (app) => {
     }),
     (_req, _res) => {
       console.log('Google success');
-    }
+    },
   );
 
   // Logout route

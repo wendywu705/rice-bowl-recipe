@@ -32,10 +32,8 @@ function Form() {
     }
 
     function handleSubmit() {
-        const form = document.forms["recipeForm"];
-        form.submit();
         alert('Recipe submitted!');
-        window.location.replace('../home')
+        // this.history.push('/home') //no page redirecting yet
 
         // let recipeForm = document.forms['recipeForm'];
         // let photo = document.getElementById("image");
@@ -55,7 +53,7 @@ function Form() {
         <div className="Form">
             <div>
                 <h1 className= 'new-recipes-title'>New Recipe:</h1>
-                <form id = 'recipeForm' method='post' action='https://localhost:9000/recipes/new' target='_self'>
+                <form id = 'recipeForm' onSubmit={handleSubmit}>
                     <label className = 'recipe-name-title'>
                         Recipe Name: <br/>
                             <input type="text" name="name" value={state.name} onChange={handleChange} placeholder='Enter Recipe Title' required="required"/>
@@ -117,9 +115,8 @@ function Form() {
                         Private?
                         <input type="checkbox" name="hidden" value='true' onChange={handleCheckBox} />
                     </label> <br/>
-                    <button className='Submit' type="button" value="Submit" onClick={handleSubmit}>
-                        Submit
-                    </button>
+                    <input className='Submit' type="submit" value="Submit" formmethod='post' 
+                    formaction='https://localhost:9000/recipes/new' formtarget='_self' />
                 </form>
             </div>
         </div>

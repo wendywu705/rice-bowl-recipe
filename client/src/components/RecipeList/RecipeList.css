@@ -3,7 +3,6 @@
     margin-left: 40vh;
     margin-top: 5vh;
     margin-right: 15vh;
-    margin-bottom: 15vh;
 }
 
 .search-bar{
@@ -16,7 +15,7 @@
     width: 23%;
 }
 
-input[type=text]{
+#header-search{
     width: 45%;
     box-sizing: border-box;
     padding: 12px 20px 12px 45px;
@@ -38,9 +37,13 @@ input[type=text]{
 .icons{
     margin-bottom: 13px;
     margin-left: 20px;
-    width: 55%
+    width: 55%;
 }
 
 h5{
-    color: #ffffff;
+    color: #fff;
+}
+
+.saved-recipe{
+    margin-bottom: 10em;
 }

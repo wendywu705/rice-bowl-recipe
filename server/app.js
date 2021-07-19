@@ -1,4 +1,5 @@
 const fs = require('fs');
+const cors = require('cors');
 const https = require('https'); // for serving SSL/HTTPS (placeholder until replaced by nginx)
 const helmet = require('helmet'); // for application security
 const logger = require('morgan');
@@ -6,11 +7,11 @@ const express = require('express');
 const passport = require('passport'); // for authentication
 const cookieSession = require('cookie-session');
 const mongoose = require('mongoose');
-const recipeRouter = require('./routes/router.recipe');
 const userRouter = require('./routes/router.user');
 
 require('dotenv').config();
 require('./models/User');
+require('./models/Recipe');
 require('./services/passport');
 
 const config = {
@@ -27,6 +28,18 @@ mongoose.connect(uri, {
   connectTimeoutMS: 5000,
   useUnifiedTopology: true,
 });
+
+app.use(cors());
+
+// Might need this during delpoyment
+// app.use(function (req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header(
+//     'Access-Control-Allow-Headers',
+//     'Origin, X-Requested-With, Content-Type, Accept'
+//   );
+//   next();
+// });
 
 // For security
 app.use(helmet());
@@ -46,9 +59,10 @@ app.use(passport.session());
 
 // Authentication routes
 require('./routes/router.auth')(app);
+require('./routes/router.gcs')(app);
+require('./routes/router.recipe')(app);
 
 // Rest of the routes, after authentication
-app.use('/recipes', recipeRouter);
 app.use('/user', userRouter);
 
 // Self-signed OpenSSL digitial certification for SSL/TLS/https connections

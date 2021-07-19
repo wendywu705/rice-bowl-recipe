@@ -42,7 +42,6 @@ class RecipeList extends Component {
 
   render() {
     const style = {
-      color: '#ffffff',
       background: '#6495ED',
       padding: '75px 0 75px 10px',
       opacity: 0.8,
@@ -98,7 +97,7 @@ class RecipeList extends Component {
             {this.state.response.map((res) => (
               <Col className="recipe-row" span={6}>
                 <div style={style}>
-                  <h5>{res.name}</h5>
+                  <h5 style={{color: '#fff'}}>{res.name}</h5>
                 </div>
               </Col>
             ))}

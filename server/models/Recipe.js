@@ -3,7 +3,13 @@ const mongoose = require('mongoose');
 const mongoSchema = new mongoose.Schema({
   recipeId: Number,
   name: String,
-  ingredients: [{ quantity: Number, unit: String, ingredient: String }],
+  ingredients: [{
+    quantity: Number,
+    quantity2: Number,
+    unitOfMeasure: String,
+    description: String,
+    isGroupHeader: Boolean,
+  }],
   time: {
     prepHour: Number, prepMin: Number, cookHour: Number, cookMin: Number,
   },

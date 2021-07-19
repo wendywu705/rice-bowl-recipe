@@ -14,7 +14,7 @@ const PageLayout = () => {
   return (
     <div style={{height:'100%'}}>
       <SideBar />
-      <Layout 
+      {/* <Layout 
         className="site-layout" 
         style={{ marginLeft: 280 }}
       >
@@ -48,7 +48,7 @@ const PageLayout = () => {
             width:'100%' 
           }}>470 Final Project ©2021
         </Footer> */}
-      </Layout>
+      {/* </Layout> */} 
 
     </div>
   );

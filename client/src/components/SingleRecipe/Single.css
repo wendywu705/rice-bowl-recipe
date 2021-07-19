@@ -108,6 +108,7 @@ h1 {
 .foodList {
     font-family: 'Abel', sans-serif;
     font-size: 22px;
+    padding-top: 5px;
 }
 
 .IngredientList {
@@ -147,6 +148,6 @@ h1 {
     line-height: 50px;
     font-weight: 600;
     color: #1C94FC;
-    margin: 0px 30px 0px 30px;
+    margin-right: 30px;
     font-family: 'Catamaran', sans-serif;
 }

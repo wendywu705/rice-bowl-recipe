@@ -30,7 +30,7 @@ const mongoSchema = new mongoose.Schema(
     imageUrl: String, // URL of the image stored in Google Cloud Storage
     category: [String], // possibly change to lower case
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const RecipeModel = mongoose.model('Recipe', mongoSchema, 'recipe-list');

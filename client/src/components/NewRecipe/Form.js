@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import './Form.css';
 
@@ -15,13 +15,13 @@ function Form() {
     servingSize: 0,
     directions: [],
     url: '',
-    imageUrl: '', // Newly added imageUrl Field for GCS link
+    imageUrl: '',
     rating: 5,
     category: '',
-    hidden: '',
+    hidden: false,
   });
   // Holds the uploaded image file in a state
-  const [selectedFile, setSelectedFile] = useState(null);
+  let [selectedFile, setSelectedFile] = useState(null);
 
   const test = async () => {
     const res = await axios.get('https://localhost:9000/recipes/');
@@ -38,20 +38,42 @@ function Form() {
 
   // Handles the AJAX request for uploading the user image
   const uploadRequest = async () => {
-    const uploadRes = await axios({
-      method: 'post',
-      url: `https://localhost:9000/api/imageupload`,
-      data: formData,
-    });
+    try{
+      const response = await axios({
+        method: 'post',
+        timeout: 1000,
+        url: `https://localhost:9000/api/imageupload`,
+        data: formData,
+      });
+      if (response.status === 200){
+        console.log('res',response);
+        return response.data;
+      }
+      return null;
+    } catch (err){
+      console.log('err',err);
+      return null;
+    }
   };
 
   // Handles the AJAX request for uploading the recipe data
   const recipeRequest = async () => {
-    const recipeRes = await axios({
-      method: 'post',
-      url: `https://localhost:9000/recipes/new`,
-      data: recipeData,
-    });
+    try{
+      const response = await axios({
+        method: 'post',
+        timeout: 1000,
+        url: `https://localhost:9000/recipes/new`,
+        data: recipeData,
+      });
+      if (response.status === 200){
+        console.log('res',response);
+        return response.data;
+      }
+      return null;
+    } catch (err){
+      console.log('err',err);
+      return null;
+    }
   };
 
   // Track the uploaded image as a state
@@ -77,48 +99,56 @@ function Form() {
   }
 
   // Handles 2 AJAX request, one for uploading the image to GCS, and other for uploading the recipe data
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    let tempData;
+    let userData;
 
     // Create a unique imageURL for each image
-    newFileName = uuidv4() + '-' + selectedFile.name;
-    let userData = {
-      imageName: newFileName,
-    };
-
-    let tempData = {
-      ...state,
-      imageUrl: `https://storage.googleapis.com/ricebowl-bucket-1/${newFileName}`,
-    };
+    //if no image inserted
+   if (!selectedFile){
+      console.log('no image, using stock apron image')
+      let defaultFileName = `c9f85699-7aae-45bf-b47e-5c1913f06d6a-no_image.jpeg`
+      tempData = {
+        ...state,
+        imageUrl: `https://storage.googleapis.com/ricebowl-bucket-1/${defaultFileName}`,
+      };
+    }
+   //image is inserted
+    else{
+      console.log('image inserted');
+      newFileName = uuidv4() + '-' + selectedFile.name;
+       userData = {
+        imageName: newFileName,
+      };
+       tempData = {
+        ...state,
+        imageUrl: `https://storage.googleapis.com/ricebowl-bucket-1/${newFileName}`,
+      };
+      formData.append('file', selectedFile);
+      formData.append('data', JSON.stringify(userData));
+      let uploadRes = uploadRequest();
+      if (!uploadRes){
+        alert('image submission FAILED!');
+      }
+    }
     recipeData.append('data', JSON.stringify(tempData));
-    formData.append('file', selectedFile);
-    formData.append('data', JSON.stringify(userData));
-
-    recipeRequest();
-    uploadRequest();
-
-    // alert('Recipe submitted!');
-    // this.history.push('/home') //no page redirecting yet
-
-    // let recipeForm = document.forms['recipeForm'];
-    // let photo = document.getElementById("image");
-    // recipeForm.append(photo);
-    // const request = new XMLHttpRequest();
-    // request.open("POST", "https://localhost:9000/recipes/new",true);
-    // request.onreadystatechange= function(){
-    //     if (request.readyState ===4 && request.status === 200){
-    //         alert('new recipe successful!');
-    //     }
-    // }
-    // request.send(recipeForm);
-    // console.log(response);
+    let recipeResId = await recipeRequest();
+    if (recipeResId){
+      alert('Recipe submitted successfully!');
+      console.log('new recipe_id',recipeResId);
+      window.location.assign(`../recipe/${recipeResId}`);
+    }
+    else{
+      alert('Recipe submission FAILED!\nMake sure recipe has ingredients and directions');
+    }
   };
 
   return (
     <div className="Form">
       <div>
         <h1 className="new-recipes-title">New Recipe:</h1>
-        <form id="recipeForm" enctype="multipart/form-data" method="POST">
+        <form id="recipeForm" encType="multipart/form-data" method="POST">
           <label className="recipe-name-title">
             Recipe Name: <br />
             <input
@@ -254,7 +284,7 @@ function Form() {
             />
           </label>{' '}
           <br />
-          <button type="submit" onClick={handleSubmit}>
+          <button className="Submit" type="submit" onClick={handleSubmit}>
             Submit
           </button>
         </form>

@@ -32,6 +32,12 @@ label{
     font-size: xx-large;
 }
 
+.Prep input, .Cook input, .Serving-Size input, .Rating input{
+    margin-left: 1em;
+    margin-right: 6em;
+    width: 4em;
+}
+
 input, textarea{
     font-family: "Calibri", serif;
     text-align: left;
@@ -68,12 +74,6 @@ textarea{
     margin-left: 0.5em;
     width: 25%;
     margin-bottom: 1em;
-}
-
-.Prep input, .Cook input, .Serving-Size input, .Rating input{
-    margin-left: 1em;
-    margin-right: 0.5em;
-    width: 25%;
 }
 
 .Serving-Size {

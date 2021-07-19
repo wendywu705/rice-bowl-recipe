@@ -102,12 +102,20 @@ const SingleRecipe = () => {
       <Button 
         ghost
         type="link"
-        icon={<LeftOutlined />}
+        icon={ <LeftOutlined 
+          style={{
+            display: 'inline-block',
+            verticalAlign: 'middle'
+          }}
+        /> }
         style={{
           marginTop:10,
           textAlign: 'left',
           paddingLeft:0,
-          fontSize:20
+          fontSize:20,
+          display: 'inline-flex',
+          justifyContent: 'center',
+          alignItems: 'center'
         }}
       >
         Back to ALL

@@ -25,7 +25,9 @@ module.exports = (app) => {
 
   // fetch Recipe names from db to Home page.
   app.get('/home', async (req, res) => {
-    var query = RecipeModel.find({}).select({ name: 1, _id: 0, imageUrl: 1, meta: 1 });
+    const query = RecipeModel.find({}).select({
+      name: 1, _id: 0, imageUrl: 1, meta: 1,
+    });
 
     query.exec((error, data) => {
       if (error) throw error;
@@ -92,7 +94,7 @@ module.exports = (app) => {
   // not implemented yet
   // });
 
-  app.get('/:id', async (req, res) => {
+  app.get('/recipes/:id', async (req, res) => {
     const { id } = req.params;
     try {
       // faster to use find().limit(1) instead of findOne()
@@ -112,7 +114,7 @@ module.exports = (app) => {
     }
   });
 
-  app.delete('/:id', async (req, res) => {
+  app.delete('/recipes/:id', async (req, res) => {
     console.log(req.params);
     const query = { _id: mongoose.Types.ObjectId(req.params.id) };
     try {

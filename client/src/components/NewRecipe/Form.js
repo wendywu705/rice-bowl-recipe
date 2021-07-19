@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './Form.css';
 
+const { v4: uuidv4 } = require('uuid');
+
 function Form() {
   const [state, setState] = useState({
     name: '',
@@ -13,12 +15,15 @@ function Form() {
     servingSize: 0,
     directions: [],
     url: '',
+    imageUrl: '',
     rating: 5,
     category: '',
     hidden: '',
   });
+  const [selectedFile, setSelectedFile] = useState(null);
   let formData = new FormData();
   let recipeData = new FormData();
+  let newFileName = '';
 
   const uploadRequest = async () => {
     const uploadRes = await axios({
@@ -34,6 +39,16 @@ function Form() {
       url: `https://localhost:9000/recipes/new`,
       data: recipeData,
     });
+  };
+
+  const nameChangeHandler = (e) => {
+    console.log('hi');
+  };
+
+  const onChangeHandler = (e) => {
+    console.log(e.target.files[0]);
+    console.log(e.target.files[0].name);
+    setSelectedFile(e.target.files[0]);
   };
 
   function handleChange(event) {
@@ -53,10 +68,25 @@ function Form() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let tempData = { ...state };
+
+    newFileName = uuidv4() + '-' + selectedFile.name;
+    console.log('newy', newFileName);
+    let userData = {
+      imageName: newFileName,
+    };
+
+    let tempData = {
+      ...state,
+      imageUrl: `https://storage.googleapis.com/ricebowl-bucket-1/${newFileName}`,
+    };
     console.log(tempData);
     recipeData.append('data', JSON.stringify(tempData));
+    formData.append('file', selectedFile);
+    formData.append('data', JSON.stringify(userData));
+
     recipeRequest();
+    uploadRequest();
+
     // alert('Recipe submitted!');
     // this.history.push('/home') //no page redirecting yet
 
@@ -92,6 +122,14 @@ function Form() {
             />
           </label>{' '}
           <br />
+          {/* <input
+            type="text"
+            name="imagename"
+            placeholder="Name of photo"
+            onChange={nameChangeHandler}
+          /> */}
+          Image: <br />
+          <input type="file" name="file" onChange={onChangeHandler} />
           {/* <label className="img">
             Thumbnail Image (NOT IMPLEMENTED YET): <br />
             <input

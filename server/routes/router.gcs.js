@@ -25,10 +25,12 @@ const bucket = storage.bucket(process.env.GCS_BUCKET);
 module.exports = (app) => {
   // Display error when log in fails
   app.post('/api/imageupload', multer.single('file'), (req, res) => {
-    const newFileName = uuidv4() + '-' + req.file.originalname;
+    const imageDetail = JSON.parse(req.body.data);
+    console.log('imageName:', imageDetail.imageName);
+    const newFileName = imageDetail.imageName;
+    console.log('newFileName: ', newFileName);
     const blob = bucket.file(newFileName);
     const blobStream = blob.createWriteStream();
-    console.log('tester:', req.body.data);
 
     console.log(newFileName);
     blobStream.on('error', (err) => {
@@ -40,8 +42,6 @@ module.exports = (app) => {
       const imageDetails = JSON.parse(req.body.data);
 
       imageDetails.image = publicUrl;
-
-      console.log('Hello');
     });
 
     blobStream.end(req.file.buffer);

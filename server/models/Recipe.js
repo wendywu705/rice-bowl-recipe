@@ -27,6 +27,7 @@ const mongoSchema = new mongoose.Schema(
     },
     hidden: Boolean,
     url: String,
+    imageUrl: String,
     category: [String], // possibly change to lower case
   },
   { timestamps: true }

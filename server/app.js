@@ -1,4 +1,5 @@
 const fs = require('fs');
+const cors = require('cors');
 const https = require('https'); // for serving SSL/HTTPS (placeholder until replaced by nginx)
 const helmet = require('helmet'); // for application security
 const logger = require('morgan');
@@ -28,6 +29,16 @@ mongoose.connect(uri, {
   useUnifiedTopology: true,
 });
 
+// Might need this during delpoyment
+// app.use(function (req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header(
+//     'Access-Control-Allow-Headers',
+//     'Origin, X-Requested-With, Content-Type, Accept'
+//   );
+//   next();
+// });
+
 // For security
 app.use(helmet());
 
@@ -47,9 +58,10 @@ app.use(passport.session());
 // Authentication routes
 require('./routes/router.auth')(app);
 require('./routes/router.gcs')(app);
+require('./routes/router.recipe')(app);
 
 // Rest of the routes, after authentication
-app.use('/recipes', recipeRouter);
+// app.use('/recipes', recipeRouter);
 app.use('/user', userRouter);
 
 // Self-signed OpenSSL digitial certification for SSL/TLS/https connections

@@ -11,6 +11,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from 'reactstrap';
+import axios from "axios";
 
 class RecipeList extends Component {
   constructor() {
@@ -33,11 +34,20 @@ class RecipeList extends Component {
   }
 
   callApi = async () => {
-    const response = await fetch('/home');
-    const body = await response.json();
-
-    if (response.status !== 200) throw Error(body.message);
-    return body;
+    try{
+      const response = await axios({
+        method: 'get',
+        timeout: 1000,
+        url: `/home`,
+      });
+      if (response.status === 200){
+        console.log('res',response);
+        return response.data;
+      }
+      return Error('error fetching from /home');
+    } catch (err){
+      console.log('err',err);
+    }
   };
 
   render() {
@@ -98,6 +108,7 @@ class RecipeList extends Component {
           <Row gutter={[10, 25]}>
             {this.state.response.map((res) => (
               <Col className="recipe-row" span={6}>
+                <Link to= {`recipe/${res.recipeId}`}>
                 <div style={style}>
                   <h5 style={{color: '#fff'}}>{res.name}</h5>
                   <img src={res.imageUrl} alt="Recipe thumbnail"
@@ -105,6 +116,7 @@ class RecipeList extends Component {
                   <span>Rate: {res.meta.rating}/5</span><br/>
                   <span>votes: {res.meta.votes} </span>
                 </div>
+                </Link>
               </Col>
             ))}
           </Row>

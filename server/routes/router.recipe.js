@@ -3,8 +3,6 @@ const mongoose = require('mongoose');
 const parseIngredient = require('parse-ingredient');
 const RecipeModel = require('../models/Recipe');
 
-// const router = express.Router();
-// const urlencodedParser = bodyParser.urlencoded({ extended: false });
 mongoose.set('useFindAndModify', false);
 
 const multer = Multer({
@@ -64,7 +62,7 @@ module.exports = (app) => {
       };
       postReq.meta = { votes: 1, rating: query.rating };
       postReq.url = query.url;
-      postReq.imageUrl = query.imageUrl;
+      postReq.imageUrl = query.imageUrl; // Embed the Google Cloud Storage image URL
       console.log(postReq);
       const recipe = await RecipeModel.create(postReq);
       if (recipe) {

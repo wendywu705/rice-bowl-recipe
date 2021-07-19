@@ -1,7 +1,5 @@
 const Multer = require('multer');
-const { v4: uuidv4 } = require('uuid');
 const { Storage } = require('@google-cloud/storage');
-const imageModel = require('../models/Image');
 
 require('dotenv').config();
 
@@ -23,16 +21,14 @@ const multer = Multer({
 const bucket = storage.bucket(process.env.GCS_BUCKET);
 
 module.exports = (app) => {
-  // Display error when log in fails
   app.post('/api/imageupload', multer.single('file'), (req, res) => {
     const imageDetail = JSON.parse(req.body.data);
-    console.log('imageName:', imageDetail.imageName);
     const newFileName = imageDetail.imageName;
-    console.log('newFileName: ', newFileName);
+
+    // Upload the image file to the Google Cloud Storage bucket
     const blob = bucket.file(newFileName);
     const blobStream = blob.createWriteStream();
 
-    console.log(newFileName);
     blobStream.on('error', (err) => {
       console.log(err);
     });

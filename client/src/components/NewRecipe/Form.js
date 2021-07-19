@@ -15,16 +15,20 @@ function Form() {
     servingSize: 0,
     directions: [],
     url: '',
-    imageUrl: '',
+    imageUrl: '', // Newly added imageUrl Field for GCS link
     rating: 5,
     category: '',
     hidden: '',
   });
+  // Holds the uploaded image file in a state
   const [selectedFile, setSelectedFile] = useState(null);
+
+  // Form data to be embedded in post requests
   let formData = new FormData();
   let recipeData = new FormData();
   let newFileName = '';
 
+  // Handles the AJAX request for uploading the user image
   const uploadRequest = async () => {
     const uploadRes = await axios({
       method: 'post',
@@ -33,6 +37,7 @@ function Form() {
     });
   };
 
+  // Handles the AJAX request for uploading the recipe data
   const recipeRequest = async () => {
     const recipeRes = await axios({
       method: 'post',
@@ -41,16 +46,12 @@ function Form() {
     });
   };
 
-  const nameChangeHandler = (e) => {
-    console.log('hi');
-  };
-
+  // Track the uploaded image as a state
   const onChangeHandler = (e) => {
-    console.log(e.target.files[0]);
-    console.log(e.target.files[0].name);
     setSelectedFile(e.target.files[0]);
   };
 
+  // General handle change function to update each corresponding value in recipe state
   function handleChange(event) {
     const value = event.target.value;
     setState({
@@ -58,6 +59,7 @@ function Form() {
       [event.target.name]: value,
     });
   }
+
   function handleCheckBox(event) {
     handleChange(event);
     const hidden = document.getElementById('hidden');
@@ -66,11 +68,12 @@ function Form() {
     }
   }
 
+  // Handles 2 AJAX request, one for uploading the image to GCS, and other for uploading the recipe data
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Create a unique imageURL for each image
     newFileName = uuidv4() + '-' + selectedFile.name;
-    console.log('newy', newFileName);
     let userData = {
       imageName: newFileName,
     };
@@ -79,7 +82,6 @@ function Form() {
       ...state,
       imageUrl: `https://storage.googleapis.com/ricebowl-bucket-1/${newFileName}`,
     };
-    console.log(tempData);
     recipeData.append('data', JSON.stringify(tempData));
     formData.append('file', selectedFile);
     formData.append('data', JSON.stringify(userData));
@@ -108,7 +110,6 @@ function Form() {
     <div className="Form">
       <div>
         <h1 className="new-recipes-title">New Recipe:</h1>
-        {/* <form id="recipeForm" onSubmit={handleSubmit}> */}
         <form id="recipeForm" enctype="multipart/form-data" method="POST">
           <label className="recipe-name-title">
             Recipe Name: <br />
@@ -122,35 +123,8 @@ function Form() {
             />
           </label>{' '}
           <br />
-          {/* <input
-            type="text"
-            name="imagename"
-            placeholder="Name of photo"
-            onChange={nameChangeHandler}
-          /> */}
           Image: <br />
           <input type="file" name="file" onChange={onChangeHandler} />
-          {/* <label className="img">
-            Thumbnail Image (NOT IMPLEMENTED YET): <br />
-            <input
-              type="file"
-              id="image"
-              name="image"
-              alt="image"
-              accept="image/png, image/jpeg"
-            />
-          </label>{' '}
-          <br />
-          <label className="img">
-            Thumbnail Image (NOT IMPLEMENTED YET): <br />
-            <input
-              type="file"
-              id="image"
-              name="image"
-              alt="image"
-              accept="image/png, image/jpeg"
-            />
-          </label>{' '} */}
           <br />
           <label className="Category">
             Categories: <br />
@@ -272,14 +246,6 @@ function Form() {
             />
           </label>{' '}
           <br />
-          {/* <input
-            className="Submit"
-            type="submit"
-            value="Submit"
-            formmethod="post"
-            formaction="https://localhost:9000/recipes/new"
-            formtarget="_self"
-          /> */}
           <button type="submit" onClick={handleSubmit}>
             Submit
           </button>

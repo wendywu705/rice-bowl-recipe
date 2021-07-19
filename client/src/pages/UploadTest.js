@@ -16,7 +16,7 @@ const UploadTest = () => {
     });
   };
   const handleSubmit = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     console.log(selectedFile);
 
     formData.append('file', selectedFile);

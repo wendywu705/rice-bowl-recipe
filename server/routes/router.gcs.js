@@ -28,6 +28,7 @@ module.exports = (app) => {
     const newFileName = uuidv4() + '-' + req.file.originalname;
     const blob = bucket.file(newFileName);
     const blobStream = blob.createWriteStream();
+    console.log('tester:', req.body.data);
 
     console.log(newFileName);
     blobStream.on('error', (err) => {

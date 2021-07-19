@@ -21,44 +21,48 @@ router.get('/', async (req, res) => {
 router.post('/new', urlencodedParser, async (req, res) => {
   console.log('adding new recipe');
   console.log(req.body);
-  try {
-    const maxIdRecipe = await RecipeModel.find().sort({ recipeId: -1 }).limit(1); // returns array
-    const newId = +maxIdRecipe[0].recipeId + 1;
-    const query = req.body;
-    const postReq = {};
-    if (query.category) {
-      postReq.category = query.category.replace(', ', ',').replace(' ,', ',').split(',');
-    }
-    if (query.ingredients) {
-      postReq.ingredients = parseIngredient(query.ingredients.toLowerCase());
-    }
-    if (query.directions) {
-      postReq.directions = query.directions.replace(/[\r]/g, '').split('\n').filter((T) => T.length > 0).map((item) => item.trim());
-    }
-    postReq.hidden = !!query.hidden;
-    postReq.name = query.name;
-    postReq.votes = +1;
-    postReq.recipeId = newId;
-    postReq.time = {
-      prepHour: query.prepHour,
-      prepMin: query.prepMin,
-      cookHour: query.cookHour,
-      cookMin: query.cookMin,
-    };
-    postReq.meta = { votes: 1, rating: query.rating };
-    postReq.url = query.url;
-    console.log(postReq);
-    const recipe = await RecipeModel.create(postReq);
-    if (recipe) {
-      console.log('recipe inserted successfully');
-      // res.json(recipe.id);
-    } else {
-      console.log('fail to add new recipe');
-    }
-  } catch (err) {
-    console.log('error, cant create new recipes');
-    res.json({ error: err.message });
-  }
+  console.log(req.body.data);
+
+  // const tempoData = JSON.parse(req.body.data);
+  // console.log(tempoData);
+  // try {
+  //   const maxIdRecipe = await RecipeModel.find().sort({ recipeId: -1 }).limit(1); // returns array
+  //   const newId = +maxIdRecipe[0].recipeId + 1;
+  //   const query = req.body;
+  //   const postReq = {};
+  //   if (query.category) {
+  //     postReq.category = query.category.replace(', ', ',').replace(' ,', ',').split(',');
+  //   }
+  //   if (query.ingredients) {
+  //     postReq.ingredients = parseIngredient(query.ingredients.toLowerCase());
+  //   }
+  //   if (query.directions) {
+  //     postReq.directions = query.directions.replace(/[\r]/g, '').split('\n').filter((T) => T.length > 0).map((item) => item.trim());
+  //   }
+  //   postReq.hidden = !!query.hidden;
+  //   postReq.name = query.name;
+  //   postReq.votes = +1;
+  //   postReq.recipeId = newId;
+  //   postReq.time = {
+  //     prepHour: query.prepHour,
+  //     prepMin: query.prepMin,
+  //     cookHour: query.cookHour,
+  //     cookMin: query.cookMin,
+  //   };
+  //   postReq.meta = { votes: 1, rating: query.rating };
+  //   postReq.url = query.url;
+  //   console.log(postReq);
+  //   const recipe = await RecipeModel.create(postReq);
+  //   if (recipe) {
+  //     console.log('recipe inserted successfully');
+  //     // res.json(recipe.id);
+  //   } else {
+  //     console.log('fail to add new recipe');
+  //   }
+  // } catch (err) {
+  //   console.log('error, cant create new recipes');
+  //   res.json({ error: err.message });
+  // }
 });
 
 // router.patch('/:id', async (req, res) => {

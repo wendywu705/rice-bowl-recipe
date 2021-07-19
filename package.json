@@ -4,18 +4,30 @@
 	"description": "ricebowl app",
 	"main": "/server/app.js",
 	"scripts": {
-	  "install-server": "npm install --prefix server",
-	  "install-client": "npm install --prefix client",
-	  "install": "npm run install-server && npm run install-client",
-	  "server": "npm run dev --prefix server",
-	  "client": "npm start --prefix client",
-	  "watch": "npm run server & npm run client"
+		"install-server": "npm install --prefix server",
+		"install-client": "npm install --prefix client",
+		"install": "npm run install-server && npm run install-client",
+		"server": "npm run dev --prefix server",
+		"client": "npm start --prefix client",
+		"watch": "npm run server & npm run client"
 	},
 	"repository": {
-	  "type": "git",
-	  "url": "git+https://csil-git1.cs.surrey.sfu.ca/xza172/rice-bowl-recipe.git"
+		"type": "git",
+		"url": "git+https://csil-git1.cs.surrey.sfu.ca/xza172/rice-bowl-recipe.git"
 	},
 	"keywords": [],
 	"author": "Christina Zhu, Jaddie Tan, Thomas Min, Wendy Wu",
-	"license": "ISC"
+	"license": "ISC",
+	"dependencies": {
+		"cookie-parser": "^1.4.5",
+		"cookie-session": "^1.4.0",
+		"dotenv": "^10.0.0",
+		"express": "^4.17.1",
+		"helmet": "^4.6.0",
+		"mongoose": "^5.13.3",
+		"morgan": "^1.10.0",
+		"parse-ingredient": "^0.3.0",
+		"passport": "^0.4.1",
+		"passport-google-oauth20": "^2.0.0"
+	}
 }

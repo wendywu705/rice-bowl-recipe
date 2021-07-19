@@ -25,9 +25,9 @@ module.exports = (app) => {
 
   // fetch Recipe names from db to Home page.
   app.get('/home', async (req, res) => {
-    var query = RecipeModel.find({}).select({ name: 1, _id: 0 });
+    const query = RecipeModel.find({}).select({ name: 1, _id: 0 });
 
-    query.exec(function (error, data) {
+    query.exec((error, data) => {
       if (error) throw error;
       // for (let i = 0; i < data.length; i++) {
       //   console.log(data[i].name);
@@ -38,7 +38,6 @@ module.exports = (app) => {
 
   app.post('/recipes/new', multer.single('file'), async (req, res) => {
     console.log('adding new recipe');
-
     try {
       const maxIdRecipe = await RecipeModel.find()
         .sort({ recipeId: -1 })
@@ -80,13 +79,12 @@ module.exports = (app) => {
       const recipe = await RecipeModel.create(postReq);
       if (recipe) {
         console.log('recipe inserted successfully');
-        // res.json(recipe.id);
+        res.json(newId);
       } else {
         console.log('fail to add new recipe');
       }
     } catch (err) {
       console.log('error, cant create new recipes');
-      res.json({ error: err.message });
     }
   });
 

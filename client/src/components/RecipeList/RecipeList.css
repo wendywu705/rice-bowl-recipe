@@ -3,6 +3,7 @@
     margin-left: 40vh;
     margin-top: 5vh;
     margin-right: 15vh;
+    margin-bottom: 15vh;
 }
 
 .search-bar{
@@ -41,5 +42,5 @@ input[type=text]{
 }
 
 h5{
-    color: white;
+    color: #ffffff;
 }

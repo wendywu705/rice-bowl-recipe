@@ -49,7 +49,7 @@ const SideBar = () => {
         </div>
         <div 
           style={{
-            display:'flex', 
+            display:'flex',
             justifyContent:'center', 
             paddingBottom:15, 
             paddingTop: 10
@@ -61,7 +61,7 @@ const SideBar = () => {
           />
         </div>
         <Menu  
-          mode="inline" 
+          mode="inline"
           defaultSelectedKeys={[ '1' ]}
         >
           <Menu.Item 

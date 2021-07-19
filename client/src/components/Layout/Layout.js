@@ -27,7 +27,7 @@ const PageLayout = () => {
         />
         <Content 
           style={{ 
-            margin: '24px 16px 0', 
+            margin: '24px 16px 0',
             overflow: 'initial' 
           }}>
         <div 

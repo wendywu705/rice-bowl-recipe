@@ -1,0 +1,44 @@
+{
+  "name": "ricebowl",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "mocha",
+    "lint": "eslint ../client/src --fix && eslint ./ --fix"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cookie-parser": "~1.4.3",
+    "cookie-session": "^1.4.0",
+    "debug": "~2.6.9",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "~4.16.0",
+    "helmet": "^4.6.0",
+    "http-errors": "~1.6.2",
+    "mongodb": "^4.0.0",
+    "mongoose": "^5.13.2",
+    "morgan": "^1.9.1",
+    "parse-ingredient": "^0.3.0",
+    "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0",
+    "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "@typescript-eslint/parser": "^4.28.3",
+    "eslint": "^7.30.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "mocha": "^9.0.2",
+    "nodemon": "^2.0.12",
+    "react-router-dom": "^5.2.0",
+    "supertest": "^3.0.0",
+    "typescript": "^4.3.5"
+  }
+}

@@ -1,0 +1,42 @@
+.all-recipe{
+    font-family: "Unica One", serif;
+    margin-left: 40vh;
+    margin-top: 5vh;
+    margin-right: 5vh;
+}
+
+.search-bar{
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.search-bar > h1{
+    width: 17%;
+}
+
+.search{
+    width: 50%;
+    box-sizing: border-box;
+    padding: 12px 12px 12px 45px;
+    margin-right: 2em;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-image: url('searchicon.png');
+    background-repeat: no-repeat;
+    background-size: 36px;
+    background-position: left 5px bottom 5px;
+}
+
+
+.flex{
+    display: flex;
+    align-items: center;
+}
+
+.icons{
+    margin-bottom: 13px;
+    margin-left: 20px;
+    width: 52%
+}

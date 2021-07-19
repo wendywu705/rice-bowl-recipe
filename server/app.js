@@ -8,6 +8,7 @@ const cookieSession = require('cookie-session');
 const mongoose = require('mongoose');
 const recipeRouter = require('./routes/router.recipe');
 const userRouter = require('./routes/router.user');
+const fetchRouter = require('./routes/fetch.recipe');
 
 require('dotenv').config();
 require('./models/User');
@@ -44,10 +45,29 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Authentication routes
-require('./routes/router.auth')(app);
+// This function checks that the user is Authenticated
+// If the user is not authenticated, an error page will be rendered.
+// Otherwise, it will call next() so that the user can access the restricted API route.
+const checkAuth = (req, res, next) => {
+  console.log('Current user is:', req.user);
+  const isLoggedIn = req.isAuthenticated() && req.user;
+  if (!isLoggedIn) {
+    return res.status(401).json({
+      error: 'You must be logged in!',
+    });
+  }
+  next();
+};
 
-// Rest of the routes, after authentication
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Connect to the fron-end recipe list home page.
+app.use('/home', fetchRouter);
+
 app.use('/recipes', recipeRouter);
 app.use('/user', userRouter);
 

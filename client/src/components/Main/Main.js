@@ -19,7 +19,7 @@ const Main = () => {
         <Route exact path="/home" component={Home} />
         <Route exact path="/new_recipe" component={NewRecipe} />
         <Route exact path="/side" component={PageLayout} />
-        <Route exact path='/single' component={SingleRecipe} />
+        <Route exact path="/recipe/:id" component={SingleRecipe} />
       </Switch>
     </div>
   );

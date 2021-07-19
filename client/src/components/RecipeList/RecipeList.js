@@ -92,4 +92,4 @@ class ReciepeList extends Component {
     }
 }
 
-export default ReciepeList
+export default RecipeList

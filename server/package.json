@@ -9,6 +9,7 @@
     "lint": "eslint ../client/src --fix && eslint ./ --fix"
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
     "cookie-parser": "~1.4.3",
     "cookie-session": "^1.4.0",
     "debug": "~2.6.9",
@@ -20,6 +21,7 @@
     "mongodb": "^4.0.0",
     "mongoose": "^5.13.2",
     "morgan": "^1.9.1",
+    "parse-ingredient": "^0.3.0",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
     "pug": "^3.0.2",

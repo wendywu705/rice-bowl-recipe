@@ -11,6 +11,7 @@ const { Strategy } = require('passport-google-oauth20'); // for authentication
 const cookieSession = require('cookie-session');
 const mongoose = require('mongoose');
 const recipeRouter = require('./routes/router.recipe');
+const fetchRouter = require('./routes/fetch.recipe');
 
 require('dotenv').config();
 
@@ -81,21 +82,14 @@ const checkAuth = (req, res, next) => {
   next();
 };
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-
-// TODO: this part is to be delete and connect to react front-end
-app.set('view engine', 'ejs');
-app.get('/', (req, res) => {
-  res.render('index');
-});
-/// ///////////////////////////////
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Connect to the fron-end recipe list home page.
+app.use('/home', fetchRouter);
 
 app.use('/recipes', recipeRouter);
 

@@ -77,6 +77,7 @@ module.exports = (app) => {
       postReq.meta = { votes: 1, rating: query.rating };
       postReq.url = query.url;
       postReq.imageUrl = query.imageUrl; // Embed the Google Cloud Storage image URL
+      postReq.servingSize = +query.servingSize;
       console.log(postReq);
       const recipe = await RecipeModel.create(postReq);
       if (recipe) {

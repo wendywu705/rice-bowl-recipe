@@ -6,6 +6,7 @@ import {
   Layout, 
   Menu, 
   AutoComplete, 
+  Button
 } from 'antd';
 
 import {
@@ -13,6 +14,7 @@ import {
   GlobalOutlined,
   CalendarOutlined,
   ShoppingCartOutlined,
+  LogoutOutlined
 } from '@ant-design/icons';
 
 const { Sider } = Layout;
@@ -93,6 +95,20 @@ const SideBar = () => {
             Cart
           </Menu.Item>
         </Menu>
+        <Button
+          className='signButton'
+          style={{
+            backgroundColor:'#E6F7FF',
+            width: 280,
+            height: 50,
+            position:'absolute',
+            bottom:0,
+            border: 0
+          }}
+          icon={<LogoutOutlined />}
+        >
+          Sign Out
+        </Button>
       </Sider>
     </Layout>
   );

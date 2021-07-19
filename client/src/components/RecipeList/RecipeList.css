@@ -3,12 +3,19 @@
     margin-left: 40vh;
     margin-top: 5vh;
     margin-right: 15vh;
+    margin-bottom: 5vh;
+}
+
+.all-recipe > h1{
+    text-align: center;
+    margin-right: 3em;
 }
 
 .search-bar{
     width: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .search-bar > h1{
@@ -46,4 +53,8 @@ h5{
 
 .saved-recipe{
     margin-bottom: 10em;
+}
+
+.recipe-row{
+    color: white;
 }

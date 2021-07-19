@@ -43,15 +43,17 @@ class RecipeList extends Component {
   render() {
     const style = {
       background: '#6495ED',
-      padding: '75px 0 75px 10px',
+      padding: '25px 0 15px 10px',
       opacity: 0.8,
+      height: '250px',
+      width: '300px'
     };
 
     return (
       <div className="all-recipe">
+        <h1><b>Your Recipes</b></h1>
         <div className="search-bar">
-          <h1>Your Recipes</h1>
-          {/* TODO: serch function to be design */}
+          {/* TODO: search function to be design */}
           <input
             type="text"
             id="header-search"
@@ -93,11 +95,15 @@ class RecipeList extends Component {
         <hr></hr>
         <div className="saved-recipe">
           {/* TODO: Add links to each displayed recipe */}
-          <Row gutter={[30, 20]}>
+          <Row gutter={[10, 25]}>
             {this.state.response.map((res) => (
               <Col className="recipe-row" span={6}>
                 <div style={style}>
                   <h5 style={{color: '#fff'}}>{res.name}</h5>
+                  <img src={res.imageUrl} alt="Recipe thumbnail"
+                  height="130px" width="130px"></img><br/>
+                  <span>Rate: {res.meta.rating}/5</span><br/>
+                  <span>votes: {res.meta.votes} </span>
                 </div>
               </Col>
             ))}

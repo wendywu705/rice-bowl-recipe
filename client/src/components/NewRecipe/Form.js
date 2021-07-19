@@ -58,7 +58,11 @@ function Form() {
                 <form id = 'recipeForm' method='post' action='https://localhost:9000/recipes/new' target='_self'>
                     <label className = 'recipe-name-title'>
                         Recipe Name: <br/>
-                            <input type="text" name="name" value={state.name} onChange={handleChange} placeholder='Enter Recipe Title'/>
+                            <input type="text" name="name" value={state.name} onChange={handleChange} placeholder='Enter Recipe Title' required="required"/>
+                    </label> <br/>
+                    <label className = 'img'>
+                        Thumbnail Image (NOT IMPLEMENTED YET): <br/>
+                        <input type="file" id="image" name="image" alt="image" accept="image/png, image/jpeg"/>
                     </label> <br/>
                     <label className = 'img'>
                         Thumbnail Image (NOT IMPLEMENTED YET): <br/>
@@ -72,7 +76,8 @@ function Form() {
                     <label className='Ingredients'>
                         Recipe Ingredients: <br/>
                         <textarea name="ingredients" value={state.ingredients} onChange={handleChange}
-                                  placeholder='quantity/unit/ingredient&#13;MUST HAVE UNITS&#13;3 cups carrots &#13;1 cup water &#13;5 cloves garlic &#13;etc...'/>
+                                  placeholder='quantity/unit/ingredient&#13;MUST HAVE UNITS&#13;3 cups carrots &#13;1 cup water &#13;5 cloves garlic &#13;etc...'
+                                  required/>
                     </label> <br/>
                     <label className='Prep'>
                         Prep Hours:
@@ -101,7 +106,8 @@ function Form() {
                     <label>
                         Recipe Steps: <br/>
                         <textarea name="directions" value={state.directions} onChange={handleChange}
-                                  placeholder='Chop up all carrots and garlic. &#13;&#13;Pour water over the carrots and add along the chopped garlic.'/>
+                                  placeholder='Chop up all carrots and garlic. &#13;&#13;Pour water over the carrots and add along the chopped garlic.'
+                                  required/>
                     </label> <br/>
                     <label className='url'>
                         Video Clip: <br/>

@@ -286,7 +286,7 @@ function Form() {
             />
           </label>{' '}
           <br />
-          <button type="submit" onClick={handleSubmit}>
+          <button className="Submit" type="submit" onClick={handleSubmit}>
             Submit
           </button>
         </form>

@@ -8,7 +8,7 @@ import { AiOutlinePushpin, AiOutlineSave } from 'react-icons/ai';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 
-class ReciepeList extends Component {
+class RecipeList extends Component {
     constructor(){
         super();
         this.state = {
@@ -92,4 +92,4 @@ class ReciepeList extends Component {
     }
 }
 
-export default RecipeList
+export default RecipeList;

@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const https = require('https'); // for serving SSL/HTTPS (placeholder until replaced by nginx)
 const helmet = require('helmet'); // for application security
 const logger = require('morgan');
@@ -8,6 +9,7 @@ const cookieSession = require('cookie-session');
 const mongoose = require('mongoose');
 const recipeRouter = require('./routes/router.recipe');
 const userRouter = require('./routes/router.user');
+const cookieParser = require('cookie-parser');
 const fetchRouter = require('./routes/fetch.recipe');
 
 require('dotenv').config();

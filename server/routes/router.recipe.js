@@ -1,25 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const parseIngredient = require('parse-ingredient');
 const RecipeModel = require('../models/Recipe');
 
 const router = express.Router();
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 mongoose.set('useFindAndModify', false);
-
-function splitIngredients(str) {
-  const trimmedStr = str.trim();
-  const blankIndexes = [];
-  for (let i = 0; i < str.length; i++) {
-    if (trimmedStr[i] === ' ') {
-      blankIndexes.push(i);
-    }
-  }
-  const quantity = +trimmedStr.slice(0, blankIndexes[0]);
-  const unit = trimmedStr.slice(blankIndexes[0] + 1, blankIndexes[1]);
-  const ingredient = trimmedStr.slice(blankIndexes[1] + 1, str.length);
-  return { quantity, unit, ingredient };
-}
 
 router.get('/', async (req, res) => {
   try {
@@ -43,11 +30,10 @@ router.post('/new', urlencodedParser, async (req, res) => {
       postReq.category = query.category.replace(', ', ',').replace(' ,', ',').split(',');
     }
     if (query.ingredients) {
-      postReq.ingredients = query.ingredients.replace(/[\r]/g, '').replace('\n', '')
-        .split('\n').map((item) => splitIngredients(item));
+      postReq.ingredients = parseIngredient(query.ingredients.toLowerCase());
     }
     if (query.directions) {
-      postReq.directions = query.directions.replace(/[\r]/g, '').split('\n').filter((T) => T.length > 0);
+      postReq.directions = query.directions.replace(/[\r]/g, '').split('\n').filter((T) => T.length > 0).map((item) => item.trim());
     }
     postReq.hidden = !!query.hidden;
     postReq.name = query.name;

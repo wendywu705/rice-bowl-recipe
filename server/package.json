@@ -21,6 +21,7 @@
     "mongodb": "^4.0.0",
     "mongoose": "^5.13.2",
     "morgan": "^1.9.1",
+    "parse-ingredient": "^0.3.0",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
     "pug": "^3.0.2"

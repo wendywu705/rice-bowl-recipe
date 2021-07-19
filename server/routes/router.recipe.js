@@ -1,105 +1,134 @@
-const express = require('express');
+const Multer = require('multer');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const parseIngredient = require('parse-ingredient');
 const RecipeModel = require('../models/Recipe');
 
-const router = express.Router();
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
 mongoose.set('useFindAndModify', false);
 
-router.get('/', async (req, res) => {
-  try {
-    const recipes = await RecipeModel.find();
-    console.log('found recipes');
-    res.send(recipes);
-  } catch (err) {
-    res.json({ error: err.message });
-  }
+const multer = Multer({
+  storage: Multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5 megabytes
+  },
 });
 
-router.post('/new', urlencodedParser, async (req, res) => {
-  console.log('adding new recipe');
-  console.log(req.body);
-  try {
-    const maxIdRecipe = await RecipeModel.find().sort({ recipeId: -1 }).limit(1); // returns array
-    const newId = +maxIdRecipe[0].recipeId + 1;
-    const query = req.body;
-    const postReq = {};
-    if (query.category) {
-      postReq.category = query.category.replace(', ', ',').replace(' ,', ',').split(',');
+module.exports = (app) => {
+  app.get('/recipe', async (req, res) => {
+    try {
+      const recipes = await RecipeModel.find();
+      console.log('found recipes');
+      res.send(recipes);
+    } catch (err) {
+      res.json({ error: err.message });
     }
-    if (query.ingredients) {
-      postReq.ingredients = parseIngredient(query.ingredients.toLowerCase());
-    }
-    if (query.directions) {
-      postReq.directions = query.directions.replace(/[\r]/g, '').split('\n').filter((T) => T.length > 0).map((item) => item.trim());
-    }
-    postReq.hidden = !!query.hidden;
-    postReq.name = query.name;
-    postReq.votes = +1;
-    postReq.recipeId = newId;
-    postReq.time = {
-      prepHour: query.prepHour,
-      prepMin: query.prepMin,
-      cookHour: query.cookHour,
-      cookMin: query.cookMin,
-    };
-    postReq.meta = { votes: 1, rating: query.rating };
-    postReq.url = query.url;
-    console.log(postReq);
-    const recipe = await RecipeModel.create(postReq);
-    if (recipe) {
-      console.log('recipe inserted successfully');
-      // res.json(recipe.id);
-    } else {
-      console.log('fail to add new recipe');
-    }
-  } catch (err) {
-    console.log('error, cant create new recipes');
-    res.json({ error: err.message });
-  }
-});
+  });
 
-// router.patch('/:id', async (req, res) => {
-// not implemented yet
-// });
+  app.get('/home', async (req, res) => {
+    var query = RecipeModel.find({}).select({ name: 1, _id: 0 });
 
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-    // faster to use find().limit(1) instead of findOne()
-    const results = await RecipeModel.find({ recipeId: +id }).limit(1);
-    const recipe = results[0];
-    if (recipe) {
-      console.log('recipe found');
-      res.send(recipe);
-    } else {
-      const dne = 'no such recipe with this id';
-      console.log(dne);
-      res.json({ error: dne });
+    query.exec(function (error, data) {
+      if (error) throw error;
+      for (let i = 0; i < data.length; i++) {
+        console.log(data[i].name);
+      }
+      res.json(data);
+    });
+  });
+
+  app.post('/recipes/new', multer.single('file'), async (req, res) => {
+    console.log('adding new recipe');
+
+    try {
+      const maxIdRecipe = await RecipeModel.find()
+        .sort({ recipeId: -1 })
+        .limit(1); // returns array
+      const newId = +maxIdRecipe[0].recipeId + 1;
+      const query = JSON.parse(req.body.data);
+      console.log('q::::', query);
+      const postReq = {};
+      if (query.category) {
+        postReq.category = query.category
+          .replace(', ', ',')
+          .replace(' ,', ',')
+          .split(',');
+      }
+      if (query.ingredients) {
+        postReq.ingredients = parseIngredient(query.ingredients.toLowerCase());
+      }
+      if (query.directions) {
+        postReq.directions = query.directions
+          .replace(/[\r]/g, '')
+          .split('\n')
+          .filter((T) => T.length > 0)
+          .map((item) => item.trim());
+      }
+      postReq.hidden = !!query.hidden;
+      postReq.name = query.name;
+      postReq.votes = +1;
+      postReq.recipeId = newId;
+      postReq.time = {
+        prepHour: query.prepHour,
+        prepMin: query.prepMin,
+        cookHour: query.cookHour,
+        cookMin: query.cookMin,
+      };
+      postReq.meta = { votes: 1, rating: query.rating };
+      postReq.url = query.url;
+      postReq.imageUrl = query.imageUrl; // Embed the Google Cloud Storage image URL
+      console.log(postReq);
+      const recipe = await RecipeModel.create(postReq);
+      if (recipe) {
+        console.log('recipe inserted successfully');
+        // res.json(recipe.id);
+      } else {
+        console.log('fail to add new recipe');
+      }
+    } catch (err) {
+      console.log('error, cant create new recipes');
+      res.json({ error: err.message });
     }
-  } catch (err) {
-    console.log('no such recipe');
-    res.json({ error: err.message });
-  }
-});
+  });
 
-router.delete('/:id', async (req, res) => {
-  console.log(req.params);
-  const query = { _id: mongoose.Types.ObjectId(req.params.id) };
-  try {
-    const recipe = await RecipeModel.findOneAndRemove(query);
-    if (recipe) {
-      console.log('recipe deleted successfully');
-      res.json(recipe);
-    } else {
-      console.log('fail to delete recipe');
+  // router.patch('/:id', async (req, res) => {
+  // not implemented yet
+  // });
+
+  app.get('/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+      // faster to use find().limit(1) instead of findOne()
+      const results = await RecipeModel.find({ recipeId: +id }).limit(1);
+      const recipe = results[0];
+      if (recipe) {
+        console.log('recipe found');
+        res.send(recipe);
+      } else {
+        const dne = 'no such recipe with this id';
+        console.log(dne);
+        res.json({ error: dne });
+      }
+    } catch (err) {
+      console.log('no such recipe');
+      res.json({ error: err.message });
     }
-  } catch (err) {
-    console.log('error, cant delete recipe');
-    res.json({ error: err.message });
-  }
-});
+  });
 
-module.exports = router;
+  app.delete('/:id', async (req, res) => {
+    console.log(req.params);
+    const query = { _id: mongoose.Types.ObjectId(req.params.id) };
+    try {
+      const recipe = await RecipeModel.findOneAndRemove(query);
+      if (recipe) {
+        console.log('recipe deleted successfully');
+        res.json(recipe);
+      } else {
+        console.log('fail to delete recipe');
+      }
+    } catch (err) {
+      console.log('error, cant delete recipe');
+      res.json({ error: err.message });
+    }
+  });
+
+  // module.exports = router;
+};

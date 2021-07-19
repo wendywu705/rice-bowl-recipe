@@ -51,7 +51,7 @@ app.use(
     name: 'session',
     maxAge: 24 * 60 * 60 * 1000, // 24 hour session
     keys: [config.COOKIE_KEY_1, config.COOKIE_KEY_2],
-  })
+  }),
 );
 
 app.use(passport.initialize());
@@ -74,7 +74,7 @@ https
       key: fs.readFileSync('key.pem'),
       cert: fs.readFileSync('cert.pem'),
     },
-    app
+    app,
   )
   .listen(PORT, () => {
     console.log(`[Server]: Listening on port: ${PORT}`);

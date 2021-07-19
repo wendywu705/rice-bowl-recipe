@@ -1,5 +1,5 @@
 const fs = require('fs');
-const path = require('path');
+const cors = require('cors');
 const https = require('https'); // for serving SSL/HTTPS (placeholder until replaced by nginx)
 const helmet = require('helmet'); // for application security
 const logger = require('morgan');
@@ -7,13 +7,11 @@ const express = require('express');
 const passport = require('passport'); // for authentication
 const cookieSession = require('cookie-session');
 const mongoose = require('mongoose');
-const recipeRouter = require('./routes/router.recipe');
 const userRouter = require('./routes/router.user');
-const cookieParser = require('cookie-parser');
-const fetchRouter = require('./routes/fetch.recipe');
 
 require('dotenv').config();
 require('./models/User');
+require('./models/Recipe');
 require('./services/passport');
 
 const config = {
@@ -31,6 +29,18 @@ mongoose.connect(uri, {
   useUnifiedTopology: true,
 });
 
+app.use(cors());
+
+// Might need this during delpoyment
+// app.use(function (req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header(
+//     'Access-Control-Allow-Headers',
+//     'Origin, X-Requested-With, Content-Type, Accept'
+//   );
+//   next();
+// });
+
 // For security
 app.use(helmet());
 
@@ -47,30 +57,12 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// This function checks that the user is Authenticated
-// If the user is not authenticated, an error page will be rendered.
-// Otherwise, it will call next() so that the user can access the restricted API route.
-const checkAuth = (req, res, next) => {
-  console.log('Current user is:', req.user);
-  const isLoggedIn = req.isAuthenticated() && req.user;
-  if (!isLoggedIn) {
-    return res.status(401).json({
-      error: 'You must be logged in!',
-    });
-  }
-  next();
-};
+// Authentication routes
+require('./routes/router.auth')(app);
+require('./routes/router.gcs')(app);
+require('./routes/router.recipe')(app);
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Connect to the fron-end recipe list home page.
-app.use('/home', fetchRouter);
-
-app.use('/recipes', recipeRouter);
+// Rest of the routes, after authentication
 app.use('/user', userRouter);
 
 // Self-signed OpenSSL digitial certification for SSL/TLS/https connections

@@ -38,7 +38,7 @@ class RecipeList extends Component {
     
 
     render() {
-        const style = { color: '#ffffff', background: '#6495ED', padding: '75px 0 75px 10px', opacity: 0.8 };
+        const style = { color: '#fff', background: '#6495ED', padding: '75px 0 75px 10px', opacity: 0.8 };
 
         return(
             <div className='all-recipe'>
@@ -82,7 +82,9 @@ class RecipeList extends Component {
                     <Row gutter={[30, 20]}>
                         {this.state.response.map(res =>
                             <Col className="recipe-row" span={6}>
-                                <div style={style}><h5>{res.name}</h5></div>
+                                <div style={style}>
+                                    <h5>{res.name}</h5>
+                                </div>
                             </Col>
                         )}
                     </Row>

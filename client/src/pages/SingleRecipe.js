@@ -1,14 +1,14 @@
-import Form from '../components/NewRecipe/Form'
 import PageLayout from "../components/Layout/Layout";
 import React from "react";
+import SingleRecipe from '../components/SingleRecipe/Single'
 
-function NewRecipe() {
+function SingleRecipePage() {
     return (
         <div>
             <PageLayout />
-            <Form/>
+            <SingleRecipe/>
         </div>
     );
 }
 
-export default NewRecipe;
+export default SingleRecipePage;

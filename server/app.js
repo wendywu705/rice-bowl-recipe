@@ -24,10 +24,10 @@ const app = express();
 
 console.log('started app.js');
 //cloud mongoDB
-// const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.hoifr.mongodb.net/recipes?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.hoifr.mongodb.net/recipes?retryWrites=true&w=majority`;
 
 //local mongoDB on server
-const uri = 'mongodb://127.0.0.1:27017/recipes';
+//const uri = 'mongodb://127.0.0.1:27017/recipes';
 
 const temp = mongoose.connect(uri, {
   useNewUrlParser: true,

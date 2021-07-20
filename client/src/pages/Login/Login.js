@@ -12,10 +12,9 @@ const Login = () => {
             alt="rice logo"
           />
           <div className="title-name">Rice Bowl</div>
-        </div><br/>
+        </div><br/><br/>
         <a href="https://localhost:9000/auth/google">
-          <b><Button className="btn" outline color="primary">Log In using Google
-            </Button></b></a>
+          <Button className="btn" outline color="primary">Log In using Google</Button></a>
     </div>
   );
 };

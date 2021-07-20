@@ -107,16 +107,16 @@ class RecipeList extends Component {
           {/* TODO: Add links to each displayed recipe */}
           <Row gutter={[10, 25]}>
             {this.state.response.map((res) => (
-              <Col className="recipe-row" span={6}>
-                <Link to= {`recipe/${res.recipeId}`}>
+              <Col className="recipe-row" span={6}>    
                 <div style={style}>
-                  <h5 style={{color: '#fff'}}>{res.name}</h5>
+                  <Link to= {`recipe/${res.recipeId}`}>
+                    <h5 style={{color: '#fff'}}>{res.name}</h5>
+                  </Link>
                   <img src={res.imageUrl} alt="Recipe thumbnail"
                   height="130px" width="130px"></img><br/>
                   <span>Rate: {res.meta.rating}/5</span><br/>
                   <span>Votes: {res.meta.votes} </span>
                 </div>
-                </Link>
               </Col>
             ))}
           </Row>

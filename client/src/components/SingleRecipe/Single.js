@@ -15,56 +15,15 @@ import {
   LeftOutlined,
 } from '@ant-design/icons';
 
-const foodData = require('./ExampleData.json');
-const initData = require('./initData.json');
-
-const hello = {
-  time: {
-    prepHour: 0,
-    prepMin: 0,
-    cookHour: 0,
-    cookMin: 0,
-  },
-  meta: {},
-  directions: [],
-  category: [],
-  _id: '',
-  ingredients: [{}],
-  hidden: null,
-  name: '',
-  recipeId: null,
-  url: '',
-  createdAt: '',
-  updatedAt: '',
-  __v: 0,
-  imageUrl: '',
-};
-
 const SingleRecipe = () => {
-  // const [newFoodData, setNewFoodData] = useState({ ...hello });
-  // const [newFoodData, setNewFoodData] = useState({ ...foodData });
   const [newFoodData, setNewFoodData] = useState(null);
   const [isVisible, setVisible] = useState(false);
-  const [foodTime, setFoodTime] = useState('');
-  const [steps, setSteps] = useState('');
   const { id } = useParams();
-  // const foodTime = newFoodData.time[0];
-  console.log(newFoodData);
 
   useEffect(() => {
     console.log('id:', id);
     fetchSingleRecipe();
-
-    if (newFoodData) {
-      setFoodTime(newFoodData.time);
-      setSteps(newFoodData.directions);
-    }
   }, []);
-
-  // if (newFoodData !== undefined) {
-  //   console.log('newrecipe\n', newFoodData);
-  //   setNewFoodData(newFoodData);
-  // }
 
   const fetchSingleRecipe = async () => {
     try {
@@ -82,8 +41,6 @@ const SingleRecipe = () => {
         newRating: null,
       };
       setNewFoodData(tempinit);
-      // setNewFoodData(body);
-      console.log('here is recipe:', body);
     } catch (err) {
       console.log(err);
     }
@@ -103,31 +60,25 @@ const SingleRecipe = () => {
     } else {
       newfav = !newFoodData.isFavourite;
     }
-    // let newfav = !newFoodData.isFavourite;
     let tempfav = {
       ...newFoodData,
       isFavourite: newfav,
     };
     setNewFoodData(tempfav);
-    console.log('inside update fav:', newFoodData);
     return newfav;
   };
 
   const updateList = (value) => {
-    console.log('in update', value, newFoodData.editRatio);
     if (!value) {
       return 0;
     }
-    console.log('updatelist', value);
     return +(value && value * newFoodData.editRatio).toFixed(2);
   };
 
   const updateRatio = (value) => {
     let templist = {
-      ...foodData,
-      // REMEMBER TO CHANGE
-      editRatio: value / newFoodData.servingsize,
-      // editRatio: value / newFoodData.servingSize,
+      ...newFoodData,
+      editRatio: value / newFoodData.servingSize,
       editServing: true,
     };
     setNewFoodData(templist);
@@ -136,18 +87,14 @@ const SingleRecipe = () => {
   const newAvg = (newValue) => {
     return (
       (
-        newFoodData.rating +
-        // newFoodData.avgRating +
-        (newValue - newFoodData.rating) / (newFoodData.votes + 1)
+        newFoodData.meta.rating +
+        (newValue - newFoodData.meta.rating) / (newFoodData.meta.votes + 1)
       )
-        // (newValue - newFoodData.avgRating) / (newFoodData.reviewAmt + 1)
         .toFixed(2)
     );
   };
 
   const updateRating = (newRating) => {
-    //    :( everything not workingg ; ; ERRORS EVRYWHERE
-    // T_T ya ya :( :(
     let hasreview = newFoodData.haveReview;
     let tempRating = {
       ...newFoodData,
@@ -159,6 +106,11 @@ const SingleRecipe = () => {
 
   const DisplayTime = (hour, minute) => {
     let time = '';
+    let extra = 0;
+    if (minute > 60) {
+      extra = Math.floor(minute/60);
+      hour += extra;
+    }
     if (hour !== 0) {
       time += hour + ' hr';
     }
@@ -166,6 +118,9 @@ const SingleRecipe = () => {
       time += 's';
     }
     if (minute !== 0) {
+      if (extra) {
+        minute -= extra*60;
+      }
       time += ' ' + minute + ' min';
     }
     if (minute > 1) {
@@ -188,9 +143,9 @@ const SingleRecipe = () => {
         margin: '10px 100px 0px 300px',
       }}
     >
-      {/* {console.log('inside divvy', newFoodData)} */}
       <Button
         type="link"
+        href={'/home'}
         icon={
           <LeftOutlined
             style={{
@@ -223,7 +178,17 @@ const SingleRecipe = () => {
       </div>
       <Divider style={{ marginTop: 5, marginBottom: 0 }} />
       <div className="underDivider">
-        <div className="Slogan">{newFoodData.slogan}</div>
+        <Button
+          type="link"
+          href={newFoodData.url}
+          style={{
+            fontSize: 'large',
+            paddingLeft: 0,
+            fontStyle: 'italic'
+          }}
+        >
+          @{newFoodData.url}
+        </Button>
         <div className="editContainer">
           <Button
             type="link"
@@ -246,7 +211,6 @@ const SingleRecipe = () => {
             </div>
           ))} */}
         <div>
-          {/* {newFoodData.imageUrl} */}
           <img src={newFoodData.imageUrl} alt={newFoodData.name} />
           <p className="legend">{newFoodData.name}</p>
         </div>
@@ -258,7 +222,7 @@ const SingleRecipe = () => {
             <InputNumber
               min={1}
               max={10000}
-              defaultValue={5}
+              defaultValue={newFoodData.servingSize}
               onChange={(value) => {
                 updateRatio(value);
               }}
@@ -269,7 +233,6 @@ const SingleRecipe = () => {
             />
           </div>
           <div className="Ratings">
-            {/* {console.log('ratings', newFoodData)} */}
             <Ratings
               name="ratings"
               rating={
@@ -310,9 +273,7 @@ const SingleRecipe = () => {
               {newFoodData.ingredients &&
                 newFoodData.ingredients.map((data) => (
                   <div className="foodList">
-                    {/* {console.log('quantity', data.quantity)} */}
                     {updateList(data.quantity)}
-                    {/* {console.log('data type', data.unitOfMeasure)} */}
                     {data.unitOfMeasure
                       ? ' ' + data.unitOfMeasure + ' ' + data.description
                       : ' ' + data.description}
@@ -326,21 +287,21 @@ const SingleRecipe = () => {
             <div className="TimeName">
               Prep Time
               <div className="TimeNumber">
-                {DisplayTime(foodTime.prepHour, foodTime.prepMin)}
+                {DisplayTime(newFoodData.time.prepHour, newFoodData.time.prepMin)}
               </div>
             </div>
             <div className="TimeName">
               Cook Time
               <div className="TimeNumber">
-                {DisplayTime(foodTime.cookHour, foodTime.cookMin)}
+                {DisplayTime(newFoodData.time.cookHour, newFoodData.time.cookMin)}
               </div>
             </div>
             <div className="TimeName">
               Total Time
               <div className="TimeNumber">
                 {DisplayTime(
-                  foodTime.prepHour + foodTime.cookHour,
-                  foodTime.prepMin + foodTime.cookMin
+                  newFoodData.time.prepHour + newFoodData.time.cookHour,
+                  newFoodData.time.prepMin + newFoodData.time.cookMin
                 )}
               </div>
             </div>
@@ -391,9 +352,8 @@ const SingleRecipe = () => {
           </div>
           <h3 className="subHeader">Directions</h3>
           <ol>
-            {console.log('steps', steps)}
-            {steps &&
-              steps.map((data, index) => (
+            {newFoodData.directions &&
+              newFoodData.directions.map((data, index) => (
                 <li className="directionContainer">
                   <div className="stepNumber">{index + 1}</div>
                   <div className="stepContent">{data}</div>
@@ -402,7 +362,6 @@ const SingleRecipe = () => {
           </ol>
         </div>
       </div>
-      {console.log('main', newFoodData)}
     </div>
   );
 };

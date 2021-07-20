@@ -66,8 +66,9 @@ h1 {
 }
 
 .leftContainer {
-  max-width: 450px;
+  max-width: 500px;
   padding-left: 30px;
+  /* background-color: blue; */
 }
 
 .rightContainer {
@@ -84,7 +85,7 @@ h1 {
   font-family: 'Unica One', cursive;
   /* margin-bottom: 0px !important; */
   margin-top: 10px;
-  padding-bottom: 40px;
+  /* padding-bottom: 40px; */
 }
 
 .ServingAmt {
@@ -115,6 +116,7 @@ h1 {
 
 .IngredientList {
   padding-top: 15px;
+  padding-bottom: 40px;
 }
 
 .Timer {
@@ -139,6 +141,7 @@ h1 {
 .directionContainer {
   display: flex;
   padding-bottom: 15px;
+  max-width: 1500px;
 }
 
 .stepContent {

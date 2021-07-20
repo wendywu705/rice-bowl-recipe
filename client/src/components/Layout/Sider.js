@@ -1,6 +1,7 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import './Sider.css';
+import { Link } from 'react-router-dom';
 
 import { 
   Layout, 
@@ -20,7 +21,7 @@ import {
 const { Sider } = Layout;
 
 const recipes = [
-  { value: 'Recipe 1' },
+  { value: 'Recent Search 1' },
   { value: 'Recipe 2' },
   { value: 'Recipe 3' },
 ];
@@ -39,6 +40,7 @@ const SideBar = () => {
           left: 0,
         }}
       >
+          <a href={'/home'}>
         <div className="logo">
           <img 
             className='riceimage' 
@@ -49,6 +51,7 @@ const SideBar = () => {
             Rice Bowl
           </div>
         </div>
+          </a>
         <div 
           style={{
             display:'flex',
@@ -70,8 +73,9 @@ const SideBar = () => {
             className='itemClass'
             key="1" 
             icon={<HomeOutlined className='itemIcon'/>}
-          >
+          ><Link to="/home">
             Home
+            </Link>
           </Menu.Item>
           <Menu.Item 
             className='itemClass' 
@@ -95,20 +99,23 @@ const SideBar = () => {
             Cart
           </Menu.Item>
         </Menu>
-        <Button
-          className='signButton'
-          style={{
-            backgroundColor:'#E6F7FF',
-            width: 280,
-            height: 50,
-            position:'absolute',
-            bottom:0,
-            border: 0
-          }}
-          icon={<LogoutOutlined />}
-        >
-          Sign Out
-        </Button>
+        <Link to="/">
+          <Button
+            className='signButton'
+            style={{
+              backgroundColor:'#E6F7FF',
+              width: 280,
+              height: 50,
+              position:'absolute',
+              bottom:0,
+              border: 0,
+              fontSize: '20px',
+            }}
+            icon={<LogoutOutlined />}
+          >
+            Sign Out
+          </Button>
+        </Link>
       </Sider>
     </Layout>
   );

@@ -1,9 +1,33 @@
-.center {
-  text-align: center;
-  margin: auto;
-  width: 100px;
+@font-face{
+  font-family: 'Hokuto';
+  src: local('Hokuto'), local('Hokuto, Regular'), url('Hokuto.otf');
 }
 
-.cal {
-  width: 100px;
+
+.center {
+  height: 250px;
+  left: 48%;
+  margin-top: -125px;
+  margin-left: -125px;
+  position: absolute;
+  top: 50%;
+  width: 350px;
+}
+
+.align-flex{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title-name {
+  font-family: 'Hokuto', 'serif';
+  font-size: 50px;
+  color: #1c94fc;
+  padding-left: 15px;  
+}
+
+.btn{
+  margin-left: 25%;
+  font-size: 20px;
 }

@@ -255,7 +255,8 @@ const SingleRecipe = () => {
               <Ratings.Widget />
             </Ratings>
             <div className="ReviewAmt">
-              {newFoodData.haveReview && newFoodData.meta
+              {console.log(newFoodData)}
+              {(newFoodData.haveReview && newFoodData.meta)
                 ? newFoodData.meta.votes + 1
                 : newFoodData.meta
                 ? newFoodData.meta.votes

@@ -25,12 +25,14 @@ module.exports = (app) => {
 
   // fetch Recipe names from db to Home page.
   app.get('/home', async (req, res) => {
-    const query = RecipeModel.find({}).select({ name: 1, _id: 0 });
+    const query = RecipeModel.find({}).select({
+      name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1,
+    });
 
     query.exec((error, data) => {
       if (error) throw error;
       // for (let i = 0; i < data.length; i++) {
-      //   console.log(data[i].name);
+      //   console.log(data[i].imageUrl);
       // }
       res.json(data);
     });
@@ -75,6 +77,7 @@ module.exports = (app) => {
       postReq.meta = { votes: 1, rating: query.rating };
       postReq.url = query.url;
       postReq.imageUrl = query.imageUrl; // Embed the Google Cloud Storage image URL
+      postReq.servingSize = +query.servingSize;
       console.log(postReq);
       const recipe = await RecipeModel.create(postReq);
       if (recipe) {

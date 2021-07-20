@@ -152,6 +152,7 @@ function Form() {
           <label className="recipe-name-title">
             Recipe Name: <br />
             <input
+              className="inputBox"
               type="text"
               name="name"
               value={state.name}
@@ -162,11 +163,12 @@ function Form() {
           </label>{' '}
           <br />
           Image: <br />
-          <input type="file" name="file" onChange={onChangeHandler} />
+          <input type="file" name="file" className="inputBox" onChange={onChangeHandler} />
           <br />
           <label className="Category">
             Categories: <br />
             <input
+              className="inputBox"
               type="text"
               name="category"
               value={state.category}
@@ -178,6 +180,7 @@ function Form() {
           <label className="Ingredients">
             Recipe Ingredients: <br />
             <textarea
+              className="inputBox"
               name="ingredients"
               value={state.ingredients}
               onChange={handleChange}
@@ -189,6 +192,7 @@ function Form() {
           <label className="Prep">
             Prep Hours:
             <input
+              className="inputBox"
               type="number"
               name="prepHour"
               value={state.prepHour}
@@ -199,6 +203,7 @@ function Form() {
           <label className="Prep">
             Prep Mins:
             <input
+              className="inputBox"
               type="number"
               name="prepMin"
               value={state.prepMin}
@@ -211,6 +216,7 @@ function Form() {
           <label className="Cook">
             Cook Hours:
             <input
+              className="inputBox"
               type="number"
               name="cookHour"
               value={state.cookHour}
@@ -221,6 +227,7 @@ function Form() {
           <label className="Cook">
             Cook Mins:
             <input
+              className="inputBox"
               type="number"
               name="cookMin"
               value={state.cookMin}
@@ -233,6 +240,7 @@ function Form() {
           <label className="Serving-Size">
             Serving Size:
             <input
+              className="inputBox"
               type="number"
               name="servingSize"
               value={state.servingSize}
@@ -243,6 +251,7 @@ function Form() {
           <label className="Rating">
             Rating:
             <input
+              className="inputBox"
               type="number"
               name="rating"
               value={state.rating}
@@ -255,6 +264,7 @@ function Form() {
           <label>
             Recipe Steps: <br />
             <textarea
+              className="inputBox"
               name="directions"
               value={state.directions}
               onChange={handleChange}
@@ -266,6 +276,7 @@ function Form() {
           <label className="url">
             Video Clip: <br />
             <input
+              className="inputBox"
               type="text"
               name="url"
               value={state.url}
@@ -277,6 +288,7 @@ function Form() {
           <label className="hidden">
             <p>Only Private View?</p>
             <input
+              className="inputBox"
               type="checkbox"
               name="hidden"
               value="true"

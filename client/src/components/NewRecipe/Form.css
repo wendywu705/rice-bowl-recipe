@@ -44,7 +44,7 @@ label{
     width: 5em;
 }
 
-input, textarea{
+.inputBox {
     font-family: "Calibri", serif;
     text-align: left;
     color: black;
@@ -79,6 +79,10 @@ textarea{
 .hidden input{
     width: 25%;
     margin-bottom: 1em;
+}
+
+.Serving-Size {
+    margin-right: 0.2em;
 }
 
 .Submit{

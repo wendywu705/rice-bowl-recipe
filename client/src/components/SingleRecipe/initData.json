@@ -1,0 +1,32 @@
+{
+    "time": {
+        "prepHour": 0,
+        "prepMin": 0,
+        "cookHour": 0,
+        "cookMin": 0
+    },
+    "meta": {
+        "votes": 1,
+        "rating": 4.9
+      },
+    "servingSize": 12,
+    "directions": ["test"],
+    "category": [],
+    "_id": "",
+    "ingredients": [{
+        "_id": "60f4d6c6d6d7981a2dc14195",
+        "quantity": 1.75,
+        "quantity2": null,
+        "unitOfMeasure": "cups",
+        "description": "all-purpose flour",
+        "isGroupHeader": false
+      }],
+    "hidden": false,
+    "name": "test",
+    "recipeId": null,
+    "url": "",
+    "createdAt": "",
+    "updatedAt": "",
+    "__v": 0,
+    "imageUrl": "https://storage.googleapis.com/ricebowl-bucket-1/c9f85699-7aae-45bf-b47e-5c1913f06d6a-no_image.jpeg"
+}

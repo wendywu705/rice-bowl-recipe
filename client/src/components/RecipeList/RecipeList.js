@@ -114,8 +114,8 @@ class RecipeList extends Component {
                   </Link>
                   <img src={res.imageUrl} alt="Recipe thumbnail"
                   height="130px" width="130px"></img><br/>
-                  <span>Rate: {res.meta.rating}/5</span><br/>
-                  <span>Votes: {res.meta.votes} </span>
+                  <span>Rate: {res.meta && res.meta.rating}/5</span><br/>
+                  <span>Votes: {res.meta && res.meta.votes} </span>
                 </div>
               </Col>
             ))}

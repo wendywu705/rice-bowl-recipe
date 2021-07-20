@@ -1,0 +1,112 @@
+{
+    "time": {
+        "prepHour": 0,
+        "prepMin": 40,
+        "cookHour": 0,
+        "cookMin": 40
+    },
+    "meta": {
+        "votes": 1,
+        "rating": 4.9
+    },
+    "directions": [
+        "Preheat oven to 350 degres F. Spray an 81/2 by 41/2-inch loaf pan with non-stick cooking spray; set aside.",
+        "In a large bowl, whisk together the flour, baking soda and salt.",
+        "Place the bananas in a microwave-safe bowl; cover with plastic wrap and cut several steam vents in plastic with a paring knife. Microwave on high power until the bananas are soft and have released liquid, about 5 minutes.",
+        "Whisk in the butter, eggs, brown sugar and vanilla extract.",
+        "Pour the banana mixture into the flour mixture and stir until just combined, with some streaks of flour remaining. Gently fold in the walnuts, if using. Scrape the batter into the prepared pan. Sprinkle the granulated sugar evenly over the top of the loaf.",
+        "Bake until a toothpick inserted into the center of the loaf comes out clean, 55 to 75 minutes. Cool the bread in the pan on a wire rack for 15 minutes, then remove the loaf from the pan and continue to cool on a wire rack. Serve warm or at room temperature. The bread can be wrapped tightly in plastic wrap and stored at room temperature for up to 3 days. It can also be frozen (the wrapped loaf should then be placed in an resealable freezer bag or double-wrapped with foil) for up to 2 months."
+    ],
+    "category": [],
+    "_id": "60f4d6c6d6d7981a2dc14194",
+    "ingredients": [
+        {
+            "_id": "60f4d6c6d6d7981a2dc14195",
+            "quantity": 1.75,
+            "quantity2": null,
+            "unitOfMeasure": "cups",
+            "v": "all-purpose flour",
+            "isGroupHeader": false
+        },
+        {
+            "_id": "60f4d6c6d6d7981a2dc14196",
+            "quantity": 1,
+            "quantity2": null,
+            "unitOfMeasure": "teaspoon",
+            "description": "baking soda",
+            "isGroupHeader": false
+        },
+        {
+            "_id": "60f4d6c6d6d7981a2dc14197",
+            "quantity": 0.5,
+            "quantity2": null,
+            "unitOfMeasure": "teaspoon",
+            "description": "salt",
+            "isGroupHeader": false
+        },
+        {
+            "_id": "60f4d6c6d6d7981a2dc14198",
+            "quantity": 5,
+            "quantity2": null,
+            "unitOfMeasure": null,
+            "description": "large very ripe bananas (about 13/4 to 2 pounds), peeled",
+            "isGroupHeader": false
+        },
+        {
+            "_id": "60f4d6c6d6d7981a2dc14199",
+            "quantity": 0.5,
+            "quantity2": null,
+            "unitOfMeasure": "cup",
+            "description": "unsalted butter, melted and cooled slightly",
+            "isGroupHeader": false
+        },
+        {
+            "_id": "60f4d6c6d6d7981a2dc1419a",
+            "quantity": 2,
+            "quantity2": null,
+            "unitOfMeasure": null,
+            "description": "eggs",
+            "isGroupHeader": false
+        },
+        {
+            "_id": "60f4d6c6d6d7981a2dc1419b",
+            "quantity": 0.75,
+            "quantity2": null,
+            "unitOfMeasure": "cup",
+            "description": "light brown sugar",
+            "isGroupHeader": false
+        },
+        {
+            "_id": "60f4d6c6d6d7981a2dc1419c",
+            "quantity": 1,
+            "quantity2": null,
+            "unitOfMeasure": "teaspoon",
+            "description": "vanilla extract",
+            "isGroupHeader": false
+        },
+        {
+            "_id": "60f4d6c6d6d7981a2dc1419d",
+            "quantity": 0.5,
+            "quantity2": null,
+            "unitOfMeasure": "cup",
+            "description": "walnuts, coarsely chopped (optional)",
+            "isGroupHeader": false
+        },
+        {
+            "_id": "60f4d6c6d6d7981a2dc1419e",
+            "quantity": 2,
+            "quantity2": null,
+            "unitOfMeasure": "teaspoons",
+            "description": "granulated sugar",
+            "isGroupHeader": false
+        }
+    ],
+    "hidden": false,
+    "name": "Banana Bread",
+    "recipeId": 12,
+    "url": "https://www.youtube.com/watch?v=5-ThVLHwu4I",
+    "createdAt": "2021-07-19T01:35:02.377Z",
+    "updatedAt": "2021-07-19T01:35:02.377Z",
+    "__v": 0,
+    "imageUrl": "https://storage.googleapis.com/ricebowl-bucket-1/c9f85699-7aae-45bf-b47e-5c1913f06d6a-no_image.jpeg"
+}

@@ -40,7 +40,7 @@ const SideBar = () => {
           left: 0,
         }}
       >
-          <a href="http://localhost:3000/home">
+          <a href={'/home'}>
         <div className="logo">
           <img 
             className='riceimage' 

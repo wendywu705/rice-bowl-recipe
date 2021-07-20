@@ -1,6 +1,7 @@
-import React from 'react';
+import { React, useEffect, useState } from 'react';
 import 'antd/dist/antd.css';
 import './Sider.css';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 import { 
@@ -15,7 +16,8 @@ import {
   GlobalOutlined,
   CalendarOutlined,
   ShoppingCartOutlined,
-  LogoutOutlined
+  LogoutOutlined,
+  LoginOutlined
 } from '@ant-design/icons';
 
 const { Sider } = Layout;
@@ -28,6 +30,41 @@ const recipes = [
 
 
 const SideBar = () => {
+  const [ reg, setReg ] = useState(false);
+  const [ name, setName ] = useState('');
+  useEffect(() => {
+    fetchUser();
+  }, []);
+  
+  const fetchUser = async () => {
+    try {
+      const userRes = await axios({
+        method: 'get',
+        timeout: 1000,
+        url: `/api/current_user`,
+      });
+      const data = userRes.data;
+      setName(data.displayName.split(' ')[0]);
+      setReg(true)
+    } catch (err) {
+      setReg(false)
+      console.log(err);
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      const outRes = await axios({
+        method: 'get',
+        timeout: 1000,
+        url: `/auth/logout`,
+      });
+      const outd = outRes.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <Layout>
       <Sider
@@ -99,23 +136,43 @@ const SideBar = () => {
             Cart
           </Menu.Item>
         </Menu>
-        <Link to="/">
+        <div 
+          style={{
+            position:'absolute', 
+            bottom:0
+          }}
+        >
+          <Link to="/">
+          {reg ?
+          <Button
+          className='signButton'
+          onClick={signOut}
+          icon={<LogoutOutlined  
+            className='BtnIcon'
+          />}
+        >
+          Sign Out
+        </Button>
+          :
           <Button
             className='signButton'
-            style={{
-              backgroundColor:'#E6F7FF',
-              width: 280,
-              height: 50,
-              position:'absolute',
-              bottom:0,
-              border: 0,
-              fontSize: '20px',
-            }}
-            icon={<LogoutOutlined />}
+            icon={<LoginOutlined 
+              className='BtnIcon'
+            />}
           >
-            Sign Out
+            Sign In
           </Button>
-        </Link>
+          }
+          </Link>
+          {reg ?
+            <Button
+              className='userButton'
+            >
+              Hi, {name}
+            </Button>
+            : null
+          }
+        </div>
       </Sider>
     </Layout>
   );

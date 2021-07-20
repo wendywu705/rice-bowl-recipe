@@ -6,7 +6,7 @@
 
 .center {
   height: 250px;
-  left: 50%;
+  left: 48%;
   margin-top: -125px;
   margin-left: -125px;
   position: absolute;
@@ -21,7 +21,7 @@
 }
 
 .title-name {
-  font-family: 'Hokuto';
+  font-family: 'Hokuto', 'serif';
   font-size: 50px;
   color: #1c94fc;
   padding-left: 15px;  

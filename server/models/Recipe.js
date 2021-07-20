@@ -33,6 +33,6 @@ const mongoSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-const RecipeModel = mongoose.model('Recipe', mongoSchema, 'recipe-list');
+const RecipeModel = mongoose.model('Recipe', mongoSchema, 'recipeslist');
 
 module.exports = RecipeModel;

@@ -26,7 +26,7 @@
     width: 45%;
     box-sizing: border-box;
     padding: 12px 20px 12px 45px;
-    margin-right: 2em;
+    margin-right: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-image: url('searchicon.png');
@@ -35,6 +35,9 @@
     background-position: left 5px bottom 5px;
 }
 
+#btn1{
+    width: 100%;
+}
 
 .flex{
     display: flex;
@@ -42,13 +45,8 @@
 }
 
 .icons{
-    margin-bottom: 13px;
+    margin-bottom: 5px;
     margin-left: 20px;
-    width: 55%;
-}
-
-h5{
-    color: #fff;
 }
 
 .saved-recipe{

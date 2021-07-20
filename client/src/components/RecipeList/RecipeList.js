@@ -51,7 +51,7 @@ class RecipeList extends Component {
 
     return (
       <div className="all-recipe">
-        <h1><b>Your Recipes</b></h1>
+        <h1><b>YOUR RECIPES</b></h1><br/>
         <div className="search-bar">
           {/* TODO: search function to be design */}
           <input
@@ -61,7 +61,7 @@ class RecipeList extends Component {
             name="quick-find"
           />
           <Link to="/new_recipe">
-            <Button color="primary">+ New Recipe</Button>
+            <Button id='btn1' color="primary">+ New Recipe</Button>
           </Link>
         </div>
         <br />
@@ -103,7 +103,7 @@ class RecipeList extends Component {
                   <img src={res.imageUrl} alt="Recipe thumbnail"
                   height="130px" width="130px"></img><br/>
                   <span>Rate: {res.meta.rating}/5</span><br/>
-                  <span>votes: {res.meta.votes} </span>
+                  <span>Votes: {res.meta.votes} </span>
                 </div>
               </Col>
             ))}

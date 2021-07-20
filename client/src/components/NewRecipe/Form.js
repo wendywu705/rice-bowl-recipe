@@ -275,7 +275,7 @@ function Form() {
           </label>{' '}
           <br />
           <label className="hidden">
-            Private?
+            <p>Only Private View?</p>
             <input
               type="checkbox"
               name="hidden"
@@ -284,9 +284,11 @@ function Form() {
             />
           </label>{' '}
           <br />
-          <button className="Submit" type="submit" onClick={handleSubmit}>
-            Submit
-          </button>
+          <div className="align-center">
+            <button className="Submit" type="submit" onClick={handleSubmit}>
+              Submit
+            </button>
+          </div>
         </form>
       </div>
     </div>

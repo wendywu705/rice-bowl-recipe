@@ -22,11 +22,29 @@ const config = {
 const PORT = process.env.PORT || 9000;
 const app = express();
 
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.hoifr.mongodb.net/recipes?retryWrites=true&w=majority`;
-mongoose.connect(uri, {
+console.log('started app.js');
+//cloud mongoDB
+// const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.hoifr.mongodb.net/recipes?retryWrites=true&w=majority`;
+
+//local mongoDB on server
+const uri = 'mongodb://127.0.0.1:27017/recipes';
+
+const temp = mongoose.connect(uri, {
   useNewUrlParser: true,
-  connectTimeoutMS: 5000,
+  connectTimeoutMS: 10000,
   useUnifiedTopology: true,
+}).then(() => console.log('i am connected'));
+
+mongoose.connection.on('connected', () => {
+  console.log(`Mongoose default connection open to ${temp}`);
+  mongoose.connection.db.listCollections().toArray((err, names) => {
+    console.log(names); // [{ name: 'dbname.myCollection' }]
+    module.exports.Collection = names;
+  });
+});
+
+mongoose.connection.on('error', (err) => {
+  console.log('error', err);
 });
 
 app.use(cors());

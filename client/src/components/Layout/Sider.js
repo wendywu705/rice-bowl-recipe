@@ -40,6 +40,7 @@ const SideBar = () => {
           left: 0,
         }}
       >
+          <a href="http://localhost:3000/home">
         <div className="logo">
           <img 
             className='riceimage' 
@@ -50,6 +51,7 @@ const SideBar = () => {
             Rice Bowl
           </div>
         </div>
+          </a>
         <div 
           style={{
             display:'flex',

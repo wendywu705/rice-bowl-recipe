@@ -4,20 +4,24 @@ import { useParams } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Ratings from 'react-ratings-declarative';
+import ReactPDF from '@react-pdf/renderer';
+import { PDFDownloadLink, Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import './Single.css';
+import DisplayTimes  from './DisplayTime';
+import ListDirections from './Directions';
+import ListIngredients from './ListIngredients';
+import InAppTimer from './AppTimer';
 
-import { Divider, InputNumber, Button, Modal } from 'antd';
+import { Divider, InputNumber, Button } from 'antd';
 
 import {
   StarOutlined,
   EditOutlined,
-  PlusOutlined,
   LeftOutlined,
 } from '@ant-design/icons';
 
 const SingleRecipe = () => {
   const [newFoodData, setNewFoodData] = useState(null);
-  const [isVisible, setVisible] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -46,12 +50,7 @@ const SingleRecipe = () => {
     }
   };
 
-  const handleClose = () => {
-    setVisible(false);
-  };
-  const showModal = () => {
-    setVisible(true);
-  };
+
 
   const updateFavourite = (value) => {
     let newfav;
@@ -66,13 +65,6 @@ const SingleRecipe = () => {
     };
     setNewFoodData(tempfav);
     return newfav;
-  };
-
-  const updateList = (value) => {
-    if (!value) {
-      return 0;
-    }
-    return +(value && value * newFoodData.editRatio).toFixed(2);
   };
 
   const updateRatio = (value) => {
@@ -104,36 +96,33 @@ const SingleRecipe = () => {
     setNewFoodData(tempRating);
   };
 
-  const DisplayTime = (hour, minute) => {
-    let time = '';
-    let extra = 0;
-    if (minute > 60) {
-      extra = Math.floor(minute/60);
-      hour += extra;
+  const printUrl = (data) => {
+    if (data && data.url){
+      return data.url;
     }
-    if (hour !== 0) {
-      time += hour + ' hr';
-    }
-    if (hour > 1) {
-      time += 's';
-    }
-    if (minute !== 0) {
-      if (extra) {
-        minute -= extra*60;
-      }
-      time += ' ' + minute + ' min';
-    }
-    if (minute > 1) {
-      time += 's';
-    }
-    if (time === '') {
-      time = 0 + ' mins';
-    }
-    return time;
-  };
+    else return null;
+  }
 
-  if (!newFoodData) {
+  const determineS = (data) => {
+    if (data) {
+      if ((data.meta.votes === 1 && data.haveReview) || data.reviewAmt > 1) {
+        return 's';
+      }
+    }
     return null;
+  }
+
+  const reviewNum = (data) => {
+    let totalNum = 0;
+    if (data) {
+      if (data.meta) {
+        totalNum = data.meta.votes
+        if (data.haveReview) {
+          totalNum = data.meta.votes + 1;
+        }
+      }
+    }
+    return totalNum + " "
   }
 
   return (
@@ -171,7 +160,9 @@ const SingleRecipe = () => {
         <StarOutlined
           className="starIcon"
           style={
-            newFoodData.isFavourite ? { color: '#1C94FC' } : { color: 'black' }
+            newFoodData ?
+            (newFoodData.isFavourite ? { color: '#1C94FC' } : { color: 'black' }
+            ): null
           }
           onClick={(value) => updateFavourite(value)}
         />
@@ -180,14 +171,14 @@ const SingleRecipe = () => {
       <div className="underDivider">
         <Button
           type="link"
-          href={newFoodData.url}
+          href={printUrl(newFoodData)}
           style={{
             fontSize: 'large',
             paddingLeft: 0,
             fontStyle: 'italic'
           }}
         >
-          @{newFoodData.url}
+          {"@"+printUrl(newFoodData)}
         </Button>
         <div className="editContainer">
           <Button
@@ -211,18 +202,18 @@ const SingleRecipe = () => {
             </div>
           ))} */}
         <div>
-          <img src={newFoodData.imageUrl} alt={newFoodData.name} />
-          <p className="legend">{newFoodData.name}</p>
+          <img src={newFoodData ? newFoodData.imageUrl :  null} alt={newFoodData ? newFoodData.name : null} />
+          <p className="legend">{newFoodData ? newFoodData.name : null}</p>
         </div>
       </Carousel>
       <div className="bottomContainer">
         <div className="leftContainer">
-          <div className="ServingAmt">
+          <div className="ServingAmt" key={newFoodData && newFoodData.servingSize}>
             Servings:
             <InputNumber
               min={1}
               max={10000}
-              defaultValue={newFoodData.servingSize}
+              defaultValue={(newFoodData && newFoodData.servingSize)}
               onChange={(value) => {
                 updateRatio(value);
               }}
@@ -255,112 +246,27 @@ const SingleRecipe = () => {
               <Ratings.Widget />
             </Ratings>
             <div className="ReviewAmt">
-              {console.log(newFoodData)}
-              {(newFoodData.haveReview && newFoodData.meta)
-                ? newFoodData.meta.votes + 1
-                : newFoodData.meta
-                ? newFoodData.meta.votes
-                : 0}{' '}
+              {reviewNum(newFoodData)}
               Review
-              {(newFoodData.meta.votes === 1 && newFoodData.haveReview) ||
-              newFoodData.reviewAmt > 1
-                ? 's'
-                : null}
+              {determineS(newFoodData)}
             </div>
           </div>
-          <div className="IngredientList">
-            <h3 className="subHeader">
-              Ingredients:
-              {newFoodData.ingredients &&
-                newFoodData.ingredients.map((data) => (
-                  <div className="foodList">
-                    {updateList(data.quantity)}
-                    {data.unitOfMeasure
-                      ? ' ' + data.unitOfMeasure + ' ' + data.description
-                      : ' ' + data.description}
-                  </div>
-                ))}
-            </h3>
-          </div>
+          <ListIngredients 
+            ingredients={newFoodData && newFoodData.ingredients} 
+            editRatio={newFoodData && newFoodData.editRatio}
+          />
         </div>
         <div className="rightContainer">
-          <div className="Timer">
-            <div className="TimeName">
-              Prep Time
-              <div className="TimeNumber">
-                {DisplayTime(newFoodData.time.prepHour, newFoodData.time.prepMin)}
-              </div>
-            </div>
-            <div className="TimeName">
-              Cook Time
-              <div className="TimeNumber">
-                {DisplayTime(newFoodData.time.cookHour, newFoodData.time.cookMin)}
-              </div>
-            </div>
-            <div className="TimeName">
-              Total Time
-              <div className="TimeNumber">
-                {DisplayTime(
-                  newFoodData.time.prepHour + newFoodData.time.cookHour,
-                  newFoodData.time.prepMin + newFoodData.time.cookMin
-                )}
-              </div>
-            </div>
-            <Button
-              size="large"
-              onClick={showModal}
-              style={{
-                fontSize: '20px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 200,
-                position: 'absolute',
-                right: 100,
-              }}
-              icon={
-                <PlusOutlined
-                  style={{
-                    display: 'inline-block',
-                    verticalAlign: 'middle',
-                    fontSize: 'small',
-                  }}
-                />
-              }
-            >
-              In-App Timer
-            </Button>
-            <Modal
-              title="Timers (WIP)"
-              onCancel={handleClose}
-              visible={isVisible}
-              footer={[
-                <Button key="ok" onClick={handleClose} type="primary">
-                  OK
-                </Button>,
-              ]}
-            >
-              Timer would go here
-              <Button
-                style={{
-                  position: 'absolute',
-                  right: 30,
-                }}
-              >
-                Start
-              </Button>
-            </Modal>
-          </div>
+          <App name={newFoodData && newFoodData.name} />
+          <DisplayTimes time={newFoodData && newFoodData.time} />
+          <InAppTimer />
           <h3 className="subHeader">Directions</h3>
-          <ol>
-            {newFoodData.directions &&
-              newFoodData.directions.map((data, index) => (
-                <li className="directionContainer">
-                  <div className="stepNumber">{index + 1}</div>
-                  <div className="stepContent">{data}</div>
-                </li>
-              ))}
-          </ol>
+            <ListDirections 
+              directions= {
+                newFoodData && 
+                newFoodData.directions
+              }
+            />
         </div>
       </div>
     </div>
@@ -368,3 +274,48 @@ const SingleRecipe = () => {
 };
 
 export default SingleRecipe;
+
+const styles = StyleSheet.create({
+  page: {
+    flexDirection: 'row',
+    backgroundColor: '#E4E4E4'
+  },
+  section: {
+    margin: 10,
+    padding: 10,
+    flexGrow: 1
+  }
+});
+
+
+const MyDocument = () => (
+  <Document>
+    <Page size="A4" style={styles.page} wrap={false}>
+      {/* <View style={styles.section}>
+        <Text>Section #1</Text>
+      </View>
+      <View style={styles.section}>
+        <Text>Section #2</Text>
+      </View> */}
+      {/* <View >
+        <Text>
+          Text File
+
+        </Text>
+      </View> */}
+    </Page>
+  </Document>
+);
+
+const App = (prop) => (
+  <div>
+    {console.log('in app')}
+    <PDFDownloadLink document={<MyDocument />} fileName={prop.name + ".pdf"}>
+      {({ blob, url, loading, error }) =>
+        loading ? 'Loading document...' : 'Download now!'
+      }
+    </PDFDownloadLink>
+  </div>
+);
+
+// ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);

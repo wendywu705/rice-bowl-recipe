@@ -35,10 +35,6 @@
     background-position: left 5px bottom 5px;
 }
 
-#btn1{
-    width: 100%;
-}
-
 .flex{
     display: flex;
     align-items: center;
@@ -55,4 +51,16 @@
 
 .recipe-row{
     color: white;
+}
+
+.span{
+    font-size: large;
+    color: black;
+    margin-left: 25vh;
+    margin-right: 25px;
+}
+
+#btn1{
+    margin-left: 25px;
+    margin-right: 35vh;
 }

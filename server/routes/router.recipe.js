@@ -2,6 +2,7 @@ const Multer = require('multer');
 const mongoose = require('mongoose');
 const parseIngredient = require('parse-ingredient');
 const RecipeModel = require('../models/Recipe');
+const recipeScraper = require("recipe-scraper");
 
 mongoose.set('useFindAndModify', false);
 

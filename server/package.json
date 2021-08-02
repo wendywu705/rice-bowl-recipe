@@ -29,6 +29,7 @@
     "passport-google-oauth20": "^2.0.0",
     "pug": "^3.0.2",
     "react-icons": "^4.2.0",
+    "recipe-scraper": "^2.1.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

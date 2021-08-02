@@ -1,6 +1,5 @@
 import './RecipeList.css';
 import { Row, Col } from 'antd';
-import { Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -19,12 +18,18 @@ class RecipeList extends Component {
     this.state = {
       response: [],
       dropdownOpen: false,
+      dropdownOpen_new: false,
     };
     this.toggle = this.toggle.bind(this);
+    this.toggle_new = this.toggle_new.bind(this);
   }
 
   toggle() {
     this.setState({ dropdownOpen: !this.state.dropdownOpen });
+  }
+
+  toggle_new() {
+    this.setState({ dropdownOpen_new: !this.state.dropdownOpen_new });
   }
 
   componentDidMount() {
@@ -70,9 +75,15 @@ class RecipeList extends Component {
             placeholder="Quick Find Recipe"
             name="quick-find"
           />
-          <Link to="/new_recipe">
-            <Button id='btn1' color="primary">+ New Recipe</Button>
-          </Link>
+          <ButtonDropdown isOpen={this.state.dropdownOpen_new} toggle={this.toggle_new}>
+            <DropdownToggle caret color="primary">
+              + New Recipe
+            </DropdownToggle>
+            <DropdownMenu>
+              <Link to="/new_recipe"><DropdownItem>From Template</DropdownItem></Link>
+              <Link to="/parse"><DropdownItem>From URL</DropdownItem></Link>
+            </DropdownMenu>
+          </ButtonDropdown>
         </div>
         <br />
         <div className="flex">

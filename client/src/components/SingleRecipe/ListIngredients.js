@@ -1,11 +1,13 @@
+export const updateList = (value, ratio) => {
+  if (!value) {
+    return 0;
+  }
+  return +(value && value * ratio).toFixed(2);
+};
+
+
 const ListIngredients = (props) => {
   console.log('ingredients', props)
-  const updateList = (value) => {
-    if (!value) {
-      return 0;
-    }
-    return +(value && value * props.editRatio).toFixed(2);
-  };
   return (
     <div className="IngredientList">
     <h3 className="subHeader">
@@ -13,7 +15,7 @@ const ListIngredients = (props) => {
       {props && props.ingredients &&
         props.ingredients.map((data) => (
           <div className="foodList">
-            {updateList(data.quantity)}
+            {updateList(data.quantity, props.editRatio)}
             {data.unitOfMeasure
               ? ' ' + data.unitOfMeasure + ' ' + data.description
               : ' ' + data.description}

@@ -112,6 +112,8 @@ h1 {
   font-size: 22px;
   padding-top: 5px;
   padding-bottom: 5px;
+  display: flex;
+  flex-direction: column;
 }
 
 .IngredientList {

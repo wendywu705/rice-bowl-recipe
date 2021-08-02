@@ -4,13 +4,14 @@ import { useParams } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Ratings from 'react-ratings-declarative';
-import ReactPDF from '@react-pdf/renderer';
-import { PDFDownloadLink, Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+// import ReactPDF from '@react-pdf/renderer';
+// import { PDFViewer, PDFDownloadLink, Image, Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import './Single.css';
 import DisplayTimes  from './DisplayTime';
 import ListDirections from './Directions';
 import ListIngredients from './ListIngredients';
 import InAppTimer from './AppTimer';
+import App from '../PDF/genPDF';
 
 import { Divider, InputNumber, Button } from 'antd';
 
@@ -77,13 +78,15 @@ const SingleRecipe = () => {
   };
 
   const newAvg = (newValue) => {
-    return (
-      (
-        newFoodData.meta.rating +
-        (newValue - newFoodData.meta.rating) / (newFoodData.meta.votes + 1)
-      )
-        .toFixed(2)
-    );
+    if (newFoodData && newFoodData.meta) {
+      return (
+        (
+          newFoodData.meta.rating +
+          (newValue - newFoodData.meta.rating) / (newFoodData.meta.votes + 1)
+        )
+          .toFixed(2)
+      );
+    }
   };
 
   const updateRating = (newRating) => {
@@ -104,7 +107,7 @@ const SingleRecipe = () => {
   }
 
   const determineS = (data) => {
-    if (data) {
+    if (data && data.meta) {
       if ((data.meta.votes === 1 && data.haveReview) || data.reviewAmt > 1) {
         return 's';
       }
@@ -254,10 +257,14 @@ const SingleRecipe = () => {
           <ListIngredients 
             ingredients={newFoodData && newFoodData.ingredients} 
             editRatio={newFoodData && newFoodData.editRatio}
+            pdf={false}
           />
         </div>
         <div className="rightContainer">
-          <App name={newFoodData && newFoodData.name} />
+          <App 
+            data={newFoodData}
+            name={newFoodData && newFoodData.name} 
+          />
           <DisplayTimes time={newFoodData && newFoodData.time} />
           <InAppTimer />
           <h3 className="subHeader">Directions</h3>
@@ -274,48 +281,3 @@ const SingleRecipe = () => {
 };
 
 export default SingleRecipe;
-
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: 'row',
-    backgroundColor: '#E4E4E4'
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1
-  }
-});
-
-
-const MyDocument = () => (
-  <Document>
-    <Page size="A4" style={styles.page} wrap={false}>
-      {/* <View style={styles.section}>
-        <Text>Section #1</Text>
-      </View>
-      <View style={styles.section}>
-        <Text>Section #2</Text>
-      </View> */}
-      {/* <View >
-        <Text>
-          Text File
-
-        </Text>
-      </View> */}
-    </Page>
-  </Document>
-);
-
-const App = (prop) => (
-  <div>
-    {console.log('in app')}
-    <PDFDownloadLink document={<MyDocument />} fileName={prop.name + ".pdf"}>
-      {({ blob, url, loading, error }) =>
-        loading ? 'Loading document...' : 'Download now!'
-      }
-    </PDFDownloadLink>
-  </div>
-);
-
-// ReactPDF.render(<MyDocument />, `${__dirname}/example.pdf`);

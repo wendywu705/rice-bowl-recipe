@@ -75,9 +75,10 @@ h1 {
   padding-left: 30px;
 }
 
-.starIcon {
-  font-size: xx-large;
-  padding-right: 30px;
+
+.circleIcon:hover,
+.circleButton:hover {
+  color: #1c94fc !important;
 }
 
 .subHeader {
@@ -112,6 +113,8 @@ h1 {
   font-size: 22px;
   padding-top: 5px;
   padding-bottom: 5px;
+  display: flex;
+  flex-direction: column;
 }
 
 .IngredientList {
@@ -155,4 +158,12 @@ h1 {
   color: #1c94fc;
   margin-right: 30px;
   font-family: 'Catamaran', sans-serif;
+}
+.pdfButtonClass {
+  color:#1c94fc;
+  margin-bottom:100;
+}
+
+.pdfButtonClass:disabled {
+  color: grey;
 }

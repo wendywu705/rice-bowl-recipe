@@ -26,10 +26,14 @@
     margin-right: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-image: url('searchicon.png');
+    background-image: url('../RecipeList/searchicon.png');
     background-repeat: no-repeat;
     background-size: 36px;
     background-position: left 5px bottom 5px;
+}
+
+#btn1{
+    width: 100%;
 }
 
 .flex{
@@ -49,28 +53,4 @@
 .recipe-row span{
     font-size: medium;
     color: white;
-}
-
-.span{
-    font-size: large;
-    color: black;
-    margin-left: 25vh;
-    margin-right: 25px;
-}
-
-#btn1{
-    margin-left: 25px;
-    margin-right: 35vh;
-}
-
-ul{
-    list-style-type: circle;
-}
-
-li{
-    font-size: medium;
-}
-
-.supported-web{
-    margin-left: 25vh;
 }

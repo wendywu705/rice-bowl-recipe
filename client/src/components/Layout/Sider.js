@@ -119,7 +119,9 @@ const SideBar = () => {
             key="2" 
             icon={<GlobalOutlined className='itemIcon' />}
           >
-            Browse
+            <Link to="/browse">
+              Browse
+            </Link>
           </Menu.Item>
           <Menu.Item 
             className='itemClass' 

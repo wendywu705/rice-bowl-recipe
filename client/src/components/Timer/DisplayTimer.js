@@ -7,6 +7,7 @@ import Timer from './Timer';
 const InappTimer = (props) => {
   const [isVisible, setVisible] = useState(false);
 
+
   const handleClose = () => {
     setVisible(false);
   };
@@ -14,6 +15,9 @@ const InappTimer = (props) => {
     setVisible(true);
   };
   const getTimeArr = () => {
+    if (!props.directions) {
+      return null;
+    }
     let numArr = GetTimes(props.directions);
     return numArr;
   }

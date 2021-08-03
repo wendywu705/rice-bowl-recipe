@@ -1,10 +1,24 @@
 import React from 'react';
+import { Dialog, DialogTitle, DialogContent } from '@material-ui/core';
+import { Button } from 'antd';
 
 const Popup = (props) => {
+  const { title, children, openPopup, setOpenPopup } = props;
+
   return (
-    <div>
-      <h1>Pop Up!</h1>
-    </div>
+    <Dialog open={openPopup}>
+      {/* <DialogTitle>
+        <div>Title yay</div>
+      </DialogTitle> */}
+      <DialogContent>{children}</DialogContent>
+      <Button
+        onClick={() => {
+          setOpenPopup(false);
+        }}
+      >
+        Close
+      </Button>
+    </Dialog>
   );
 };
 

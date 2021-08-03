@@ -6,7 +6,7 @@ import List from './List';
 
 const useStyle = makeStyles((theme) => ({
   root: {
-    width: '270px',
+    width: '280px',
     backgroundColor: '#fafafa',
     marginLeft: theme.spacing(1),
     marginTop: theme.spacing(1),
@@ -27,9 +27,13 @@ const MPlanner = (props) => {
     <div className={classes.divvy}>
       <h2 className={classes.center}>{props.day}</h2>
       <Paper className={classes.root}>
-        <List title="Breakfast" />
+        {Object.keys(props.list.meals).map(function (key, index) {
+          return <List title={key} />;
+        })}
+
+        {/* <List title="Breakfast" />
         <List title="Lunch" />
-        <List title="Dinner" />
+        <List title="Dinner" /> */}
       </Paper>
     </div>
   );

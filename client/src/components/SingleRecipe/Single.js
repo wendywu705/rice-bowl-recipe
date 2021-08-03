@@ -97,13 +97,10 @@ const SingleRecipe = () => {
     fetchSingleRecipe().then(recipeObj => console.log('done fetch for recipeId = ',recipeObj.recipeId));
   }, [id]);
 
-
-
   const updateFavourite = async () => {
     let newFav;
     if (newFoodData.isFavourite === true) {
-      console.log('attemping to star');
-      newFav = false;
+      console.log('attemping to un-star');
       try {
         const response = await axios({
           method: 'post',
@@ -117,8 +114,7 @@ const SingleRecipe = () => {
         console.log('err', err);
       }
     } else {
-      console.log('attempting to un-star');
-      newFav = !newFoodData.isFavourite;
+      console.log('attempting to star');
       try {
         const response = await axios({
           method: 'post',
@@ -132,6 +128,7 @@ const SingleRecipe = () => {
         console.log('err', err);
       }
     }
+    newFav = !newFoodData.isFavourite;
     let tempfav = {
       ...newFoodData,
       isFavourite: newFav,
@@ -143,8 +140,7 @@ const SingleRecipe = () => {
   const updatePinned = async () => {
     let newPin;
     if (newFoodData.isPinned === true) {
-      console.log('attemping to pin');
-      newPin = false;
+      console.log('attemping to un-pin');
       try {
         const response = await axios({
           method: 'post',
@@ -152,14 +148,13 @@ const SingleRecipe = () => {
           url: `https://localhost:9000/pin/remove/${id}`,
         });
         if (response.status === 200) {
-          console.log('ok pinned!');
+          console.log('ok un-pinned!');
         }
       } catch (err) {
         console.log('err', err);
       }
     } else {
-      console.log('attempting to un-pin');
-      newPin = !newFoodData.isPinned;
+      console.log('attempting to pin');
       try {
         const response = await axios({
           method: 'post',
@@ -167,12 +162,13 @@ const SingleRecipe = () => {
           url: `https://localhost:9000/pin/add/${id}`,
         });
         if (response.status === 200) {
-          console.log('ok un-pinned!');
+          console.log('ok pinned!');
         }
       } catch (err) {
         console.log('err', err);
       }
     }
+    newPin = !newFoodData.isPinned;
     let temppin = {
       ...newFoodData,
       isPinned: newPin,

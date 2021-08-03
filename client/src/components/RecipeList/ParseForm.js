@@ -39,6 +39,7 @@ class ParseForm extends Component{
           }
         })
         .catch(err => {
+          alert('Error: Failed to parse domain, please entry a correct domain URL');
           console.error(err);
         });
     } else{

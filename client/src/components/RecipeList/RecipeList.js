@@ -108,7 +108,7 @@ class RecipeList extends Component {
                                     <Link to= {`recipe/${res.recipeId}`}>
                                         <div>
                                             <h5 style={{color: '#fff'}}>{res.name}</h5>
-                                            <img src={res.imageUrl} alt="Recipe thumbnail" height="130px" width="130px"/><br/>
+                                            <img src={res.imageUrl} alt="Recipe thumbnail" height="130px" width="200px"/><br/>
                                             <span>Rate: {res.meta && res.meta.rating}/5</span><br/>
                                             <span>Votes: {res.meta && res.meta.votes} </span>
                                         </div>

@@ -4,8 +4,6 @@ import { useParams } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Ratings from 'react-ratings-declarative';
-// import ReactPDF from '@react-pdf/renderer';
-// import { PDFViewer, PDFDownloadLink, Image, Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import './Single.css';
 import DisplayTimes  from './DisplayTime';
 import ListDirections from './Directions';
@@ -16,9 +14,10 @@ import App from '../PDF/genPDF';
 import { Divider, InputNumber, Button } from 'antd';
 
 import {
-  StarOutlined,
   EditOutlined,
   LeftOutlined,
+  SaveOutlined,
+  PushpinOutlined
 } from '@ant-design/icons';
 
 const SingleRecipe = () => {
@@ -42,6 +41,7 @@ const SingleRecipe = () => {
         ...body,
         editRatio: 1,
         isFavourite: false,
+        isPinned: false,
         haveReview: false,
         newRating: null,
       };
@@ -66,6 +66,20 @@ const SingleRecipe = () => {
     };
     setNewFoodData(tempfav);
     return newfav;
+  };
+  const updatePinned = (value) => {
+    let newpin;
+    if (newFoodData.isPinned == null) {
+      newpin = false;
+    } else {
+      newpin = !newFoodData.isPinned;
+    }
+    let temppin = {
+      ...newFoodData,
+      isPinned: newpin,
+    };
+    setNewFoodData(temppin);
+    return newpin;
   };
 
   const updateRatio = (value) => {
@@ -127,7 +141,19 @@ const SingleRecipe = () => {
     }
     return totalNum + " "
   }
-
+  const determineColor = (type) => {
+    if (!newFoodData) {
+      return null;
+    }
+    if (
+      (type === 'fav' && newFoodData.isFavourite === true) || 
+      (type === 'pin' && newFoodData.isPinned === true)
+    ) {
+      return '#1C94FC';
+    } else {
+      return 'grey';
+    }
+  }
   return (
     <div
       className="SingleContainer"
@@ -135,6 +161,7 @@ const SingleRecipe = () => {
         margin: '10px 100px 0px 300px',
       }}
     >
+      {console.log(newFoodData)}
       <Button
         type="link"
         href={'/home'}
@@ -160,19 +187,56 @@ const SingleRecipe = () => {
       </Button>
       <div className="TitleContainer">
         <h1 style={{ paddingTop: 10 }}>{newFoodData && newFoodData.name}</h1>
-        <StarOutlined
-          className="starIcon"
-          style={
-            newFoodData ?
-            (newFoodData.isFavourite ? { color: '#1C94FC' } : { color: 'black' }
-            ): null
-          }
-          onClick={(value) => updateFavourite(value)}
-        />
+        <div>
+          <Button
+            shape="circle"
+            className="circleButton"
+            size="large"
+            style={{ 
+              display: 'inline-flex', 
+              justifyContent: 'center', 
+              alignItems: 'center',
+            }}
+            onClick={(value) => updateFavourite(value)}
+            icon={
+              <SaveOutlined
+                className="circleIcon"
+                style={{
+                  color: determineColor('fav'),
+                  fontSize:20
+                }}
+              />
+            }
+          >
+          </Button>
+          <Button
+            shape="circle"
+            className="circleButton"
+            size="large"
+            style={{ 
+              display: 'inline-flex', 
+              justifyContent: 'center', 
+              alignItems: 'center',
+              marginLeft:10
+            }}
+            onClick={(value) => updatePinned(value)}
+            icon={
+              <PushpinOutlined
+                className="circleIcon"
+                style={{
+                  color: determineColor('pin'),
+                  fontSize:20
+                }}
+              />
+            }
+          >
+          </Button>
+        </div>
       </div>
       <Divider style={{ marginTop: 5, marginBottom: 0 }} />
       <div className="underDivider">
         <Button
+        
           type="link"
           href={printUrl(newFoodData)}
           style={{

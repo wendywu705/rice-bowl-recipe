@@ -237,7 +237,7 @@ const SingleRecipe = () => {
           alignItems: 'center',
         }}
       >
-        Back to ALL
+        Back to Home
       </Button>
       <div className="TitleContainer">
         <h1 style={{ paddingTop: 10 }}>{newFoodData && newFoodData.name}</h1>

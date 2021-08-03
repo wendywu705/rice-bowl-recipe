@@ -60,7 +60,7 @@ class RecipeList extends Component {
       background: '#6495ED',
       padding: '25px 0 15px 10px',
       opacity: 0.8,
-      height: '250px',
+      height: '300px',
       width: '300px'
     };
 
@@ -115,7 +115,6 @@ class RecipeList extends Component {
         </div>
         <hr></hr>
         <div className="saved-recipe">
-          {/* TODO: Add links to each displayed recipe */}
           <Row gutter={[10, 25]}>
             {this.state.response.map((res) => (
               <Col className="recipe-row" span={6}>    
@@ -124,7 +123,7 @@ class RecipeList extends Component {
                     <h5 style={{color: '#fff'}}>{res.name}</h5>
                   </Link>
                   <img src={res.imageUrl} alt="Recipe thumbnail"
-                  height="130px" width="130px"></img><br/>
+                  height="130px" width="200px"></img><br/>
                   <span>Rate: {res.meta && res.meta.rating}/5</span><br/>
                   <span>Votes: {res.meta && res.meta.votes} </span>
                 </div>

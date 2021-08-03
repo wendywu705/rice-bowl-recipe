@@ -64,3 +64,15 @@
     margin-left: 25px;
     margin-right: 35vh;
 }
+
+ul{
+    list-style-type: circle;
+}
+
+li{
+    font-size: medium;
+}
+
+.supported-web{
+    margin-left: 25vh;
+}

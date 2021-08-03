@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const parseIngredient = require('parse-ingredient');
 const RecipeModel = require('../models/Recipe');
 const recipeScraper = require("recipe-scraper");
+const alert = require('alert');
 
 mongoose.set('useFindAndModify', false);
 
@@ -133,5 +134,66 @@ module.exports = (app) => {
     }
   });
 
-  // module.exports = router;
+  app.post('/parse',  async (req, res) => {
+    console.log('Parse the URL to recipe');
+ 
+    const maxIdRecipe = await RecipeModel.find()
+      .sort({ recipeId: -1 })
+      .limit(1); // returns array
+    const newId = +maxIdRecipe[0].recipeId + 1;
+
+    const postReq = {};
+    const url_addr = req.body.url;
+    console.log(url_addr);
+
+    recipeScraper(url_addr).then(recipe => {
+      console.log(recipe);
+      if(recipe.tag){
+        postReq.category = recipe.tag
+          .replace(', ', ',')
+          .replace(' ,', ',')
+          .split(',');
+      }
+      postReq.name = recipe.name;
+      postReq.recipeId = newId;
+      postReq.hidden = false;
+      var newIngre = [];
+      for(var i = 0; i < recipe.ingredients.length; i++){
+        newIngre[i] = recipe.ingredients[i].replace(',', '');
+      }
+      const formatIngre = newIngre.toString().split(',').join('\n');
+      //console.log(formatIngre);
+      postReq.ingredients = parseIngredient(formatIngre);
+      var newInstruct = [];
+      var index = 0;
+      for(var n = 0; n < recipe.instructions.length; n++){
+        if(recipe.instructions[n].length != 0){
+          newInstruct[index] = recipe.instructions[n];
+          index++;
+        }
+        
+      }
+      postReq.directions = newInstruct;
+
+      postReq.time = {
+        prepHour: recipe.time.total ? recipe.time.total.substring(0,1) : 0,
+        cookHour: 0,
+        prepMin: recipe.time.prep ? recipe.time.prep.replace(' mins', '') : 0,
+        cookMin: recipe.time.cook ? recipe.time.cook.replace(' mins', '') : 0,
+      };
+      postReq.servingSize = recipe.servings;
+      postReq.imageUrl = recipe.image;
+      // console.log(postReq);
+
+      const parseRecipe = RecipeModel.create(postReq);
+      if (parseRecipe) {
+        console.log('Parsed recipe inserted successfully');
+      } else {
+        console.log('Fail to parse new recipe');
+      }
+    }).catch(err => {
+      alert('Error: Failed to parse domain, please entry a correct doman URL');
+      throw err;
+    })
+  })
 };

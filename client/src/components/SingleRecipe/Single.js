@@ -5,8 +5,13 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Ratings from 'react-ratings-declarative';
 import './Single.css';
+import DisplayTimes  from './DisplayTime';
+import ListDirections from './Directions';
+import ListIngredients from './ListIngredients';
+import InAppTimer from './AppTimer';
+import App from '../PDF/genPDF';
 
-import { Divider, InputNumber, Button, Modal } from 'antd';
+import { Divider, InputNumber, Button } from 'antd';
 
 import {
   StarOutlined,
@@ -21,58 +26,90 @@ const SingleRecipe = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    console.log('id:', id);
-    fetchSingleRecipe();
-  }, []);
-
-  const fetchSingleRecipe = async () => {
-    try {
-      const recipeRes = await axios({
-        method: 'get',
-        timeout: 1000,
-        url: `/recipes/${id}`,
-      });
-      const body = recipeRes.data;
-      let tempinit = {
-        ...body,
-        editRatio: 1,
-        isFavourite: false,
-        haveReview: false,
-        newRating: null,
-      };
-      setNewFoodData(tempinit);
-    } catch (err) {
-      console.log(err);
+    console.log('recipeId:', id);
+    const checkSaved= async() =>{
+      try{
+        const savedResponse = await axios({
+          method: 'get',
+          timeout: 1000,
+          url: `/saved/${id}`,
+        });
+        if ( [200, 304].includes(savedResponse.status) ){
+          if (savedResponse.data === id){
+            return true;
+          }
+        }
+      } catch(err){
+        console.log('err',err);
+      }
+      return false;
     }
-  };
 
-  const handleClose = () => {
-    setVisible(false);
-  };
-  const showModal = () => {
-    setVisible(true);
-  };
+    const fetchSingleRecipe = async () => {
+      try {
+        const recipeRes = await axios({
+          method: 'get',
+          timeout: 1000,
+          url: `/recipes/${id}`,
+        });
+        const body = recipeRes.data;
+        let tempinit = {
+          ...body,
+          editRatio: 1,
+          isFavourite: await checkSaved(),
+          haveReview: false,
+          newRating: null,
+        };
+        setNewFoodData(tempinit);
+        return body;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchSingleRecipe().then(recipeObj => console.log('done fetch for recipeId = ',recipeObj.recipeId));
+  }, [id]);
 
-  const updateFavourite = (value) => {
-    let newfav;
-    if (newFoodData.isFavourite == null) {
-      newfav = false;
+
+
+  const updateFavourite = async () => {
+    let newFav;
+    if (newFoodData.isFavourite === true) {
+      console.log('attemping to star');
+      newFav = false;
+      try {
+        const response = await axios({
+          method: 'post',
+          timeout: 1000,
+          url: `https://localhost:9000/star/remove/${id}`,
+        });
+        if (response.status === 200) {
+          console.log('ok starred!');
+        }
+      } catch (err) {
+        console.log('err', err);
+      }
     } else {
-      newfav = !newFoodData.isFavourite;
+      console.log('attempting to un-star');
+      newFav = !newFoodData.isFavourite;
+      try {
+        const response = await axios({
+          method: 'post',
+          timeout: 1000,
+          url: `https://localhost:9000/star/add/${id}`,
+        });
+        if (response.status === 200) {
+          console.log('ok un-starred!');
+        }
+      } catch (err) {
+        console.log('err', err);
+      }
     }
     let tempfav = {
       ...newFoodData,
-      isFavourite: newfav,
+      isFavourite: newFav,
     };
     setNewFoodData(tempfav);
-    return newfav;
-  };
-
-  const updateList = (value) => {
-    if (!value) {
-      return 0;
-    }
-    return +(value && value * newFoodData.editRatio).toFixed(2);
+    return newFav;
   };
 
   const updateRatio = (value) => {
@@ -85,13 +122,15 @@ const SingleRecipe = () => {
   };
 
   const newAvg = (newValue) => {
-    return (
-      (
-        newFoodData.meta.rating +
-        (newValue - newFoodData.meta.rating) / (newFoodData.meta.votes + 1)
-      )
-        .toFixed(2)
-    );
+    if (newFoodData && newFoodData.meta) {
+      return (
+        (
+          newFoodData.meta.rating +
+          (newValue - newFoodData.meta.rating) / (newFoodData.meta.votes + 1)
+        )
+          .toFixed(2)
+      );
+    }
   };
 
   const updateRating = (newRating) => {
@@ -104,36 +143,33 @@ const SingleRecipe = () => {
     setNewFoodData(tempRating);
   };
 
-  const DisplayTime = (hour, minute) => {
-    let time = '';
-    let extra = 0;
-    if (minute > 60) {
-      extra = Math.floor(minute/60);
-      hour += extra;
+  const printUrl = (data) => {
+    if (data && data.url){
+      return data.url;
     }
-    if (hour !== 0) {
-      time += hour + ' hr';
-    }
-    if (hour > 1) {
-      time += 's';
-    }
-    if (minute !== 0) {
-      if (extra) {
-        minute -= extra*60;
-      }
-      time += ' ' + minute + ' min';
-    }
-    if (minute > 1) {
-      time += 's';
-    }
-    if (time === '') {
-      time = 0 + ' mins';
-    }
-    return time;
-  };
+    else return null;
+  }
 
-  if (!newFoodData) {
+  const determineS = (data) => {
+    if (data && data.meta) {
+      if ((data.meta.votes === 1 && data.haveReview) || data.reviewAmt > 1) {
+        return 's';
+      }
+    }
     return null;
+  }
+
+  const reviewNum = (data) => {
+    let totalNum = 0;
+    if (data) {
+      if (data.meta) {
+        totalNum = data.meta.votes
+        if (data.haveReview) {
+          totalNum = data.meta.votes + 1;
+        }
+      }
+    }
+    return totalNum + " "
   }
 
   return (
@@ -171,7 +207,9 @@ const SingleRecipe = () => {
         <StarOutlined
           className="starIcon"
           style={
-            newFoodData.isFavourite ? { color: '#1C94FC' } : { color: 'black' }
+            newFoodData ?
+            (newFoodData.isFavourite ? { color: '#1C94FC' } : { color: 'black' }
+            ): null
           }
           onClick={(value) => updateFavourite(value)}
         />
@@ -180,14 +218,14 @@ const SingleRecipe = () => {
       <div className="underDivider">
         <Button
           type="link"
-          href={newFoodData.url}
+          href={printUrl(newFoodData)}
           style={{
             fontSize: 'large',
             paddingLeft: 0,
             fontStyle: 'italic'
           }}
         >
-          @{newFoodData.url}
+          {"@"+printUrl(newFoodData)}
         </Button>
         <div className="editContainer">
           <Button
@@ -211,18 +249,18 @@ const SingleRecipe = () => {
             </div>
           ))} */}
         <div>
-          <img src={newFoodData.imageUrl} alt={newFoodData.name} />
-          <p className="legend">{newFoodData.name}</p>
+          <img src={newFoodData ? newFoodData.imageUrl :  null} alt={newFoodData ? newFoodData.name : null} />
+          <p className="legend">{newFoodData ? newFoodData.name : null}</p>
         </div>
       </Carousel>
       <div className="bottomContainer">
         <div className="leftContainer">
-          <div className="ServingAmt">
+          <div className="ServingAmt" key={newFoodData && newFoodData.servingSize}>
             Servings:
             <InputNumber
               min={1}
               max={10000}
-              defaultValue={newFoodData.servingSize}
+              defaultValue={(newFoodData && newFoodData.servingSize)}
               onChange={(value) => {
                 updateRatio(value);
               }}
@@ -255,112 +293,33 @@ const SingleRecipe = () => {
               <Ratings.Widget />
             </Ratings>
             <div className="ReviewAmt">
-              {console.log(newFoodData)}
-              {(newFoodData.haveReview && newFoodData.meta)
-                ? newFoodData.meta.votes + 1
-                : newFoodData.meta
-                ? newFoodData.meta.votes
-                : 0}{' '}
+              {reviewNum(newFoodData)}
               Review
-              {(newFoodData.meta.votes === 1 && newFoodData.haveReview) ||
-              newFoodData.reviewAmt > 1
-                ? 's'
-                : null}
+              {determineS(newFoodData)}
             </div>
           </div>
-          <div className="IngredientList">
-            <h3 className="subHeader">
-              Ingredients:
-              {newFoodData.ingredients &&
-                newFoodData.ingredients.map((data) => (
-                  <div className="foodList">
-                    {updateList(data.quantity)}
-                    {data.unitOfMeasure
-                      ? ' ' + data.unitOfMeasure + ' ' + data.description
-                      : ' ' + data.description}
-                  </div>
-                ))}
-            </h3>
-          </div>
+          <ListIngredients
+            ingredients={newFoodData && newFoodData.ingredients}
+            editRatio={newFoodData && newFoodData.editRatio}
+            pdf={false}
+          />
         </div>
         <div className="rightContainer">
-          <div className="Timer">
-            <div className="TimeName">
-              Prep Time
-              <div className="TimeNumber">
-                {DisplayTime(newFoodData.time.prepHour, newFoodData.time.prepMin)}
-              </div>
-            </div>
-            <div className="TimeName">
-              Cook Time
-              <div className="TimeNumber">
-                {DisplayTime(newFoodData.time.cookHour, newFoodData.time.cookMin)}
-              </div>
-            </div>
-            <div className="TimeName">
-              Total Time
-              <div className="TimeNumber">
-                {DisplayTime(
-                  newFoodData.time.prepHour + newFoodData.time.cookHour,
-                  newFoodData.time.prepMin + newFoodData.time.cookMin
-                )}
-              </div>
-            </div>
-            <Button
-              size="large"
-              onClick={showModal}
-              style={{
-                fontSize: '20px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 200,
-                position: 'absolute',
-                right: 100,
-              }}
-              icon={
-                <PlusOutlined
-                  style={{
-                    display: 'inline-block',
-                    verticalAlign: 'middle',
-                    fontSize: 'small',
-                  }}
-                />
-              }
-            >
-              In-App Timer
-            </Button>
-            <Modal
-              title="Timers (WIP)"
-              onCancel={handleClose}
-              visible={isVisible}
-              footer={[
-                <Button key="ok" onClick={handleClose} type="primary">
-                  OK
-                </Button>,
-              ]}
-            >
-              Timer would go here
-              <Button
-                style={{
-                  position: 'absolute',
-                  right: 30,
-                }}
-              >
-                Start
-              </Button>
-            </Modal>
+          <div style={{display:'flex', paddingBottom:10}}>
+            <DisplayTimes time={newFoodData && newFoodData.time} />
+            <App
+              data={newFoodData}
+              name={newFoodData && newFoodData.name}
+            />
           </div>
-          <h3 className="subHeader">Directions</h3>
-          <ol>
-            {newFoodData.directions &&
-              newFoodData.directions.map((data, index) => (
-                <li className="directionContainer">
-                  <div className="stepNumber">{index + 1}</div>
-                  <div className="stepContent">{data}</div>
-                </li>
-              ))}
-          </ol>
+            <InAppTimer />
+            <h3 className="subHeader">Directions</h3>
+            <ListDirections
+              directions= {
+                newFoodData &&
+                newFoodData.directions
+              }
+            />
         </div>
       </div>
     </div>
@@ -368,3 +327,4 @@ const SingleRecipe = () => {
 };
 
 export default SingleRecipe;
+

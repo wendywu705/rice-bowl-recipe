@@ -1,9 +1,12 @@
 const Multer = require('multer');
 const mongoose = require('mongoose');
 const parseIngredient = require('parse-ingredient');
+const { ObjectId } = require('mongodb');
 const RecipeModel = require('../models/Recipe');
+const UserModel = require('../models/User');
 
 mongoose.set('useFindAndModify', false);
+let userId;
 
 const multer = Multer({
   storage: Multer.memoryStorage(),
@@ -13,38 +16,200 @@ const multer = Multer({
 });
 
 module.exports = (app) => {
-  app.get('/recipe', async (req, res) => {
-    try {
-      const recipes = await RecipeModel.find();
-      console.log('found recipes');
-      res.send(recipes);
-    } catch (err) {
-      res.json({ error: err.message });
-    }
-  });
+  // app.get('/recipe', async (req, res) => {
+  //   try {
+  //     const recipes = await RecipeModel.find({});
+  //     console.log('found recipes');
+  //     res.send(recipes);
+  //   } catch (err) {
+  //     res.json({ error: err.message });
+  //   }
+  // });
 
   // fetch Recipe names from db to Home page.
   app.get('/home', async (req, res) => {
-    const query = RecipeModel.find({}).select({
+    const query = await RecipeModel.find({ hidden: false }).select({
       name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1,
     });
+    console.log('query:', query);
+    res.json(query);
+  });
 
-    query.exec((error, data) => {
-      if (error) throw error;
-      // for (let i = 0; i < data.length; i++) {
-      //   console.log(data[i].imageUrl);
-      // }
-      res.json(data);
+  // eslint-disable-next-line consistent-return
+  const checkAuth = (req, res, next) => {
+    // console.log('Current user is:', req.user);
+    const isLoggedIn = req.isAuthenticated() && req.user;
+    if (!isLoggedIn) {
+      return res.status(401).json({
+        error: 'You must be logged in!',
+      });
+    }
+    console.log('Authed!');
+    userId = req.user._id;
+    next();
+  };
+
+  app.get('/pinned', checkAuth, async (req, res) => {
+    const results = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
+    const user = results[0];
+    if (!user) {
+      res.json([]);
+      return;
+    }
+    const recipeIds = user.recipesPinned;
+
+    const query = await RecipeModel.find({ recipeId: { $in: recipeIds } }).select({
+      name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1,
     });
+    // console.log('pinned:', query);
+    res.json(query);
+  });
+
+  app.get('/saved/:id', checkAuth, async (req, res) => {
+    const recipeId = req.params.id;
+    const results = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
+    const user = results[0];
+    if (!user) {
+      res.json([]);
+      return;
+    }
+    const recipeIds = user.recipesStarred;
+    console.log(recipeIds);
+
+    if (recipeIds.includes(recipeId.toString())) {
+      res.json(recipeId);
+      return;
+    }
+    res.json([]);
+  });
+
+  app.get('/saved', checkAuth, async (req, res) => {
+    const results = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
+    const user = results[0];
+    if (!user) {
+      res.json([]);
+      return;
+    }
+    const recipeIds = user.recipesStarred;
+
+    const query = await RecipeModel.find({ recipeId: { $in: recipeIds } }).select({
+      name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1,
+    });
+    // console.log('saved:', query);
+    res.json(query);
+  });
+
+  app.post('/star/add/:recipeId', async (req, res) => {
+    const { recipeId } = req.params;
+    try {
+      const results = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
+      const user = results[0];
+      console.log(user);
+      if (user) {
+        const updateDoc = { $addToSet: { recipesStarred: recipeId } };
+        try {
+          const response = await UserModel.updateOne({ _id: userId }, updateDoc);
+          if (response) {
+            console.log('starred successfully');
+            res.json(recipeId);
+          } else {
+            console.log('failed to star');
+          }
+        } catch (err) {
+          console.log(err, 'fail to star recipe on DB');
+        }
+      }
+    } catch (err) {
+      console.log(err, 'fail to find user in DB to star recipe');
+    }
+  });
+
+  app.post('/star/remove/:recipeId', async (req, res) => {
+    const { recipeId } = req.params;
+    try {
+      const results = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
+      const user = results[0];
+      console.log(user);
+      if (user) {
+        const updateDoc = { $pull: { recipesStarred: recipeId } };
+        try {
+          const response = await UserModel.updateOne({ _id: userId }, updateDoc);
+          if (response) {
+            console.log('unstarred successfully');
+            res.json(recipeId);
+          } else {
+            console.log('failed to unstar');
+          }
+        } catch (err) {
+          console.log(err, 'fail to unstar recipe on DB');
+        }
+      }
+    } catch (err) {
+      console.log(err, 'fail to find user in DB to unstar recipe');
+    }
+  });
+
+  app.post('/pin/add/:recipeId', async (req, res) => {
+    const { recipeId } = req.params;
+    try {
+      const results = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
+      const user = results[0];
+      console.log(user);
+      if (user) {
+        const updateDoc = { $addToSet: { recipesPinned: recipeId } };
+        try {
+          const response = await UserModel.updateOne({ _id: userId }, updateDoc);
+          if (response) {
+            console.log('starred successfully');
+            res.json(recipeId);
+          } else {
+            console.log('failed to star');
+          }
+        } catch (err) {
+          console.log(err, 'fail to star recipe on DB');
+        }
+      }
+    } catch (err) {
+      console.log(err, 'fail to find user in DB to star recipe');
+    }
+  });
+
+  app.post('/pin/remove/:recipeId', async (req, res) => {
+    const { recipeId } = req.params;
+    try {
+      const results = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
+      const user = results[0];
+      console.log(user);
+      if (user) {
+        const updateDoc = { $pull: { recipesPinned: recipeId } };
+        try {
+          const response = await UserModel.updateOne({ _id: userId }, updateDoc);
+          if (response) {
+            console.log('unstarred successfully');
+            res.json(recipeId);
+          } else {
+            console.log('failed to unstar');
+          }
+        } catch (err) {
+          console.log(err, 'fail to unstar recipe on DB');
+        }
+      }
+    } catch (err) {
+      console.log(err, 'fail to find user in DB to unstar recipe');
+    }
   });
 
   app.post('/recipes/new', multer.single('file'), async (req, res) => {
     console.log('adding new recipe');
+    let newId = 1;
+    console.log('user', userId);
     try {
       const maxIdRecipe = await RecipeModel.find()
         .sort({ recipeId: -1 })
         .limit(1); // returns array
-      const newId = +maxIdRecipe[0].recipeId + 1;
+      if (maxIdRecipe.length > 0) { // if db has at least 1 recipe, else sets newId to 1
+        newId = +maxIdRecipe[0].recipeId + 1;
+      }
       const query = JSON.parse(req.body.data);
       console.log('q::::', query);
       const postReq = {};
@@ -78,19 +243,50 @@ module.exports = (app) => {
       postReq.url = query.url;
       postReq.imageUrl = query.imageUrl; // Embed the Google Cloud Storage image URL
       postReq.servingSize = +query.servingSize;
-      console.log(postReq);
       const recipe = await RecipeModel.create(postReq);
-      if (recipe) {
-        console.log('recipe inserted successfully');
-        res.json(newId);
-      } else {
-        console.log('fail to add new recipe');
+      console.log('recipe added successfully', recipe);
+
+      // add to user owned
+      let addedToUser = false;
+
+      if (recipe && userId) {
+        try {
+          const userRes = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
+          const user = userRes[0];
+          console.log('userRes:', userRes);
+          if (user) {
+            const updateDoc = { $addToSet: { recipesOwned: newId, recipesStarred: newId } };
+            try {
+              const response = await UserModel.updateOne({ _id: ObjectId(userId) }, updateDoc);
+              if (response) {
+                addedToUser = true;
+                console.log('added recipe to recipesOwned successfully');
+                res.json(newId);
+              } else {
+                console.log('failed to add to recipesOwned');
+              }
+            } catch (err2) {
+              console.log(err2, 'fail to add recipe to user DB');
+            }
+          }
+        } catch (err) {
+          console.log(err, 'fail to find user in DB to add recipe');
+        }
+        if (recipe && !addedToUser) {
+          console.log('recipe added publicly, but no author');
+        }
+        if (addedToUser) {
+          console.log('recipe added but cannot find userId in DB');
+        }
+        console.log('done!');
       }
-    } catch (err) {
+    } catch (err3) {
       console.log('error, cant create new recipes');
+      console.log(err3);
     }
   });
 
+  // NEED TO DO:  modify
   // router.patch('/:id', async (req, res) => {
   // not implemented yet
   // });
@@ -131,6 +327,4 @@ module.exports = (app) => {
       res.json({ error: err.message });
     }
   });
-
-  // module.exports = router;
 };

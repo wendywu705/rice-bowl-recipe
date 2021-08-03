@@ -12,19 +12,20 @@ function Form() {
     prepMin: 0,
     cookHour: 0,
     cookMin: 0,
-    servingSize: 0,
+    servingSize: 1,
     directions: [],
     url: '',
     imageUrl: '',
     rating: 5,
     category: '',
     hidden: false,
+    errors: {},
   });
   // Holds the uploaded image file in a state
   let [selectedFile, setSelectedFile] = useState(null);
 
   const test = async () => {
-    const res = await axios.get('https://localhost:9000/recipes/');
+    const res = await axios.get('https://localhost:9000/home/');
     console.log('heyo', res);
   };
   useEffect(() => {
@@ -61,7 +62,7 @@ function Form() {
     try{
       const response = await axios({
         method: 'post',
-        timeout: 1000,
+        timeout: 2000,
         url: `https://localhost:9000/recipes/new`,
         data: recipeData,
       });
@@ -98,15 +99,81 @@ function Form() {
     }
   }
 
+  function handleValidation() {
+    let formIsValid = true;
+    state.errors = {};
+
+    //Name
+    if(state.name.length<1){
+      formIsValid = false;
+      state.errors["name"] = "Cannot be empty";
+    }
+
+    //category
+    if (state.category.length<1){
+      formIsValid = false;
+      state.errors["category"] = "Cannot be empty";
+    }
+
+    //ingredients
+    if (state.ingredients.length<1){
+      formIsValid = false;
+      state.errors["ingredients"] = "Cannot be empty";
+    }
+
+    //instructions
+    if (state.directions.length<1){
+      formIsValid = false;
+      state.errors["directions"] = "Cannot be empty";
+    }
+
+    //ServingSize
+    if (state.servingSize<1){
+      formIsValid = false;
+      state.errors["servingSize"] = "Cannot be less than 1";
+    }
+
+    //rating
+    if (state.rating<0 || state.rating>5){
+      formIsValid = false;
+      state.errors["rating"] = "Must be between 0 and 5";
+    }
+
+    //time
+    if (state.prepHour<0 || state.prepMin<0 || state.cookHour<0 || state.cookMin<0){
+      formIsValid = false;
+      state.errors["time"] = "Time cannot be negative.";
+    }
+
+    //url
+    let valid = /^(https?:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/;
+    if (state.url.length>0) {
+      if (!valid.exec(state.url)) {
+        state.errors["url"] = "Invalid youtube url";
+      }
+    }
+
+    return formIsValid;
+  }
+
   // Handles 2 AJAX request, one for uploading the image to GCS, and other for uploading the recipe data
   const handleSubmit = async(e) => {
     e.preventDefault();
+
+    //form validation
+    if(!handleValidation()){
+      console.log('Form validation failed');
+      console.log('errors:',state.errors);
+      let errors = JSON.stringify(state.errors).replace(/\\n/g, "\\n");
+      alert(`Form has errors. Cannot submit.\n ${errors}`)
+      return;
+    }
     let tempData;
     let userData;
 
     // Create a unique imageURL for each image
     //if no image inserted
-   if (!selectedFile){
+    if (!selectedFile){
       console.log('no image, using stock apron image')
       let defaultFileName = `c9f85699-7aae-45bf-b47e-5c1913f06d6a-no_image.jpeg`
       tempData = {
@@ -114,14 +181,14 @@ function Form() {
         imageUrl: `https://storage.googleapis.com/ricebowl-bucket-1/${defaultFileName}`,
       };
     }
-   //image is inserted
+    //image is inserted
     else{
       console.log('image inserted');
       newFileName = uuidv4() + '-' + selectedFile.name;
-       userData = {
+      userData = {
         imageName: newFileName,
       };
-       tempData = {
+      tempData = {
         ...state,
         imageUrl: `https://storage.googleapis.com/ricebowl-bucket-1/${newFileName}`,
       };
@@ -145,165 +212,165 @@ function Form() {
   };
 
   return (
-    <div className="Form">
-      <div>
-        <h1 className="new-recipes-title">New Recipe:</h1>
-        <form id="recipeForm" encType="multipart/form-data" method="POST">
-          <label className="recipe-name-title">
-            Recipe Name: <br />
-            <input
-              className="inputBox"
-              type="text"
-              name="name"
-              value={state.name}
-              onChange={handleChange}
-              placeholder="Enter Recipe Title"
-              required="required"
-            />
-          </label>{' '}
-          <br />
-          Image: <br />
-          <input type="file" name="file" className="inputBox" onChange={onChangeHandler} />
-          <br />
-          <label className="Category">
-            Categories: <br />
-            <input
-              className="inputBox"
-              type="text"
-              name="category"
-              value={state.category}
-              onChange={handleChange}
-              placeholder="Enter Categories seperated by commas. eg) Chinese, Cake, Fish"
-            />
-          </label>{' '}
-          <br />
-          <label className="Ingredients">
-            Recipe Ingredients: <br />
-            <textarea
-              className="inputBox"
-              name="ingredients"
-              value={state.ingredients}
-              onChange={handleChange}
-              placeholder="quantity/unit/ingredient&#13;MUST HAVE UNITS&#13;3 cups carrots &#13;1 cup water &#13;5 cloves garlic &#13;etc..."
-              required
-            />
-          </label>{' '}
-          <br />
-          <label className="Prep">
-            Prep Hours:
-            <input
-              className="inputBox"
-              type="number"
-              name="prepHour"
-              value={state.prepHour}
-              onChange={handleChange}
-              min="0"
-            />
-          </label>
-          <label className="Prep">
-            Prep Mins:
-            <input
-              className="inputBox"
-              type="number"
-              name="prepMin"
-              value={state.prepMin}
-              onChange={handleChange}
-              min="0"
-              max="59"
-            />
-          </label>{' '}
-          <br />
-          <label className="Cook">
-            Cook Hours:
-            <input
-              className="inputBox"
-              type="number"
-              name="cookHour"
-              value={state.cookHour}
-              onChange={handleChange}
-              min="0"
-            />
-          </label>
-          <label className="Cook">
-            Cook Mins:
-            <input
-              className="inputBox"
-              type="number"
-              name="cookMin"
-              value={state.cookMin}
-              onChange={handleChange}
-              min="0"
-              max="59"
-            />
-          </label>{' '}
-          <br />
-          <label className="Serving-Size">
-            Serving Size:
-            <input
-              className="inputBox"
-              type="number"
-              name="servingSize"
-              value={state.servingSize}
-              onChange={handleChange}
-              min="0"
-            />
-          </label>
-          <label className="Rating">
-            Rating:
-            <input
-              className="inputBox"
-              type="number"
-              name="rating"
-              value={state.rating}
-              onChange={handleChange}
-              min="0"
-              max="5"
-            />
-          </label>{' '}
-          <br />
-          <label>
-            Recipe Steps: <br />
-            <textarea
-              className="inputBox"
-              name="directions"
-              value={state.directions}
-              onChange={handleChange}
-              placeholder="Chop up all carrots and garlic. &#13;&#13;Pour water over the carrots and add along the chopped garlic."
-              required
-            />
-          </label>{' '}
-          <br />
-          <label className="url">
-            Video Clip: <br />
-            <input
-              className="inputBox"
-              type="text"
-              name="url"
-              value={state.url}
-              onChange={handleChange}
-              placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            />
-          </label>{' '}
-          <br />
-          <label className="hidden">
-            <p>Only Private View?</p>
-            <input
-              className="inputBox"
-              type="checkbox"
-              name="hidden"
-              value="true"
-              onChange={handleCheckBox}
-            />
-          </label>{' '}
-          <br />
-          <div className="align-center">
-            <button className="Submit" type="submit" onClick={handleSubmit}>
-              Submit
-            </button>
-          </div>
-        </form>
+      <div className="Form">
+        <div>
+          <h1 className="new-recipes-title">New Recipe:</h1>
+          <form id="recipeForm" encType="multipart/form-data" method="POST">
+            <label className="recipe-name-title">
+              Recipe Name: <br />
+              <input
+                  className="inputBox"
+                  type="text"
+                  name="name"
+                  value={state.name}
+                  onChange={handleChange}
+                  placeholder="Enter Recipe Title"
+                  required="required"
+              />
+            </label>{' '}
+            <br />
+            Image: <br />
+            <input type="file" name="file" className="inputBox" onChange={onChangeHandler} />
+            <br />
+            <label className="Category">
+              Categories: <br />
+              <input
+                  className="inputBox"
+                  type="text"
+                  name="category"
+                  value={state.category}
+                  onChange={handleChange}
+                  placeholder="Enter Categories seperated by commas. eg) Chinese, Cake, Fish"
+              />
+            </label>{' '}
+            <br />
+            <label className="Ingredients">
+              Recipe Ingredients: <br />
+              <textarea
+                  className="inputBox"
+                  name="ingredients"
+                  value={state.ingredients}
+                  onChange={handleChange}
+                  placeholder="quantity/unit/ingredient&#13;3 cups carrots &#13;2 eggs &#13;5 cloves garlic &#13;etc..."
+                  required
+              />
+            </label>{' '}
+            <br />
+            <label className="Prep">
+              Prep Hours:
+              <input
+                  className="inputBox"
+                  type="number"
+                  name="prepHour"
+                  value={state.prepHour}
+                  onChange={handleChange}
+                  min="0"
+              />
+            </label>
+            <label className="Prep">
+              Prep Mins:
+              <input
+                  className="inputBox"
+                  type="number"
+                  name="prepMin"
+                  value={state.prepMin}
+                  onChange={handleChange}
+                  min="0"
+                  max="59"
+              />
+            </label>{' '}
+            <br />
+            <label className="Cook">
+              Cook Hours:
+              <input
+                  className="inputBox"
+                  type="number"
+                  name="cookHour"
+                  value={state.cookHour}
+                  onChange={handleChange}
+                  min="0"
+              />
+            </label>
+            <label className="Cook">
+              Cook Mins:
+              <input
+                  className="inputBox"
+                  type="number"
+                  name="cookMin"
+                  value={state.cookMin}
+                  onChange={handleChange}
+                  min="0"
+                  max="59"
+              />
+            </label>{' '}
+            <br />
+            <label className="Serving-Size">
+              Serving Size:
+              <input
+                  className="inputBox"
+                  type="number"
+                  name="servingSize"
+                  value={state.servingSize}
+                  onChange={handleChange}
+                  min="1"
+              />
+            </label>
+            <label className="Rating">
+              Rating:
+              <input
+                  className="inputBox"
+                  type="number"
+                  name="rating"
+                  value={state.rating}
+                  onChange={handleChange}
+                  min="0"
+                  max="5"
+              />
+            </label>{' '}
+            <br />
+            <label>
+              Recipe Steps: <br />
+              <textarea
+                  className="inputBox"
+                  name="directions"
+                  value={state.directions}
+                  onChange={handleChange}
+                  placeholder="Chop up all carrots and garlic. &#13;&#13;Pour water over the carrots and add along the chopped garlic."
+                  required
+              />
+            </label>{' '}
+            <br />
+            <label className="url">
+              Video Clip: <br />
+              <input
+                  className="inputBox"
+                  type="text"
+                  name="url"
+                  value={state.url}
+                  onChange={handleChange}
+                  placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+              />
+            </label>{' '}
+            <br />
+            <label className="hidden">
+              <p>Only Private View?</p>
+              <input
+                  className="inputBox"
+                  type="checkbox"
+                  name="hidden"
+                  value="true"
+                  onChange={handleCheckBox}
+              />
+            </label>{' '}
+            <br />
+            <div className="align-center">
+              <button className="Submit" type="submit" onClick={handleSubmit}>
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
   );
 }
 

@@ -4,8 +4,6 @@ import { useParams } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Ratings from 'react-ratings-declarative';
-// import ReactPDF from '@react-pdf/renderer';
-// import { PDFViewer, PDFDownloadLink, Image, Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import './Single.css';
 import DisplayTimes  from './DisplayTime';
 import ListDirections from './Directions';
@@ -18,54 +16,100 @@ import { Divider, InputNumber, Button } from 'antd';
 import {
   StarOutlined,
   EditOutlined,
+  PlusOutlined,
   LeftOutlined,
 } from '@ant-design/icons';
 
 const SingleRecipe = () => {
   const [newFoodData, setNewFoodData] = useState(null);
+  const [isVisible, setVisible] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
-    console.log('id:', id);
-    fetchSingleRecipe();
-  }, []);
-
-  const fetchSingleRecipe = async () => {
-    try {
-      const recipeRes = await axios({
-        method: 'get',
-        timeout: 1000,
-        url: `/recipes/${id}`,
-      });
-      const body = recipeRes.data;
-      let tempinit = {
-        ...body,
-        editRatio: 1,
-        isFavourite: false,
-        haveReview: false,
-        newRating: null,
-      };
-      setNewFoodData(tempinit);
-    } catch (err) {
-      console.log(err);
+    console.log('recipeId:', id);
+    const checkSaved= async() =>{
+      try{
+        const savedResponse = await axios({
+          method: 'get',
+          timeout: 1000,
+          url: `/saved/${id}`,
+        });
+        if ( [200, 304].includes(savedResponse.status) ){
+          if (savedResponse.data === id){
+            return true;
+          }
+        }
+      } catch(err){
+        console.log('err',err);
+      }
+      return false;
     }
-  };
+
+    const fetchSingleRecipe = async () => {
+      try {
+        const recipeRes = await axios({
+          method: 'get',
+          timeout: 1000,
+          url: `/recipes/${id}`,
+        });
+        const body = recipeRes.data;
+        let tempinit = {
+          ...body,
+          editRatio: 1,
+          isFavourite: await checkSaved(),
+          haveReview: false,
+          newRating: null,
+        };
+        setNewFoodData(tempinit);
+        return body;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchSingleRecipe().then(recipeObj => console.log('done fetch for recipeId = ',recipeObj.recipeId));
+  }, [id]);
 
 
 
-  const updateFavourite = (value) => {
-    let newfav;
-    if (newFoodData.isFavourite == null) {
-      newfav = false;
+  const updateFavourite = async () => {
+    let newFav;
+    if (newFoodData.isFavourite === true) {
+      console.log('attemping to star');
+      newFav = false;
+      try {
+        const response = await axios({
+          method: 'post',
+          timeout: 1000,
+          url: `https://localhost:9000/star/remove/${id}`,
+        });
+        if (response.status === 200) {
+          console.log('ok starred!');
+        }
+      } catch (err) {
+        console.log('err', err);
+      }
     } else {
-      newfav = !newFoodData.isFavourite;
+      console.log('attempting to un-star');
+      newFav = !newFoodData.isFavourite;
+      try {
+        const response = await axios({
+          method: 'post',
+          timeout: 1000,
+          url: `https://localhost:9000/star/add/${id}`,
+        });
+        if (response.status === 200) {
+          console.log('ok un-starred!');
+        }
+      } catch (err) {
+        console.log('err', err);
+      }
     }
     let tempfav = {
       ...newFoodData,
-      isFavourite: newfav,
+      isFavourite: newFav,
     };
     setNewFoodData(tempfav);
-    return newfav;
+    return newFav;
   };
 
   const updateRatio = (value) => {
@@ -254,8 +298,8 @@ const SingleRecipe = () => {
               {determineS(newFoodData)}
             </div>
           </div>
-          <ListIngredients 
-            ingredients={newFoodData && newFoodData.ingredients} 
+          <ListIngredients
+            ingredients={newFoodData && newFoodData.ingredients}
             editRatio={newFoodData && newFoodData.editRatio}
             pdf={false}
           />
@@ -263,16 +307,16 @@ const SingleRecipe = () => {
         <div className="rightContainer">
           <div style={{display:'flex', paddingBottom:10}}>
             <DisplayTimes time={newFoodData && newFoodData.time} />
-            <App 
+            <App
               data={newFoodData}
-              name={newFoodData && newFoodData.name} 
+              name={newFoodData && newFoodData.name}
             />
           </div>
             <InAppTimer />
             <h3 className="subHeader">Directions</h3>
-            <ListDirections 
+            <ListDirections
               directions= {
-                newFoodData && 
+                newFoodData &&
                 newFoodData.directions
               }
             />

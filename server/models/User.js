@@ -18,6 +18,7 @@ const mongoSchema = new Schema({
   displayName: String,
   recipesOwned: [String],
   recipesStarred: [String],
+  recipesPinned: [String],
 });
 
 const User = mongoose.model('users', mongoSchema);

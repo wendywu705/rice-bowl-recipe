@@ -26,7 +26,7 @@
     margin-right: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-image: url('searchicon.png');
+    background-image: url('../RecipeList/searchicon.png');
     background-repeat: no-repeat;
     background-size: 36px;
     background-position: left 5px bottom 5px;

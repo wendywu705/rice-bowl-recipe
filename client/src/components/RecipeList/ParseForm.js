@@ -28,12 +28,14 @@ class ParseForm extends Component{
     if(url){
       axios.post('https://localhost:9000/parse', parseInfo)
         .then(response => {
+          console.log('res',response);
           if(response.status === 200){
-            window.location.assign('/home')
+            const recipeId = response.data;
+            window.location.assign(`/recipe/${recipeId}`)
             console.log('res', response);
           }
           else{
-            alert('Error: Failed to parse domain, please entry a correct doman URL');
+            alert('Error: Failed to parse domain, please entry a correct domain URL');
           }
         })
         .catch(err => {

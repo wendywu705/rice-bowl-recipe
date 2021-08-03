@@ -2,9 +2,9 @@ const Multer = require('multer');
 const mongoose = require('mongoose');
 const parseIngredient = require('parse-ingredient');
 const { ObjectId } = require('mongodb');
-const RecipeModel = require('../models/Recipe');
-const recipeScraper = require("recipe-scraper");
+const recipeScraper = require('recipe-scraper');
 const alert = require('alert');
+const RecipeModel = require('../models/Recipe');
 const UserModel = require('../models/User');
 
 mongoose.set('useFindAndModify', false);
@@ -18,16 +18,6 @@ const multer = Multer({
 });
 
 module.exports = (app) => {
-  // app.get('/recipe', async (req, res) => {
-  //   try {
-  //     const recipes = await RecipeModel.find({});
-  //     console.log('found recipes');
-  //     res.send(recipes);
-  //   } catch (err) {
-  //     res.json({ error: err.message });
-  //   }
-  // });
-
   // fetch Recipe names from db to Home page.
   app.get('/home', async (req, res) => {
     const query = await RecipeModel.find({ hidden: false }).select({
@@ -47,6 +37,7 @@ module.exports = (app) => {
       });
     }
     console.log('Authed!');
+    // eslint-disable-next-line no-underscore-dangle
     userId = req.user._id;
     next();
   };
@@ -330,21 +321,27 @@ module.exports = (app) => {
     }
   });
 
-  app.post('/parse',  async (req, res) => {
+  app.post('/parse', async (req, res) => {
     console.log('Parse the URL to recipe');
-
-    const maxIdRecipe = await RecipeModel.find()
-      .sort({ recipeId: -1 })
-      .limit(1); // returns array
-    const newId = +maxIdRecipe[0].recipeId + 1;
+    let newId = 1;
+    try {
+      const maxIdRecipe = await RecipeModel.find()
+        .sort({ recipeId: -1 })
+        .limit(1); // returns array
+      if (maxIdRecipe.length > 0) { // if db has at least 1 recipe, else sets newId to 1
+        newId = +maxIdRecipe[0].recipeId + 1;
+      }
+    } catch (e) {
+      console.log('err with find maxId', e);
+    }
 
     const postReq = {};
-    const url_addr = req.body.url;
-    console.log(url_addr);
+    const urlAddr = req.body.url;
+    console.log(urlAddr);
 
-    recipeScraper(url_addr).then(recipe => {
+    recipeScraper(urlAddr).then(async (recipe) => {
       console.log(recipe);
-      if(recipe.tag){
+      if (recipe.tag) {
         postReq.category = recipe.tag
           .replace(', ', ',')
           .replace(' ,', ',')
@@ -353,26 +350,26 @@ module.exports = (app) => {
       postReq.name = recipe.name;
       postReq.recipeId = newId;
       postReq.hidden = false;
-      var newIngre = [];
-      for(var i = 0; i < recipe.ingredients.length; i++){
+      postReq.url = urlAddr;
+      const newIngre = [];
+      for (let i = 0; i < recipe.ingredients.length; i++) {
         newIngre[i] = recipe.ingredients[i].replace(',', '');
       }
       const formatIngre = newIngre.toString().split(',').join('\n');
-      //console.log(formatIngre);
+      // console.log(formatIngre);
       postReq.ingredients = parseIngredient(formatIngre);
-      var newInstruct = [];
-      var index = 0;
-      for(var n = 0; n < recipe.instructions.length; n++){
-        if(recipe.instructions[n].length != 0){
+      const newInstruct = [];
+      let index = 0;
+      for (let n = 0; n < recipe.instructions.length; n++) {
+        if (recipe.instructions[n].length !== 0) {
           newInstruct[index] = recipe.instructions[n];
           index++;
         }
-
       }
       postReq.directions = newInstruct;
 
       postReq.time = {
-        prepHour: recipe.time.total ? recipe.time.total.substring(0,1) : 0,
+        prepHour: recipe.time.total ? recipe.time.total.substring(0, 1) : 0,
         cookHour: 0,
         prepMin: recipe.time.prep ? recipe.time.prep.replace(' mins', '') : 0,
         cookMin: recipe.time.cook ? recipe.time.cook.replace(' mins', '') : 0,
@@ -381,15 +378,19 @@ module.exports = (app) => {
       postReq.imageUrl = recipe.image;
       // console.log(postReq);
 
-      const parseRecipe = RecipeModel.create(postReq);
-      if (parseRecipe) {
-        console.log('Parsed recipe inserted successfully');
-      } else {
-        console.log('Fail to parse new recipe');
+      // TODO insert try-catch
+      try {
+        const parseRecipe = await RecipeModel.create(postReq);
+        if (parseRecipe) {
+          console.log('Parsed recipe inserted successfully');
+          res.json(newId);
+        } else {
+          console.log('Fail to parse new recipe');
+        }
+      } catch (err) {
+        alert('Error: Failed to parse domain, please entry a correct domain URL');
+        throw err;
       }
-    }).catch(err => {
-      alert('Error: Failed to parse domain, please entry a correct doman URL');
-      throw err;
-    })
-  })
+    });
+  });
 };

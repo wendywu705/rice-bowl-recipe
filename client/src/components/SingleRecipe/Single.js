@@ -4,8 +4,6 @@ import { useParams } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Ratings from 'react-ratings-declarative';
-// import ReactPDF from '@react-pdf/renderer';
-// import { PDFViewer, PDFDownloadLink, Image, Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import './Single.css';
 import DisplayTimes  from './DisplayTime';
 import ListDirections from './Directions';
@@ -22,11 +20,20 @@ import {
   PushpinOutlined
 } from '@ant-design/icons';
 
+window.onload = function() {
+  console.log('location',window.location);
+  if(!window.location.hash && window.location.pathname.includes('/recipe/')) {
+    window.location = window.location + '#loaded';
+    window.location.reload();
+  }
+}
+
 const SingleRecipe = () => {
   const [newFoodData, setNewFoodData] = useState(null);
   const { id } = useParams();
 
   useEffect(() => {
+
     console.log('recipeId:', id);
     const checkSaved= async() =>{
       try{
@@ -48,6 +55,7 @@ const SingleRecipe = () => {
 
     const fetchSingleRecipe = async () => {
       try {
+        window.onload();
         const recipeRes = await axios({
           method: 'get',
           timeout: 1000,
@@ -364,8 +372,8 @@ const SingleRecipe = () => {
               {determineS(newFoodData)}
             </div>
           </div>
-          <ListIngredients 
-            ingredients={newFoodData && newFoodData.ingredients} 
+          <ListIngredients
+            ingredients={newFoodData && newFoodData.ingredients}
             editRatio={newFoodData && newFoodData.editRatio}
             pdf={false}
           />
@@ -373,16 +381,16 @@ const SingleRecipe = () => {
         <div className="rightContainer">
           <div style={{display:'flex', paddingBottom:10}}>
             <DisplayTimes time={newFoodData && newFoodData.time} />
-            <App 
+            <App
               data={newFoodData}
-              name={newFoodData && newFoodData.name} 
+              name={newFoodData && newFoodData.name}
             />
           </div>
             <InAppTimer />
             <h3 className="subHeader">Directions</h3>
-            <ListDirections 
+            <ListDirections
               directions= {
-                newFoodData && 
+                newFoodData &&
                 newFoodData.directions
               }
             />

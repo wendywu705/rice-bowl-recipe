@@ -75,9 +75,10 @@ h1 {
   padding-left: 30px;
 }
 
-.starIcon {
-  font-size: xx-large;
-  padding-right: 30px;
+
+.circleIcon:hover,
+.circleButton:hover {
+  color: #1c94fc !important;
 }
 
 .subHeader {

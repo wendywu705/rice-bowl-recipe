@@ -1,6 +1,6 @@
 import { React, useState } from 'react';
-import Countdown from 'react-countdown';
 import { Button } from 'antd';
+import Countdown from 'react-countdown';
 import './Timer.css'
 
 const CompleteTimer = () => {
@@ -35,10 +35,12 @@ const Timer = (prop) => {
         api.stop();  // stop timer
       }
     }
-    return <span className="timer">{prepend(hours)}:{prepend(minutes)}:{prepend(seconds)}</span>;
+    return (
+      <span className="timer">
+        {prepend(hours)}:{prepend(minutes)}:{prepend(seconds)}
+      </span>
+    );
   }
-
-
   return (
     <div className="TimerContainer">
       <Countdown 

@@ -5,21 +5,19 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Ratings from 'react-ratings-declarative';
 import './Single.css';
-import Timer from '../Timer/Timer';
-import GetTimes from '../Timer/GetTimes';
+import InappTimer from '../Timer/DisplayTimer';
 
-import { Divider, InputNumber, Button, Modal } from 'antd';
+import { Divider, InputNumber, Button } from 'antd';
 
 import {
   StarOutlined,
   EditOutlined,
-  PlusOutlined,
   LeftOutlined,
 } from '@ant-design/icons';
 
 const SingleRecipe = () => {
   const [newFoodData, setNewFoodData] = useState(null);
-  const [isVisible, setVisible] = useState(false);
+  // const [isVisible, setVisible] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -46,13 +44,6 @@ const SingleRecipe = () => {
     } catch (err) {
       console.log(err);
     }
-  };
-
-  const handleClose = () => {
-    setVisible(false);
-  };
-  const showModal = () => {
-    setVisible(true);
   };
 
   const updateFavourite = (value) => {
@@ -136,10 +127,6 @@ const SingleRecipe = () => {
 
   if (!newFoodData) {
     return null;
-  }
-  const getTimeArr = () => {
-    let numArr = GetTimes(newFoodData.directions);
-    return numArr;
   }
 
   return (
@@ -312,50 +299,7 @@ const SingleRecipe = () => {
                 )}
               </div>
             </div>
-            <Button
-              size="large"
-              onClick={showModal}
-              style={{
-                fontSize: '20px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 200,
-                position: 'absolute',
-                right: 100,
-              }}
-              icon={
-                <PlusOutlined
-                  style={{
-                    display: 'inline-block',
-                    verticalAlign: 'middle',
-                    fontSize: 'small',
-                  }}
-                />
-              }
-            >
-              In-App Timer
-            </Button>
-            <Modal
-              title="Timers"
-              onCancel={handleClose}
-              visible={isVisible}
-              footer={[
-                <Button key="ok" onClick={handleClose} type="primary">
-                  OK
-                </Button>,
-              ]}
-            >
-              {getTimeArr().map(data =>{
-                return (
-                  <div style={{display:'flex', alignItems:'center'}}>
-                    <div style={{marginRight:10, fontSize:15}}>{'STEP ' +(data[1]+1)+ ": "}</div> 
-                    <Timer time={data[0]}/> 
-                  </div>
-                );
-              })}
-              {/* {getTimeArr() || 'No Timers Found'} */}
-            </Modal>
+            <InappTimer directions={newFoodData.directions} />
           </div>
           <h3 className="subHeader">Directions</h3>
           <ol>

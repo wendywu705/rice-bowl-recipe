@@ -5,6 +5,7 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Ratings from 'react-ratings-declarative';
 import './Single.css';
+import Timer from '../Timer/Timer';
 
 import { Divider, InputNumber, Button, Modal } from 'antd';
 
@@ -306,6 +307,7 @@ const SingleRecipe = () => {
                 )}
               </div>
             </div>
+            <Timer time={10}/>
             <Button
               size="large"
               onClick={showModal}

@@ -158,3 +158,11 @@ h1 {
   margin-right: 30px;
   font-family: 'Catamaran', sans-serif;
 }
+.pdfButtonClass {
+  color:#1c94fc;
+  margin-bottom:100;
+}
+
+.pdfButtonClass:disabled {
+  color: grey;
+}

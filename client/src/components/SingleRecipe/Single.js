@@ -261,13 +261,15 @@ const SingleRecipe = () => {
           />
         </div>
         <div className="rightContainer">
-          <App 
-            data={newFoodData}
-            name={newFoodData && newFoodData.name} 
-          />
-          <DisplayTimes time={newFoodData && newFoodData.time} />
-          <InAppTimer />
-          <h3 className="subHeader">Directions</h3>
+          <div style={{display:'flex', paddingBottom:10}}>
+            <DisplayTimes time={newFoodData && newFoodData.time} />
+            <App 
+              data={newFoodData}
+              name={newFoodData && newFoodData.name} 
+            />
+          </div>
+            <InAppTimer />
+            <h3 className="subHeader">Directions</h3>
             <ListDirections 
               directions= {
                 newFoodData && 
@@ -281,3 +283,4 @@ const SingleRecipe = () => {
 };
 
 export default SingleRecipe;
+

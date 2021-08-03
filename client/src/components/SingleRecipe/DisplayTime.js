@@ -23,7 +23,7 @@ export const formatTime = (hour, minute) => {
   if (time === '') {
     time = 0 + ' mins';
   }
-  console.log('time result',time)
+  // console.log('time result',time)
   return time;
 };
 

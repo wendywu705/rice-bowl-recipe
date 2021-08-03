@@ -6,12 +6,14 @@ import Login from '../../pages/Login/Login';
 import UploadTest from '../../pages/UploadTest';
 import PageLayout from '../Layout/Layout';
 import SingleRecipePage from '../../pages/SingleRecipe';
+import MealPlanner from '../../pages/MealPlanner/MealPlanner';
 
 const Main = () => {
   return (
     <div>
       <Switch>
         <Route exact path="/" component={Login} />
+        <Route exact path="/mealplanner" component={MealPlanner} />
         <Route exact path="/upload" component={UploadTest} />
         <Route exact path="/home" component={Home} />
         <Route exact path="/new_recipe" component={NewRecipe} />

@@ -50,7 +50,7 @@ class ParseForm extends Component{
   render() {
     return (
       <div className="all-recipe">
-        <h1>Parse From URL</h1><br/>
+        <h1>Parse Recipe From URL</h1><br/>
         <Form className="search-bar" method="POST" onSubmit={this.handleSubmit}>
           <span className="span">URL: </span>
           <Input
@@ -61,7 +61,7 @@ class ParseForm extends Component{
               value={this.state.url}
               onChange={this.handleInputChange}
           />
-          <Button id="btn1" color="primary" type="submit">Parse</Button>
+          <Button id="btn" color="primary" type="submit">Parse</Button>
         </Form><hr/>
         <div className="supported-web">
           <h5>We supported most recipe websites on the below list:</h5>

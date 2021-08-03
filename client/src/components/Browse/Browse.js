@@ -12,18 +12,12 @@ class Browse extends Component {
         this.state = {
             public: [],
             dropdownOpenPublic: false,
-            dropdownOpen_new: false,
         };
         this.togglePublic = this.togglePublic.bind(this);
-        this.toggle_new = this.toggle_new.bind(this);
     }
 
     togglePublic() {
         this.setState({ dropdownOpenPublic: !this.state.dropdownOpenPublic });
-    }
-
-    toggle_new() {
-        this.setState({ dropdownOpen_new: !this.state.dropdownOpen_new });
     }
 
     async componentDidMount() {
@@ -59,13 +53,13 @@ class Browse extends Component {
             background: '#6495ED',
             padding: '25px 0 15px 10px',
             opacity: 0.8,
-            height: '250px',
+            height: '300px',
             width: '300px'
         };
 
         return (
             <div className="all-recipe">
-                <h1><b>YOUR RECIPES</b></h1><br/>
+                <h1><b>BROWSE RECIPES</b></h1><br/>
                 <div className="search-bar">
                     {/* TODO: search function to be design */}
                     <input
@@ -74,21 +68,12 @@ class Browse extends Component {
                         placeholder="Quick Find Recipe"
                         name="quick-find"
                     />
-                    <ButtonDropdown isOpen={this.state.dropdownOpen_new} toggle={this.toggle_new}>
-                        <DropdownToggle caret color="primary">
-                            + New Recipe
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            <Link to="/new_recipe"><DropdownItem>From Template</DropdownItem></Link>
-                            <Link to="/parse"><DropdownItem>From URL</DropdownItem></Link>
-                        </DropdownMenu>
-                    </ButtonDropdown>
                 </div>
                 <br />
 
                 <div className="flex">
                     <h2>Public Recipes</h2>
-                    <ButtonDropdown isOpen={this.state.dropdownOpenSaved} toggle={this.toggleSaved}>
+                    <ButtonDropdown isOpen={this.state.dropdownOpenPublic} toggle={this.togglePublic}>
                         <DropdownToggle caret outline color="primary">
                             Sort by
                         </DropdownToggle>
@@ -110,7 +95,7 @@ class Browse extends Component {
                                     <Link to= {`recipe/${res.recipeId}`}>
                                         <div>
                                             <h5 style={{color: '#fff'}}>{res.name}</h5>
-                                            <img src={res.imageUrl} alt="Recipe thumbnail" height="130px" width="200px"/><br/>
+                                            <img src={res.imageUrl} alt="Recipe thumbnail" height="150px" width="200px"/><br/>
                                             <span>Rate: {res.meta && res.meta.rating}/5</span><br/>
                                             <span>Votes: {res.meta && res.meta.votes} </span>
                                         </div>

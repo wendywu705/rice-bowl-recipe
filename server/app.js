@@ -74,6 +74,7 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.json());
 
 // Authentication routes
 require('./routes/router.auth')(app);

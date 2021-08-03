@@ -16,13 +16,11 @@ import { Divider, InputNumber, Button } from 'antd';
 import {
   StarOutlined,
   EditOutlined,
-  PlusOutlined,
   LeftOutlined,
 } from '@ant-design/icons';
 
 const SingleRecipe = () => {
   const [newFoodData, setNewFoodData] = useState(null);
-  const [isVisible, setVisible] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -327,4 +325,3 @@ const SingleRecipe = () => {
 };
 
 export default SingleRecipe;
-

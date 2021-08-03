@@ -1,6 +1,6 @@
 import './RecipeList.css';
 import {Col, Row} from 'antd';
-import {Button, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
+import {ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -14,12 +14,18 @@ class RecipeList extends Component {
             pinned: [],
             saved: [],
             dropdownOpenSaved: false,
+            dropdownOpen_new: false,
         };
         this.toggleSaved = this.toggleSaved.bind(this);
+        this.toggle_new = this.toggle_new.bind(this);
     }
 
     toggleSaved() {
         this.setState({ dropdownOpenSaved: !this.state.dropdownOpenSaved });
+    }
+
+    toggle_new() {
+        this.setState({ dropdownOpen_new: !this.state.dropdownOpen_new });
     }
 
     async componentDidMount() {
@@ -61,7 +67,7 @@ class RecipeList extends Component {
             background: '#6495ED',
             padding: '25px 0 15px 10px',
             opacity: 0.8,
-            height: '250px',
+            height: '300px',
             width: '300px'
         };
 
@@ -76,9 +82,15 @@ class RecipeList extends Component {
                         placeholder="Quick Find Recipe"
                         name="quick-find"
                     />
-                    <Link to="/new_recipe">
-                        <Button id='btn1' color="primary">+ New Recipe</Button>
-                    </Link>
+                    <ButtonDropdown isOpen={this.state.dropdownOpen_new} toggle={this.toggle_new}>
+                        <DropdownToggle caret color="primary">
+                            + New Recipe
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <Link to="/new_recipe"><DropdownItem>From Template</DropdownItem></Link>
+                            <Link to="/parse"><DropdownItem>From URL</DropdownItem></Link>
+                        </DropdownMenu>
+                    </ButtonDropdown>
                 </div>
                 <br />
                 <div className="flex">
@@ -107,7 +119,6 @@ class RecipeList extends Component {
                     </Row>
                 </div>
                 <br />
-                <br />
                 <div className="flex">
                     <h2>Saved Recipes</h2>
                     <div className="icons">
@@ -134,7 +145,7 @@ class RecipeList extends Component {
                                     <Link to= {`recipe/${res.recipeId}`}>
                                         <div>
                                             <h5 style={{color: '#fff'}}>{res.name}</h5>
-                                            <img src={res.imageUrl} alt="Recipe thumbnail" height="130px" width="130px"/><br/>
+                                            <img src={res.imageUrl} alt="Recipe thumbnail" height="130px" width="200px"/><br/>
                                             <span>Rate: {res.meta && res.meta.rating}/5</span><br/>
                                             <span>Votes: {res.meta && res.meta.votes} </span>
                                         </div>

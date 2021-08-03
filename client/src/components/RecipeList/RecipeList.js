@@ -18,6 +18,8 @@ class RecipeList extends Component {
         };
         this.toggleSaved = this.toggleSaved.bind(this);
         this.toggle_new = this.toggle_new.bind(this);
+        this.sortByRate = this.sortByRate.bind(this);
+        this.sortByPrepTime = this.sortByPrepTime.bind(this);
     }
 
     toggleSaved() {
@@ -61,6 +63,20 @@ class RecipeList extends Component {
             console.log('err',err);
         }
     };
+
+    sortByRate(){
+        const sortRate = [].concat(this.state.saved)
+            .sort((a,b) => b.meta.rating - a.meta.rating);
+        this.setState( {saved: sortRate} );
+        console.log('sort by rate', sortRate);
+    }
+
+    sortByPrepTime(){
+        const sortPrep = [].concat(this.state.saved)
+            .sort((a,b) => b.time.prepHour*60+b.time.prepMin - a.time.prepHour*60+a.time.prepMin);
+        this.setState( {saved: sortPrep} );
+        console.log('sort by prep time', sortPrep);
+    }
 
     render() {
         return (
@@ -106,10 +122,8 @@ class RecipeList extends Component {
                             Sort by
                         </DropdownToggle>
                         <DropdownMenu>
-                            <DropdownItem>Rate</DropdownItem>
-                            <DropdownItem>Prep Time</DropdownItem>
-                            <DropdownItem>Total Time</DropdownItem>
-                            <DropdownItem>Serving Size</DropdownItem>
+                            <DropdownItem onClick={this.sortByRate}>Rate</DropdownItem>
+                            <DropdownItem onClick={this.sortByPrepTime}>Prep Time</DropdownItem>
                         </DropdownMenu>
                     </ButtonDropdown>
                 </div>

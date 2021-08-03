@@ -21,9 +21,9 @@ module.exports = (app) => {
   // fetch Recipe names from db to Home page.
   app.get('/home', async (req, res) => {
     const query = await RecipeModel.find({ hidden: false }).select({
-      name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1,
+      name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1, time: 1
     });
-    console.log('query:', query);
+    //console.log('query:', query);
     res.json(query);
   });
 

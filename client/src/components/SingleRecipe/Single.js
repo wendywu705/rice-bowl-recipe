@@ -6,6 +6,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Ratings from 'react-ratings-declarative';
 import './Single.css';
 import Timer from '../Timer/Timer';
+import GetTimes from '../Timer/GetTimes';
 
 import { Divider, InputNumber, Button, Modal } from 'antd';
 
@@ -135,6 +136,10 @@ const SingleRecipe = () => {
 
   if (!newFoodData) {
     return null;
+  }
+  const getTimeArr = () => {
+    let numArr = GetTimes(newFoodData.directions);
+    return numArr;
   }
 
   return (
@@ -307,7 +312,6 @@ const SingleRecipe = () => {
                 )}
               </div>
             </div>
-            <Timer time={10}/>
             <Button
               size="large"
               onClick={showModal}
@@ -333,7 +337,7 @@ const SingleRecipe = () => {
               In-App Timer
             </Button>
             <Modal
-              title="Timers (WIP)"
+              title="Timers"
               onCancel={handleClose}
               visible={isVisible}
               footer={[
@@ -342,15 +346,15 @@ const SingleRecipe = () => {
                 </Button>,
               ]}
             >
-              Timer would go here
-              <Button
-                style={{
-                  position: 'absolute',
-                  right: 30,
-                }}
-              >
-                Start
-              </Button>
+              {getTimeArr().map(data =>{
+                return (
+                  <div style={{display:'flex', alignItems:'center'}}>
+                    <div style={{marginRight:10, fontSize:15}}>{'STEP ' +(data[1]+1)+ ": "}</div> 
+                    <Timer time={data[0]}/> 
+                  </div>
+                );
+              })}
+              {/* {getTimeArr() || 'No Timers Found'} */}
             </Modal>
           </div>
           <h3 className="subHeader">Directions</h3>

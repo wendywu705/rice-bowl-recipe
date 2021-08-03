@@ -1,89 +1,65 @@
 import { React, useState } from 'react';
 import Countdown from 'react-countdown';
-import { Divider, InputNumber, Button, Modal } from 'antd';
+import { Button } from 'antd';
+import './Timer.css'
 
 const CompleteTimer = () => {
-  // alert('Time is up')
+  setTimeout(function(){
+    alert('Time is up')
+  }, 100)
 }
 
-
-
-
-// {
-//   total: 0,
-//   days: 0,
-//   hours: 0,
-//   minutes: 0,
-//   seconds: 0,
-//   milliseconds: 0,
-//   completed: true,
-//   api: { ... },
-//   props: { ... },
-//   formatted: { ... }
-// }
+const prepend = (num) => {
+  if (num < 10 && num >= 0) {
+    return "0"+num;
+  }
+  else return num;
+}
 
 const Timer = (prop) => {
   const [pause, setPause] = useState(true);
 
   const renderer = ({hours, minutes, seconds, api, completed}) => {
-    // console.log('in renderer',value)
-    console.log('api', api);
-    if (completed) {
+    if (api.isCompleted() && !pause) {
       CompleteTimer()
+      setPause(true)
       return <span>00:00:00</span>;
     } 
-    if (api.pause && pause) {
-      // return api.start();
-      setPause(false)
-      api.start()
+    if (!pause) { // pressed play (pause = false)
+      if (api.isPaused() || api.isStopped()) { // timer is stopped
+        api.start();  // start timer
+      }
     }
-    if (!api.isPaused && !pause) {
-      setPause(true)
-      api.pause()
+    else if (pause) { // pressed stop
+      if (!api.isPaused() === true) {  // timer is going
+        api.stop();  // stop timer
+      }
     }
-    return <span>{hours}:{minutes}:{seconds}</span>;
+    return <span className="timer">{prepend(hours)}:{prepend(minutes)}:{prepend(seconds)}</span>;
   }
-  let x;
-  console.log('paused', pause)
-  // window.onload = function() {
-  //   x = document.getElementById('timerBtn');
-  //   console.log('THE X',x)
-  // }
-  // // window.addEventListener('load', function() {
-  //   // let x = document.getElementsByClassName('timerBtn')[0];
-  //   // console.log('THE X',x)
-  // // })
 
-  // if (x) {
-  //   x.addEventListener('click', function(){
-  //     // console.log('clicked')
-  //     setPause((pause)=>!pause)
-  //     console.log('paused', pause)
-  //   })
-
-  // }
 
   return (
-    <div>
+    <div className="TimerContainer">
       <Countdown 
         date={Date.now() + prop.time*1000}
         controlled={false}
         renderer={renderer}
-        // renderer = {api => <div>{console.log(api())}</div>}
         autoStart={false}
-      >
-        {/* seconds * 1000 = seconds */}
-        {/* {CompleteTimer(prop.time)} */}
-   
+        className="timer"
+      > 
       </Countdown>
       <Button
         className= "timerBtn"
         onClick={()=>setPause(!pause)}
+        style={{
+          marginLeft:20,
+          width: 100,
+          marginRight:10
+        }}
       >
-        Click Button
+        {pause ? 'START' : 'STOP'}
       </Button>   
-
-
     </div>
 
   );

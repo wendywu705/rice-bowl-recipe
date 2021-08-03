@@ -1,33 +1,30 @@
-import './RecipeList.css';
+import './Browse.css';
 import {Col, Row} from 'antd';
 import {Button, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {AiOutlinePushpin, AiOutlineSave} from 'react-icons/ai';
 import axios from "axios";
 
-class RecipeList extends Component {
+class Browse extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            pinned: [],
-            saved: [],
-            dropdownOpenSaved: false,
+            public: [],
+            dropdownOpenPublic: false,
         };
-        this.toggleSaved = this.toggleSaved.bind(this);
+        this.togglePublic = this.togglePublic.bind(this);
     }
 
-    toggleSaved() {
-        this.setState({ dropdownOpenSaved: !this.state.dropdownOpenSaved });
+    togglePublic() {
+        this.setState({ dropdownOpenPublic: !this.state.dropdownOpenPublic });
     }
 
     async componentDidMount() {
         try {
             const res = await this.callApi();
-            if (Object.keys(res).length>1){
-                this.setState({ saved: res.savedRes });
-                this.setState({ pinned: res.pinnedRes });
+            if (Object.keys(res).length===1){
+                this.setState({ public: res.publicRes });
             }
         } catch(e){
             console.log('err',e);
@@ -35,21 +32,16 @@ class RecipeList extends Component {
     }
 
     callApi = async () => {
+        let publicResponse=[];
         try{
-            const pinnedResponse = await axios({
+            publicResponse = await axios({
                 method: 'get',
                 timeout: 1000,
-                url: `/pinned`,
+                url: `/home`,
             });
-
-            const savedResponse = await axios({
-                method: 'get',
-                timeout: 1000,
-                url: `/saved`,
-            });
-            if ( [200, 304].includes(savedResponse.status) && [200, 304].includes(pinnedResponse.status)){
+            if ( [200, 304].includes(publicResponse.status)){
                 console.log('approved');
-                return {savedRes: savedResponse.data, pinnedRes: pinnedResponse.data};
+                return {publicRes: publicResponse.data};
             }
         } catch (err){
             console.log('err',err);
@@ -80,40 +72,11 @@ class RecipeList extends Component {
                         <Button id='btn1' color="primary">+ New Recipe</Button>
                     </Link>
                 </div>
+                {/*{//////////////////////}*/}
                 <br />
                 <div className="flex">
-                    <h2>Pinned Recipes</h2>
-                    <div className="icons">
-                        <AiOutlinePushpin size={28} />
-                    </div>
-                </div>
-                <hr></hr>
-                <div className="recipe-card">
-                    <Row gutter={[10, 25]}>
-                        {this.state.pinned.map((res) => (
-                            <Col className="recipe-row" span={6}>
-                                <div style={style}>
-                                    <Link to= {`recipe/${res.recipeId}`}>
-                                        <div>
-                                            <h5 style={{color: '#fff'}}>{res.name}</h5>
-                                            <img src={res.imageUrl} alt="Recipe thumbnail" height="130px" width="130px"/><br/>
-                                            <span>Rate: {res.meta && res.meta.rating}/5</span><br/>
-                                            <span>Votes: {res.meta && res.meta.votes} </span>
-                                        </div>
-                                    </Link>
-                                </div>
-                            </Col>
-                        ))}
-                    </Row>
-                </div>
-                <br />
-                <br />
-                <div className="flex">
-                    <h2>Saved Recipes</h2>
-                    <div className="icons">
-                        <AiOutlineSave size={28} />
-                    </div>
-                    <ButtonDropdown isOpen={this.state.dropdownOpenSaved} toggle={this.toggleSaved}>
+                    <h2>Public Recipes</h2>
+                    <ButtonDropdown isOpen={this.state.dropdownOpenPublic} toggle={this.togglePublic}>
                         <DropdownToggle caret outline color="primary">
                             Sort by
                         </DropdownToggle>
@@ -128,7 +91,7 @@ class RecipeList extends Component {
                 <hr></hr>
                 <div className="recipe-card">
                     <Row gutter={[10, 25]}>
-                        {this.state.saved.map((res) => (
+                        {this.state.public.map((res) => (
                             <Col className="recipe-row" span={6}>
                                 <div style={style}>
                                     <Link to= {`recipe/${res.recipeId}`}>
@@ -149,4 +112,4 @@ class RecipeList extends Component {
     }
 }
 
-export default RecipeList;
+export default Browse;

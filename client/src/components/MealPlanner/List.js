@@ -3,25 +3,28 @@ import { Paper, Typography, CssBaseline } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Title from './Title';
 import Meal from './Meal';
+import Add from './Add';
 
 const useStyle = makeStyles((theme) => ({
   root: {
-    width: '300px',
+    width: '250px',
     backgroundColor: '#EBECF0',
     marginLeft: theme.spacing(1),
+    marginTop: theme.spacing(1),
   },
 }));
 
-const List = () => {
+const List = (props) => {
   const classes = useStyle();
   return (
     <div>
       <Paper className={classes.root}>
         <CssBaseline />
-        <Title />
+        <Title title={props.title} />
         <Meal />
         <Meal />
         <Meal />
+        <Add />
       </Paper>
     </div>
   );

@@ -23,7 +23,7 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-const Title = () => {
+const Title = (props) => {
   const classes = useStyle();
   const [open, setOpen] = useState(false);
   return (
@@ -45,7 +45,7 @@ const Title = () => {
             onClick={() => setOpen(!open)}
             className={classes.editableTitle}
           >
-            Lunch
+            {props.title}
           </Typography>
           <MoreHorizIcon />
         </div>

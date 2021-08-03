@@ -1,12 +1,13 @@
 import React from 'react';
 import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import MPlanner from './MPlanner';
 import './MPlanner.css';
 import List from './List';
 
 const useStyle = makeStyles((theme) => ({
   root: {
-    width: '270px',
+    width: '320px',
     backgroundColor: '#fafafa',
     marginLeft: theme.spacing(1),
     marginTop: theme.spacing(1),
@@ -20,19 +21,23 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-const MPlanner = (props) => {
+const MealWeek = () => {
   const classes = useStyle();
 
   return (
-    <div className={classes.divvy}>
-      <h2 className={classes.center}>{props.day}</h2>
-      <Paper className={classes.root}>
-        <List title="Breakfast" />
-        <List title="Lunch" />
-        <List title="Dinner" />
-      </Paper>
+    <div className="boxes">
+      <h1>Meal Planner</h1>
+      <div style={{ display: 'flex' }}>
+        <MPlanner day="Sunday" />
+        <MPlanner day="Monday" />
+        <MPlanner day="Tuesday" />
+        <MPlanner day="Wednesday" />
+        <MPlanner day="Thursday" />
+        <MPlanner day="Friday" />
+        <MPlanner day="Saturday" />
+      </div>
     </div>
   );
 };
 
-export default MPlanner;
+export default MealWeek;

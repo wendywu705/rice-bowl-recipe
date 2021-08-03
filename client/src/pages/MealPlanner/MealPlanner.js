@@ -1,12 +1,12 @@
 import PageLayout from '../../components/Layout/Layout';
 import React from 'react';
-import MPlanner from '../../components/MealPlanner/MPlanner';
+import MealWeek from '../../components/MealPlanner/MealWeek';
 
 const MealPlanner = () => {
   return (
     <div>
       <PageLayout />
-      <MPlanner />
+      <MealWeek />
     </div>
   );
 };

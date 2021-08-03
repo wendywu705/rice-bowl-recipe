@@ -1,10 +1,11 @@
 import './Browse.css';
-import {Col, Row} from 'antd';
 import {ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
-import {Link} from 'react-router-dom';
-import React, {Component} from 'react';
+import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
+import RecipeTiles from '../Layout/RecipeTiles';
+
 
 class Browse extends Component {
     constructor(props) {
@@ -55,14 +56,6 @@ class Browse extends Component {
     };
 
     render() {
-        const style = {
-            background: '#6495ED',
-            padding: '25px 0 15px 10px',
-            opacity: 0.8,
-            height: '250px',
-            width: '300px'
-        };
-
         return (
             <div className="all-recipe">
                 <h1><b>YOUR RECIPES</b></h1><br/>
@@ -85,7 +78,6 @@ class Browse extends Component {
                     </ButtonDropdown>
                 </div>
                 <br />
-
                 <div className="flex">
                     <h2>Public Recipes</h2>
                     <ButtonDropdown isOpen={this.state.dropdownOpenSaved} toggle={this.toggleSaved}>
@@ -103,22 +95,7 @@ class Browse extends Component {
                 <hr></hr>
 
                 <div className="recipe-card">
-                    <Row gutter={[10, 25]}>
-                        {this.state.public.map((res) => (
-                            <Col className="recipe-row" span={6}>
-                                <div style={style}>
-                                    <Link to= {`recipe/${res.recipeId}`}>
-                                        <div>
-                                            <h5 style={{color: '#fff'}}>{res.name}</h5>
-                                            <img src={res.imageUrl} alt="Recipe thumbnail" height="130px" width="200px"/><br/>
-                                            <span>Rate: {res.meta && res.meta.rating}/5</span><br/>
-                                            <span>Votes: {res.meta && res.meta.votes} </span>
-                                        </div>
-                                    </Link>
-                                </div>
-                            </Col>
-                        ))}
-                    </Row>
+                  <RecipeTiles data={this.state.public} />
                 </div>
             </div>
         );

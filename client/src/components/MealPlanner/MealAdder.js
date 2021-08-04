@@ -1,5 +1,6 @@
 import React from 'react';
 import { Input, Space } from 'antd';
+import MealSnippet from './MealSnippet';
 
 const { Search } = Input;
 
@@ -9,13 +10,17 @@ const onSearch = (value) => {
 
 const MealAdder = () => {
   return (
-    <div>
+    <div style={{ width: '500px', maxHeight: '700px' }}>
       <h1>Add a Meal</h1>
       <Search placeholder="input search text" onSearch={onSearch} enterButton />
-      <h2>Content Title</h2>
-      <p>Content Lorem ipsum dolor sit amet, consectetur adipiscing</p>
-      <p>Content Lorem ipsum dolor sit amet, consectetur adipiscing</p>
-      <p>Content Lorem ipsum dolor sit amet, consectetur adipiscing</p>
+      <h2>Recently Viewed</h2>
+      <MealSnippet />
+      <MealSnippet />
+      <MealSnippet />
+      <MealSnippet />
+      <MealSnippet />
+      <MealSnippet />
+      <MealSnippet />
     </div>
   );
 };

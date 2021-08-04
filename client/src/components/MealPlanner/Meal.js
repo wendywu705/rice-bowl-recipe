@@ -3,6 +3,9 @@ import { Paper, Typography } from '@material-ui/core';
 import { Tag, Divider } from 'antd';
 import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
+import { Button } from 'antd';
+
+import { CloseSquareTwoTone } from '@ant-design/icons';
 
 const useStyle = makeStyles((theme) => ({
   meal: {
@@ -25,7 +28,7 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-const Meal = () => {
+const Meal = (props) => {
   const classes = useStyle();
   return (
     <div>
@@ -36,15 +39,38 @@ const Meal = () => {
             src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?webp=true&quality=90&resize=620%2C563"
             alt="food"
           />
-          <Typography className={classes.food}>
-            Butternut Squash Soup
-          </Typography>
-        </div>
-        <Tag className={classes.prep} color="lime">
-          Lightdish
-        </Tag>
+          <div className={classes.food}>
+            <Typography>{props.meal.name}</Typography>
+            <Tag color="lime">{props.meal.category[0]}</Tag>
 
-        <Typography className={classes.prep}>Prep: 25 min</Typography>
+            <Typography>Prep: 25 min</Typography>
+            <Typography>Cook: 25 min</Typography>
+          </div>
+
+          <CloseSquareTwoTone
+            style={{
+              marginLeft: 'auto',
+              marginRight: 0,
+              fontSize: '20px',
+            }}
+            onClick={() => {
+              console.log('hello');
+            }}
+            twoToneColor="#eb2f96"
+          />
+          {/* <Button
+            style={{
+              height: '30px',
+              width: '40px',
+              marginLeft: 'auto',
+              marginRight: 0,
+            }}
+            type="primary"
+            danger
+          >
+            X
+          </Button> */}
+        </div>
       </Paper>
     </div>
   );

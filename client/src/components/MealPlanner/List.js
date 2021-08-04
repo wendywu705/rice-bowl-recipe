@@ -21,9 +21,12 @@ const List = (props) => {
       <Paper className={classes.root}>
         <CssBaseline />
         <Title title={props.title} />
+        {props.meals.map((meal) => {
+          return <Meal meal={meal} />;
+        })}
+        {/* <Meal />
         <Meal />
-        <Meal />
-        <Meal />
+        <Meal /> */}
         <Add />
       </Paper>
     </div>

@@ -5,6 +5,7 @@ import MPlanner from './MPlanner';
 import './MPlanner.css';
 import List from './List';
 import store from '../MealPlanner/data';
+import ContextApi from './ContextApi';
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -25,25 +26,23 @@ const useStyle = makeStyles((theme) => ({
 const MealWeek = () => {
   const [data, setData] = useState(store);
   const classes = useStyle();
-  console.log(data);
+
+  const addMeal = (title) => {
+    console.log('Meal:', title);
+  };
 
   return (
-    <div className="boxes">
-      <h1>Meal Planner</h1>
-      <div style={{ display: 'flex' }}>
-        {data.listsIdx.map((listIdx) => {
-          const list = data.lists[listIdx];
-          return <MPlanner day={list.title} list={list} key={listIdx} />;
-        })}
-        {/* <MPlanner day="Sunday" />
-        <MPlanner day="Monday" />
-        <MPlanner day="Tuesday" />
-        <MPlanner day="Wednesday" />
-        <MPlanner day="Thursday" />
-        <MPlanner day="Friday" />
-        <MPlanner day="Saturday" /> */}
+    <ContextApi.Provider value={{ addMeal }}>
+      <div className="boxes">
+        <h1>Meal Planner</h1>
+        <div style={{ display: 'flex' }}>
+          {data.listsIdx.map((listIdx) => {
+            const list = data.lists[listIdx];
+            return <MPlanner day={list.title} list={list} key={listIdx} />;
+          })}
+        </div>
       </div>
-    </div>
+    </ContextApi.Provider>
   );
 };
 

@@ -23,17 +23,12 @@
     width: 45%;
     box-sizing: border-box;
     padding: 12px 20px 12px 45px;
-    margin-right: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-image: url('../RecipeList/searchicon.png');
     background-repeat: no-repeat;
     background-size: 36px;
     background-position: left 5px bottom 5px;
-}
-
-#btn1{
-    width: 100%;
 }
 
 .flex{

@@ -81,7 +81,7 @@ class Browse extends Component {
                     <input
                         type="text"
                         id="header-search"
-                        placeholder="Quick Find Recipe"
+                        placeholder="  Quick Find Recipe"
                         name="quick-find"
                     />
                 </div>

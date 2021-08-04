@@ -86,7 +86,7 @@ module.exports = (app) => {
     const recipeIds = user.recipesStarred;
 
     const query = await RecipeModel.find({ recipeId: { $in: recipeIds } }).select({
-      name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1,
+      name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1, time: 1
     });
     // console.log('saved:', query);
     res.json(query);

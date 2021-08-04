@@ -22,7 +22,6 @@ import {
 } from '@ant-design/icons';
 
 window.onload = function() {
-  console.log('location',window.location);
   if(!window.location.hash && window.location.pathname.includes('/recipe/')) {
     window.location = window.location + '#loaded';
     window.location.reload();
@@ -388,6 +387,7 @@ const SingleRecipe = () => {
                   onChange={(value) => {
                     updateRatio(value);
                   }}
+                  disabled={newFoodData && newFoodData.servingSize ? false : true}
                   style={{
                     marginLeft: 10,
                     width: 70,

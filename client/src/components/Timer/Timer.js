@@ -18,22 +18,21 @@ const prepend = (num) => {
 
 const Timer = (prop) => {
   const [pause, setPause] = useState(true);
+  const [action, setAction] = useState(false)
 
   const renderer = ({hours, minutes, seconds, api, completed}) => {
-    if (api.isCompleted() && !pause) {
+    if (completed && !pause) {
       CompleteTimer()
       setPause(true)
       return <span>00:00:00</span>;
     } 
-    if (!pause) { // pressed play (pause = false)
-      if (api.isPaused() || api.isStopped()) { // timer is stopped
-        api.start();  // start timer
-      }
+    if (!pause && action) { // pressed play (pause = false)
+      setAction(false);
+      api.start();  // start timer
     }
-    else if (pause) { // pressed stop
-      if (!api.isPaused() === true) {  // timer is going
-        api.stop();  // stop timer
-      }
+    else if (pause && action) { // pressed stop
+      setAction(false);
+      api.stop();  // stop timer
     }
     return (
       <span className="timer">
@@ -53,7 +52,14 @@ const Timer = (prop) => {
       </Countdown>
       <Button
         className= "timerBtn"
-        onClick={()=>setPause(!pause)}
+        onClick={()=>{
+          return(
+            <div>
+              {setPause(!pause)}
+              {setAction(true)}
+            </div>
+          );
+        }}
         style={{
           marginLeft:20,
           width: 100,

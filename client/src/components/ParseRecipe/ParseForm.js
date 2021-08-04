@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Form, Input } from 'reactstrap';
 import axios from 'axios';
-import './RecipeList.css';
+import '../RecipeList/RecipeList.css';
 import '../Layout/Footer.css';
 
 class ParseForm extends Component{

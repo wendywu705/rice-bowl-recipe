@@ -11,6 +11,8 @@ import App from '../PDF/genPDF';
 import axios from 'axios';
 import './Single.css';
 import '../Layout/Footer.css'
+import { Link } from 'react-router-dom';
+
 
 import { Divider, InputNumber, Button } from 'antd';
 
@@ -351,16 +353,18 @@ const SingleRecipe = () => {
               {"@"+printUrl(newFoodData)}
             </Button>
             <div className="editContainer">
-              <Button
-                type="link"
-                icon={<EditOutlined />}
-                style={{
-                  fontSize: '17px',
-                  lineHeight: '17px',
-                }}
-              >
-                Edit
-              </Button>
+              <Link to= {`edit/${newFoodData.recipeId}`}>
+                <Button
+                  type="link"
+                  icon={<EditOutlined />}
+                  style={{
+                    fontSize: '17px',
+                    lineHeight: '17px',
+                  }}
+                >
+                  Edit
+                </Button>
+              </Link>
             </div>
           </div>
           <Carousel className="imageGallery" style={{ marginTop: 100 }}>
@@ -383,6 +387,7 @@ const SingleRecipe = () => {
                 <InputNumber
                   min={1}
                   max={10000}
+                  disabled={newFoodData && !newFoodData.servingSize}
                   defaultValue={(newFoodData && newFoodData.servingSize)}
                   onChange={(value) => {
                     updateRatio(value);

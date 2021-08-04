@@ -88,7 +88,7 @@ class RecipeList extends Component {
                     <input
                         type="text"
                         id="header-search"
-                        placeholder="Quick Find Recipe"
+                        placeholder="  Quick Find Recipe"
                         name="quick-find"
                     />
                     <ButtonDropdown isOpen={this.state.dropdownOpen_new} toggle={this.toggle_new}>

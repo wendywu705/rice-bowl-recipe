@@ -1,9 +1,12 @@
 import { React, useState } from 'react';
 import { Button, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import GetTimes from './GetTimes';
+import Timer from './Timer';
 
-function InAppTimer(){
+const InappTimer = (props) => {
   const [isVisible, setVisible] = useState(false);
+
 
   const handleClose = () => {
     setVisible(false);
@@ -11,8 +14,15 @@ function InAppTimer(){
   const showModal = () => {
     setVisible(true);
   };
+  const getTimeArr = () => {
+    if (!props.directions) {
+      return null;
+    }
+    let numArr = GetTimes(props.directions);
+    return numArr;
+  }
   return (
-    <div className="Timer">
+    <div>
       <Button
         size="large"
         onClick={showModal}
@@ -38,7 +48,7 @@ function InAppTimer(){
         In-App Timer
       </Button>
       <Modal
-        title="Timers (WIP)"
+        title="Timers"
         onCancel={handleClose}
         visible={isVisible}
         footer={[
@@ -47,18 +57,23 @@ function InAppTimer(){
           </Button>,
         ]}
       >
-        Timer would go here
-        <Button
-          style={{
-            position: 'absolute',
-            right: 30,
-          }}
-        >
-          Start
-        </Button>
+        {console.log(getTimeArr().length===0)}
+        {getTimeArr().length!==0 ? 
+          getTimeArr().map(data => {
+            return (
+              <div style={{display:'flex', alignItems:'center'}}>
+                <div style={{marginRight:10, fontSize:15}}>{'STEP '+(data[1]+1)+": "}</div> 
+                <Timer time={data[0]}/> 
+              </div>
+            );
+          }):
+        <div style={{color:'#A6A6A6', fontSize:17, textAlign:'center'}}>
+          NO TIMERS AVAILABLE
+        </div>
+        }
       </Modal>
     </div>
   );
 };
 
-export default InAppTimer;
+export default InappTimer;

@@ -33,6 +33,7 @@
 		"parse-ingredient": "^0.3.0",
 		"passport": "^0.4.1",
 		"passport-google-oauth20": "^2.0.0",
+		"react-countdown": "^2.3.2",
 		"react-icons": "^4.2.0",
 		"react-ratings-declarative": "^3.4.1",
 		"react-router-dom": "^5.2.0",

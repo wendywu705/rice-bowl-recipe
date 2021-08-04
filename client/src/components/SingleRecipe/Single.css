@@ -66,8 +66,9 @@ h1 {
 }
 
 .leftContainer {
-  max-width: 500px;
+  max-width: 350px;
   padding-left: 30px;
+  margin-right: 10px;
   /* background-color: blue; */
 }
 

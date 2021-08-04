@@ -1,10 +1,16 @@
-import './Browse.css';
-import {Col, Row} from 'antd';
-import {ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
-import {Link} from 'react-router-dom';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
+import RecipeTiles from '../Layout/RecipeTiles';
+import './Browse.css';
+import '../Layout/Footer.css'
+import {
+  ButtonDropdown, 
+  DropdownItem, 
+  DropdownMenu, 
+  DropdownToggle
+} from 'reactstrap';
+
 
 class Browse extends Component {
     constructor(props) {
@@ -12,18 +18,14 @@ class Browse extends Component {
         this.state = {
             public: [],
             dropdownOpenPublic: false,
-            dropdownOpen_new: false,
         };
         this.togglePublic = this.togglePublic.bind(this);
-        this.toggle_new = this.toggle_new.bind(this);
+        this.sortByRate = this.sortByRate.bind(this);
+        this.sortByPrepTime = this.sortByPrepTime.bind(this);
     }
 
     togglePublic() {
         this.setState({ dropdownOpenPublic: !this.state.dropdownOpenPublic });
-    }
-
-    toggle_new() {
-        this.setState({ dropdownOpen_new: !this.state.dropdownOpen_new });
     }
 
     async componentDidMount() {
@@ -54,71 +56,50 @@ class Browse extends Component {
         }
     };
 
-    render() {
-        const style = {
-            background: '#6495ED',
-            padding: '25px 0 15px 10px',
-            opacity: 0.8,
-            height: '250px',
-            width: '300px'
-        };
+    sortByRate(){
+        const sortRate = [].concat(this.state.public)
+            .sort((a,b) => b.meta.rating - a.meta.rating);
+        this.setState( {public: sortRate} );
+        console.log('sort by rating', sortRate);
+    }
 
+    sortByPrepTime(){
+        const sortPrep = [].concat(this.state.public)
+            .sort((a,b) => b.time.prepHour*60+b.time.prepMin - a.time.prepHour*60+a.time.prepMin);
+        this.setState( {public: sortPrep} );
+        console.log('sort by prep time',sortPrep);
+    }
+
+    render() {
         return (
-            <div className="all-recipe">
-                <h1><b>YOUR RECIPES</b></h1><br/>
+            <div className="all-recipe" id="pageContainer">
+                <h1><b>BROWSE RECIPES</b></h1><br/>
                 <div className="search-bar">
                     {/* TODO: search function to be design */}
                     <input
                         type="text"
                         id="header-search"
-                        placeholder="Quick Find Recipe"
+                        placeholder="  Quick Find Recipe"
                         name="quick-find"
                     />
-                    <ButtonDropdown isOpen={this.state.dropdownOpen_new} toggle={this.toggle_new}>
-                        <DropdownToggle caret color="primary">
-                            + New Recipe
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            <Link to="/new_recipe"><DropdownItem>From Template</DropdownItem></Link>
-                            <Link to="/parse"><DropdownItem>From URL</DropdownItem></Link>
-                        </DropdownMenu>
-                    </ButtonDropdown>
                 </div>
                 <br />
-
                 <div className="flex">
                     <h2>Public Recipes</h2>
-                    <ButtonDropdown isOpen={this.state.dropdownOpenSaved} toggle={this.toggleSaved}>
+                    <ButtonDropdown isOpen={this.state.dropdownOpenPublic} toggle={this.togglePublic}>
                         <DropdownToggle caret outline color="primary">
                             Sort by
                         </DropdownToggle>
                         <DropdownMenu>
-                            <DropdownItem>Rate</DropdownItem>
-                            <DropdownItem>Prep Time</DropdownItem>
-                            <DropdownItem>Total Time</DropdownItem>
-                            <DropdownItem>Serving Size</DropdownItem>
+                            <DropdownItem onClick={this.sortByRate}>Rate</DropdownItem>
+                            <DropdownItem onClick={this.sortByPrepTime}>Prep Time</DropdownItem>
                         </DropdownMenu>
                     </ButtonDropdown>
                 </div>
                 <hr></hr>
 
                 <div className="recipe-card">
-                    <Row gutter={[10, 25]}>
-                        {this.state.public.map((res) => (
-                            <Col className="recipe-row" span={6}>
-                                <div style={style}>
-                                    <Link to= {`recipe/${res.recipeId}`}>
-                                        <div>
-                                            <h5 style={{color: '#fff'}}>{res.name}</h5>
-                                            <img src={res.imageUrl} alt="Recipe thumbnail" height="130px" width="200px"/><br/>
-                                            <span>Rate: {res.meta && res.meta.rating}/5</span><br/>
-                                            <span>Votes: {res.meta && res.meta.votes} </span>
-                                        </div>
-                                    </Link>
-                                </div>
-                            </Col>
-                        ))}
-                    </Row>
+                  <RecipeTiles data={this.state.public} />
                 </div>
             </div>
         );

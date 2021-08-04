@@ -1,12 +1,14 @@
-import PageLayout from "../components/Layout/Layout";
 import React from "react";
+import SideBar from "../components/Layout/Sider";
 import ParseForm from '../components/RecipeList/ParseForm';
+import WebsiteFooter from "../components/Layout/Footer";
 
 function ParseRecipe() {
     return (
         <div>
-            <PageLayout />
+            <SideBar />
             <ParseForm/>
+            <WebsiteFooter />
         </div>
     );
 }

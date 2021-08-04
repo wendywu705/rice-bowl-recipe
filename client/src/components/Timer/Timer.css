@@ -1,0 +1,13 @@
+.TimerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+}
+.timer {
+  font-size:x-large !important;
+}
+.timerBtn {
+  font-size: large;
+  line-height: normal;
+}

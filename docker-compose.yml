@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: 'mongodb'
+    volumes:
+      - mongodb:/data/db
+    ports:
+      - "27017:27017"
+    command: "mongod"
+  backend:
+    container_name: 'backend'
+    env_file: "./server/.env"
+    depends_on:
+     - mongodb
+    build: #
+      context: ./server
+      dockerfile: ./dockerfile
+    image: ricebowl-backend:latest #
+    ports:
+      - "9000:9000"
+    restart: unless-stopped
+  client:
+    container_name: 'client'
+    volumes:
+      - ./certs:/etc/nginx/certs
+    build: #
+      context: ./client
+      dockerfile: ./dockerfile
+    depends_on:
+      - mongodb
+      - backend
+    image: "ricebowl-client:latest" #
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+volumes:
+  mongodb:

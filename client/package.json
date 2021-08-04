@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://localhost:3000/",
   "proxy": "https://localhost:9000/",
   "dependencies": {
     "@react-pdf/renderer": "^2.0.17",

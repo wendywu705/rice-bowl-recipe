@@ -45,7 +45,7 @@ class Browse extends Component {
             publicResponse = await axios({
                 method: 'get',
                 timeout: 1000,
-                url: `/home`,
+                url: `/api/home`,
             });
             if ( [200, 304].includes(publicResponse.status)){
                 console.log('approved');

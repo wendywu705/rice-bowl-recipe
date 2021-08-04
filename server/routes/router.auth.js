@@ -51,7 +51,7 @@ module.exports = (app) => {
     res.send('Failed to log in');
   });
 
-  app.get('/api/current_user', checkAuth, (req, res) => {
+  app.get('/current_user_obj', checkAuth, (req, res) => {
     res.send(req.user);
   });
 };

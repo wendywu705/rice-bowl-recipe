@@ -42,7 +42,7 @@ const SingleRecipe = () => {
         const savedResponse = await axios({
           method: 'get',
           timeout: 1000,
-          url: `/saved/${id}`,
+          url: `/api/saved/${id}`,
         });
         if ( [200, 304].includes(savedResponse.status) ){
           if (savedResponse.data === id){
@@ -60,7 +60,7 @@ const SingleRecipe = () => {
         const savedResponse = await axios({
           method: 'get',
           timeout: 1000,
-          url: `/pinned/${id}`,
+          url: `/api/pinned/${id}`,
         });
         if ( [200, 304].includes(savedResponse.status) ){
           if (savedResponse.data === id){
@@ -79,7 +79,7 @@ const SingleRecipe = () => {
         const recipeRes = await axios({
           method: 'get',
           timeout: 1000,
-          url: `/recipes/${id}`,
+          url: `/api/recipes/${id}`,
         });
         const body = recipeRes.data;
         let tempinit = {
@@ -106,7 +106,7 @@ const SingleRecipe = () => {
       response = await axios({
         method: 'post',
         timeout: 1000,
-        url: `https://localhost:9000/remove/${id}`,
+        url: `/api/remove/${id}`,
       });
       if (response.status === 200) {
         console.log(response.data);
@@ -135,7 +135,7 @@ const SingleRecipe = () => {
         const response = await axios({
           method: 'post',
           timeout: 1000,
-          url: `https://localhost:9000/star/remove/${id}`,
+          url: `/api/star/remove/${id}`,
         });
         if (response.status === 200) {
           console.log('ok starred!');
@@ -149,7 +149,7 @@ const SingleRecipe = () => {
         const response = await axios({
           method: 'post',
           timeout: 1000,
-          url: `https://localhost:9000/star/add/${id}`,
+          url: `/api/star/add/${id}`,
         });
         if (response.status === 200) {
           console.log('ok un-starred!');
@@ -175,7 +175,7 @@ const SingleRecipe = () => {
         const response = await axios({
           method: 'post',
           timeout: 1000,
-          url: `https://localhost:9000/pin/remove/${id}`,
+          url: `/api/pin/remove/${id}`,
         });
         if (response.status === 200) {
           console.log('ok un-pinned!');
@@ -189,7 +189,7 @@ const SingleRecipe = () => {
         const response = await axios({
           method: 'post',
           timeout: 1000,
-          url: `https://localhost:9000/pin/add/${id}`,
+          url: `/api/pin/add/${id}`,
         });
         if (response.status === 200) {
           console.log('ok pinned!');

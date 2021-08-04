@@ -25,7 +25,7 @@ const UploadTest = () => {
   const uploadRequest = async () => {
     const uploadRes = await axios({
       method: 'post',
-      url: `https://localhost:9000/api/imageupload`,
+      url: `api/imageupload`,
       data: formData,
     });
   };

@@ -26,7 +26,7 @@ function Form() {
   let [selectedFile, setSelectedFile] = useState(null);
 
   const test = async () => {
-    const res = await axios.get('https://localhost:9000/home/');
+    const res = await axios.get('/api/home/');
     console.log('heyo', res);
   };
   useEffect(() => {
@@ -44,7 +44,7 @@ function Form() {
       const response = await axios({
         method: 'post',
         timeout: 1000,
-        url: `https://localhost:9000/api/imageupload`,
+        url: `/api/imageupload`,
         data: formData,
       });
       if (response.status === 200){
@@ -64,7 +64,7 @@ function Form() {
       const response = await axios({
         method: 'post',
         timeout: 2000,
-        url: `https://localhost:9000/recipes/new`,
+        url: `/api/recipes/new`,
         data: recipeData,
       });
       if (response.status === 200){

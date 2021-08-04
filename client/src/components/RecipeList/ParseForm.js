@@ -27,7 +27,7 @@ class ParseForm extends Component{
     const parseInfo = { url };
 
     if(url){
-      axios.post('https://localhost:9000/parse', parseInfo)
+      axios.post('api/parse', parseInfo)
         .then(response => {
           console.log('res',response);
           if(response.status === 200){

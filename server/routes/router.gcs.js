@@ -21,7 +21,7 @@ const multer = Multer({
 const bucket = storage.bucket(process.env.GCS_BUCKET);
 
 module.exports = (app) => {
-  app.post('/api/imageupload', multer.single('file'), (req, res) => {
+  app.post('/imageupload', multer.single('file'), (req, res) => {
     const imageDetail = JSON.parse(req.body.data);
     const newFileName = imageDetail.imageName;
 

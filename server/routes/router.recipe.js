@@ -21,7 +21,12 @@ module.exports = (app) => {
   // fetch Recipe names from db to Home page.
   app.get('/home', async (req, res) => {
     const query = await RecipeModel.find({ hidden: false }).select({
-      name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1, time: 1
+      name: 1,
+      _id: 0,
+      imageUrl: 1,
+      meta: 1,
+      recipeId: 1,
+      time: 1,
     });
     //console.log('query:', query);
     res.json(query);
@@ -69,8 +74,14 @@ module.exports = (app) => {
     }
     const recipeIds = user.recipesPinned;
 
-    const query = await RecipeModel.find({ recipeId: { $in: recipeIds } }).select({
-      name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1,
+    const query = await RecipeModel.find({
+      recipeId: { $in: recipeIds },
+    }).select({
+      name: 1,
+      _id: 0,
+      imageUrl: 1,
+      meta: 1,
+      recipeId: 1,
     });
     // console.log('pinned:', query);
     res.json(query);
@@ -103,8 +114,16 @@ module.exports = (app) => {
     }
     const recipeIds = user.recipesStarred;
 
-    const query = await RecipeModel.find({ recipeId: { $in: recipeIds } }).select({
-      name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1, time: 1
+    const query = await RecipeModel.find({
+      recipeId: { $in: recipeIds },
+    }).select({
+      name: 1,
+      _id: 0,
+      imageUrl: 1,
+      meta: 1,
+      recipeId: 1,
+      time: 1,
+      category: 1,
     });
     // console.log('saved:', query);
     res.json(query);
@@ -119,7 +138,10 @@ module.exports = (app) => {
       if (user) {
         const updateDoc = { $addToSet: { recipesStarred: recipeId } };
         try {
-          const response = await UserModel.updateOne({ _id: userId }, updateDoc);
+          const response = await UserModel.updateOne(
+            { _id: userId },
+            updateDoc
+          );
           if (response) {
             console.log('starred successfully');
             res.json(recipeId);
@@ -144,7 +166,10 @@ module.exports = (app) => {
       if (user) {
         const updateDoc = { $pull: { recipesStarred: recipeId } };
         try {
-          const response = await UserModel.updateOne({ _id: userId }, updateDoc);
+          const response = await UserModel.updateOne(
+            { _id: userId },
+            updateDoc
+          );
           if (response) {
             console.log('unstarred successfully');
             res.json(recipeId);
@@ -169,7 +194,10 @@ module.exports = (app) => {
       if (user) {
         const updateDoc = { $addToSet: { recipesPinned: recipeId } };
         try {
-          const response = await UserModel.updateOne({ _id: userId }, updateDoc);
+          const response = await UserModel.updateOne(
+            { _id: userId },
+            updateDoc
+          );
           if (response) {
             console.log('starred successfully');
             res.json(recipeId);
@@ -194,7 +222,10 @@ module.exports = (app) => {
       if (user) {
         const updateDoc = { $pull: { recipesPinned: recipeId } };
         try {
-          const response = await UserModel.updateOne({ _id: userId }, updateDoc);
+          const response = await UserModel.updateOne(
+            { _id: userId },
+            updateDoc
+          );
           if (response) {
             console.log('unstarred successfully');
             res.json(recipeId);
@@ -218,7 +249,8 @@ module.exports = (app) => {
       const maxIdRecipe = await RecipeModel.find()
         .sort({ recipeId: -1 })
         .limit(1); // returns array
-      if (maxIdRecipe.length > 0) { // if db has at least 1 recipe, else sets newId to 1
+      if (maxIdRecipe.length > 0) {
+        // if db has at least 1 recipe, else sets newId to 1
         newId = +maxIdRecipe[0].recipeId + 1;
       }
       const query = JSON.parse(req.body.data);
@@ -262,13 +294,20 @@ module.exports = (app) => {
 
       if (recipe && userId) {
         try {
-          const userRes = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
+          const userRes = await UserModel.find({ _id: ObjectId(userId) }).limit(
+            1
+          );
           const user = userRes[0];
           console.log('userRes:', userRes);
           if (user) {
-            const updateDoc = { $addToSet: { recipesOwned: newId, recipesStarred: newId } };
+            const updateDoc = {
+              $addToSet: { recipesOwned: newId, recipesStarred: newId },
+            };
             try {
-              const response = await UserModel.updateOne({ _id: ObjectId(userId) }, updateDoc);
+              const response = await UserModel.updateOne(
+                { _id: ObjectId(userId) },
+                updateDoc
+              );
               if (response) {
                 addedToUser = true;
                 console.log('added recipe to recipesOwned successfully');
@@ -346,7 +385,8 @@ module.exports = (app) => {
       const maxIdRecipe = await RecipeModel.find()
         .sort({ recipeId: -1 })
         .limit(1); // returns array
-      if (maxIdRecipe.length > 0) { // if db has at least 1 recipe, else sets newId to 1
+      if (maxIdRecipe.length > 0) {
+        // if db has at least 1 recipe, else sets newId to 1
         newId = +maxIdRecipe[0].recipeId + 1;
       }
     } catch (e) {
@@ -406,7 +446,9 @@ module.exports = (app) => {
           console.log('Fail to parse new recipe');
         }
       } catch (err) {
-        alert('Error: Failed to parse domain, please entry a correct domain URL');
+        alert(
+          'Error: Failed to parse domain, please entry a correct domain URL'
+        );
         throw err;
       }
     });

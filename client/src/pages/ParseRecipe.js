@@ -1,6 +1,6 @@
 import React from "react";
 import SideBar from "../components/Layout/Sider";
-import ParseForm from '../components/RecipeList/ParseForm';
+import ParseForm from '../components/ParseRecipe/ParseForm';
 import WebsiteFooter from "../components/Layout/Footer";
 
 function ParseRecipe() {

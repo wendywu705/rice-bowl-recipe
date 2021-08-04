@@ -58,10 +58,18 @@ const InappTimer = (props) => {
         ]}
       >
         {getTimeArr().length!==0 ? 
-          getTimeArr().map(data => {
+          getTimeArr().map((data, index, arr) => {
             return (
               <div style={{display:'flex', alignItems:'center'}}>
-                <div style={{marginRight:10, fontSize:15, minWidth:60}}>{'STEP '+(data[1]+1)+": "}</div> 
+                <div style={{
+                  marginRight:10, 
+                  fontSize:15, 
+                  minWidth:60
+                }}>
+                  {(index>0 && arr[index][1]===arr[index-1][1]) ? // check to see if its the same step 
+                  null:
+                  ('STEP '+(data[1]+1)+": ")}
+                </div> 
                 <Timer time={data[0]}/> 
               </div>
             );

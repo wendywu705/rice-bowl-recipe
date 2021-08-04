@@ -23,12 +23,12 @@ const PORT = process.env.PORT || 9000;
 const app = express();
 
 console.log('started app.js');
-//cloud mongoDB
+// cloud mongoDB
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.hoifr.mongodb.net/recipes?retryWrites=true&w=majority`;
 
-//local mongoDB on server
-//const uri = 'mongodb://127.0.0.1:27017/recipes';
-
+// local mongoDB on server
+// const uri = 'mongodb://127.0.0.1:27017/recipes';
+//
 const temp = mongoose.connect(uri, {
   useNewUrlParser: true,
   connectTimeoutMS: 10000,
@@ -74,6 +74,7 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.json());
 
 // Authentication routes
 require('./routes/router.auth')(app);

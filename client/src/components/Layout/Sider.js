@@ -24,10 +24,30 @@ const recipes = [
 ];
 
 const SideBar = () => {
-  const [reg, setReg] = useState(false);
-  const [name, setName] = useState('');
+  const [ reg, setReg ] = useState(false);
+  const [ name, setName ] = useState('');
+  const [ key, setKey] = useState(null);
   useEffect(() => {
     fetchUser();
+    let pos = window.location.pathname;
+    let currkey;
+    switch(pos) {
+      case "/home":
+        currkey = "1"
+        break;
+      case "/browse":
+        currkey = "2"
+        break;
+      case "/planner":
+        currkey = "3"
+        break;
+      case "/cart":
+        currkey = "4"
+        break;
+      default:
+        currkey = "1"
+    }
+    setKey(currkey);
   }, []);
 
   const fetchUser = async () => {
@@ -95,34 +115,48 @@ const SideBar = () => {
             options={recipes}
           />
         </div>
-        <Menu mode="inline" defaultSelectedKeys={['1']}>
-          <Menu.Item
-            className="itemClass"
-            key="1"
-            icon={<HomeOutlined className="itemIcon" />}
-          >
-            <Link to="/home">Home</Link>
+        <Menu  
+          mode="inline"
+          selectedKeys={key}
+        >
+          <Menu.Item 
+            className='itemClass'
+            key="1" 
+            onClick={() => setKey('1')}
+            icon={<HomeOutlined className='itemIcon'/>}
+          ><Link to="/home">
+            Home
+            </Link>
           </Menu.Item>
-          <Menu.Item
-            className="itemClass"
-            key="2"
-            icon={<GlobalOutlined className="itemIcon" />}
+          <Menu.Item 
+            className='itemClass' 
+            key="2" 
+            onClick={() => setKey('2')}
+            icon={<GlobalOutlined className='itemIcon' />}
           >
-            Browse
+            <Link to="/browse">
+              Browse
+            </Link>
           </Menu.Item>
-          <Menu.Item
-            className="itemClass"
-            key="3"
-            icon={<CalendarOutlined className="itemIcon" />}
+          <Menu.Item 
+            className='itemClass' 
+            key="3" 
+            onClick={() => setKey('3')}
+            icon={<CalendarOutlined className='itemIcon' />}
           >
-            <Link to="/mealplanner">Meal Planner</Link>
+            <Link to= "#">
+              Meal Planner
+            </Link>
           </Menu.Item>
-          <Menu.Item
-            className="itemClass"
-            key="4"
-            icon={<ShoppingCartOutlined className="itemIcon" />}
+          <Menu.Item 
+            className='itemClass' 
+            key="4" 
+            onClick={() => setKey('4')}
+            icon={<ShoppingCartOutlined className='itemIcon' />}
           >
-            Cart
+            <Link to="#">
+              Cart
+            </Link>
           </Menu.Item>
         </Menu>
         <div

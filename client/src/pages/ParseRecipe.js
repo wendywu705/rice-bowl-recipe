@@ -1,16 +1,16 @@
 import React from "react";
 import SideBar from "../components/Layout/Sider";
-import SingleRecipe from '../components/SingleRecipe/Single'
+import ParseForm from '../components/RecipeList/ParseForm';
 import WebsiteFooter from "../components/Layout/Footer";
 
-function SingleRecipePage() {
+function ParseRecipe() {
     return (
         <div>
             <SideBar />
-            <SingleRecipe/>
+            <ParseForm/>
             <WebsiteFooter />
         </div>
     );
 }
 
-export default SingleRecipePage;
+export default ParseRecipe;

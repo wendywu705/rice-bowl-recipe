@@ -1,13 +1,14 @@
-import RecipeList from '../../components/RecipeList/RecipeList'
-import './Home.css'
-import PageLayout from "../../components/Layout/Layout";
 import React from "react";
+import RecipeList from '../../components/RecipeList/RecipeList'
+import SideBar from "../../components/Layout/Sider";
+import WebsiteFooter from '../../components/Layout/Footer';
 
 function Home() {
     return (
         <div>
-            <PageLayout />
-            <RecipeList/>
+            <SideBar />
+            <RecipeList />
+            <WebsiteFooter />
         </div>
     );
 }

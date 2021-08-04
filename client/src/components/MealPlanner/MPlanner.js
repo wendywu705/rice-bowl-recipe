@@ -33,6 +33,7 @@ const MPlanner = (props) => {
               title={key}
               meals={props.list.meals[key]}
               listId={props.list.id}
+              recipes={props.recipes}
             />
           );
         })}

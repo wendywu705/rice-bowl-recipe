@@ -1,16 +1,16 @@
 import React from "react";
-import Form from '../components/NewRecipe/Form'
+import Browse from '../components/Browse/Browse';
 import SideBar from "../components/Layout/Sider";
 import WebsiteFooter from '../components/Layout/Footer';
 
-function NewRecipe() {
+function Home() {
     return (
         <div>
             <SideBar />
-            <Form/>
+            <Browse/>
             <WebsiteFooter />
         </div>
     );
 }
 
-export default NewRecipe;
+export default Home;

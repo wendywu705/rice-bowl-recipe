@@ -24,7 +24,11 @@ const List = (props) => {
         {props.meals.map((meal) => {
           return <Meal meal={meal} listId={props.listId} title={props.title} />;
         })}
-        <Add listId={props.listId} title={props.title} />
+        <Add
+          listId={props.listId}
+          title={props.title}
+          recipes={props.recipes}
+        />
       </Paper>
     </div>
   );

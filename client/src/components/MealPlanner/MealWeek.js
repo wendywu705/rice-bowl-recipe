@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { v4 as uuid } from 'uuid';
 import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -26,7 +27,28 @@ const useStyle = makeStyles((theme) => ({
 
 const MealWeek = () => {
   const [data, setData] = useState(store);
+  const [savedRecipes, setSavedRecipes] = useState([]);
+  const [mealData, setMealData] = useState(null);
   const classes = useStyle();
+
+  const dataFetch = async () => {
+    try {
+      const resp = await axios({
+        method: 'get',
+        timeout: 1000,
+        url: `/saved/`,
+      });
+      console.log('first data', resp.data);
+      setSavedRecipes(resp.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    console.log('in Use Effect');
+    dataFetch();
+  }, []);
 
   const addMeal = (meal, listId, title) => {
     const newMealId = uuid();
@@ -89,7 +111,14 @@ const MealWeek = () => {
         <div style={{ display: 'flex' }}>
           {data.listsIdx.map((listIdx) => {
             const list = data.lists[listIdx];
-            return <MPlanner day={list.title} list={list} key={listIdx} />;
+            return (
+              <MPlanner
+                day={list.title}
+                list={list}
+                key={listIdx}
+                recipes={savedRecipes}
+              />
+            );
           })}
         </div>
       </div>

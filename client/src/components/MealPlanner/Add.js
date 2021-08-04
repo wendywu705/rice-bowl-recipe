@@ -30,6 +30,7 @@ const Add = (props) => {
             setOpenPopup={setOpenPopup}
             listId={props.listId}
             title={props.title}
+            recipes={props.recipes}
           />
         </Popup>
         <Button

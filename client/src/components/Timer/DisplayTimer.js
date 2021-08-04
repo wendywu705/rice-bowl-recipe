@@ -57,12 +57,11 @@ const InappTimer = (props) => {
           </Button>,
         ]}
       >
-        {console.log(getTimeArr().length===0)}
         {getTimeArr().length!==0 ? 
           getTimeArr().map(data => {
             return (
               <div style={{display:'flex', alignItems:'center'}}>
-                <div style={{marginRight:10, fontSize:15}}>{'STEP '+(data[1]+1)+": "}</div> 
+                <div style={{marginRight:10, fontSize:15, minWidth:60}}>{'STEP '+(data[1]+1)+": "}</div> 
                 <Timer time={data[0]}/> 
               </div>
             );

@@ -3,6 +3,9 @@ const matchUnit = (unit, strArr, round) => {
   if (match) {
     let arr = strArr.substring(0, match.index-1).split(/[\s,]+/)
     let num = arr[arr.length-1]
+    if (num.includes('-')) {
+      num = num.substring(num.indexOf('-')+1, num.length)
+    }
     if (unit === 'minute' || unit === 'minutes') {
       num *= 60
     }
@@ -13,14 +16,21 @@ const matchUnit = (unit, strArr, round) => {
   }
 }
 
+const possibleUnits = [
+  'minute',
+  'hour',
+  'min',
+  'hr'
+];
+
 const GetTimes = (dir) => {
   var numArr = []
   for (let i=0; i<dir.length; i++) {
-    if (matchUnit('minute', dir[i], i)) {
-      numArr.push(matchUnit('minute', dir[i], i))
-    }
-    if (matchUnit('hour', dir[i], i)) {
-      numArr.push(matchUnit('hour', dir[i], i))
+    for (let j=0; j<possibleUnits.length; j++) {
+      let possibleMatch = matchUnit(possibleUnits[j], dir[i], i)
+      if (possibleMatch) {
+        numArr.push(possibleMatch)
+      }
     }
   }
   return numArr;

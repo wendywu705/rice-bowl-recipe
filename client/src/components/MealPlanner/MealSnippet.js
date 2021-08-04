@@ -29,13 +29,6 @@ const MealSnippet = ({ setOpenPopup, listId, title, recipe }) => {
   const classes = useStyle();
   const { addMeal } = useContext(ContextApi);
   const handleOnClick = () => {
-    const snippy = {
-      name: 'Delicious Food',
-      rating: 4,
-      category: ['Delicious'],
-      prepHour: 0.5,
-      cookingHour: 1,
-    };
     addMeal(recipe, listId, title);
     setOpenPopup(false);
   };

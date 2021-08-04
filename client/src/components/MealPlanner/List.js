@@ -12,7 +12,17 @@ const useStyle = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     marginTop: theme.spacing(1),
   },
+  title: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
 }));
+
+const titleColor = {
+  breakfast: '#85ad07',
+  lunch: '#ba2065',
+  dinner: '#260880',
+};
 
 const List = (props) => {
   const classes = useStyle();
@@ -20,7 +30,11 @@ const List = (props) => {
     <div>
       <Paper className={classes.root}>
         <CssBaseline />
-        <Title title={props.title} />
+        <Title
+          className={classes.title}
+          title={props.title}
+          color={titleColor[props.title]}
+        />
         {props.meals.map((meal) => {
           return <Meal meal={meal} listId={props.listId} title={props.title} />;
         })}

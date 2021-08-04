@@ -40,19 +40,22 @@ const Meal = (props) => {
   };
   return (
     <div>
+      {console.log('in Meal:', props.meal)}
       <Paper className={classes.meal}>
         <div className={classes.flexy}>
-          <img
-            className={classes.image}
-            src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?webp=true&quality=90&resize=620%2C563"
-            alt="food"
-          />
+          <img className={classes.image} src={props.meal.imageUrl} alt="food" />
           <div className={classes.food}>
-            <Typography>{props.meal.name}</Typography>
-            <Tag color="lime">{props.meal.category[0]}</Tag>
+            <Typography style={{ fontWeight: 'bold' }}>
+              {props.meal.name}
+            </Typography>
+            <div style={{ display: 'flex' }}>
+              {props.meal.category.map((cat) => {
+                return <Tag color="blue">{cat}</Tag>;
+              })}
+            </div>
 
-            <Typography>Prep: {props.meal.prepHour} hours</Typography>
-            <Typography>Cook: {props.meal.cookingHour} hours</Typography>
+            <Typography>Prep: {props.meal.time.prepHour} hours</Typography>
+            <Typography>Cook: {props.meal.time.cookHour} hours</Typography>
           </div>
 
           <CloseSquareTwoTone

@@ -32,7 +32,7 @@ const Title = (props) => {
   };
   return (
     <div style={{ marginTop: '1em' }}>
-      {open ? (
+      {/* {open ? (
         <div>
           <InputBase
             value="Lunch"
@@ -43,17 +43,17 @@ const Title = (props) => {
             onBlur={() => setOpen(!open)}
           />
         </div>
-      ) : (
-        <div className={classes.editableTitleContainer}>
-          <Typography
-            onClick={() => setOpen(!open)}
-            className={classes.editableTitle}
-          >
-            {titleCase(props.title)}
-          </Typography>
-          <MoreHorizIcon />
-        </div>
-      )}
+      ) : ( */}
+      <div className={classes.editableTitleContainer}>
+        <Typography
+          style={{ color: props.color }}
+          // onClick={() => setOpen(!open)}
+          className={classes.editableTitle}
+        >
+          {titleCase(props.title)}
+        </Typography>
+        <MoreHorizIcon />
+      </div>
     </div>
   );
 };

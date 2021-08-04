@@ -36,7 +36,7 @@ const MealSnippet = ({ setOpenPopup, listId, title, recipe }) => {
       prepHour: 0.5,
       cookingHour: 1,
     };
-    addMeal(snippy, listId, title);
+    addMeal(recipe, listId, title);
     setOpenPopup(false);
   };
 
@@ -49,7 +49,12 @@ const MealSnippet = ({ setOpenPopup, listId, title, recipe }) => {
             <img className={classes.image} src={recipe.imageUrl} alt="food" />
             <div className={classes.prep}>
               <Typography className={classes.food}>{recipe.name}</Typography>
-              <Tag color="lime">Homemade</Tag>
+              <div style={{ display: 'flex' }}>
+                {recipe.category.map((cate) => {
+                  return <Tag color="blue">{cate}</Tag>;
+                })}
+                <Tag color="lime">Homemade</Tag>
+              </div>
 
               <Typography>Prep: {recipe.time.prepHour} hours</Typography>
               <Typography>Cook: {recipe.time.cookHour} hours</Typography>

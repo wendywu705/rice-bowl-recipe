@@ -8,7 +8,9 @@ import Add from './Add';
 const useStyle = makeStyles((theme) => ({
   root: {
     width: '270px',
-    backgroundColor: '#EBECF0',
+    // backgroundColor: '#EBECF0',
+    backgroundColor: '#fafcff',
+
     marginLeft: theme.spacing(1),
     marginTop: theme.spacing(1),
   },

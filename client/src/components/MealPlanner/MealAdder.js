@@ -1,24 +1,25 @@
-import React from 'react';
-import { Input, Space } from 'antd';
+import React, { useState, useEffect } from 'react';
 import MealSnippet from './MealSnippet';
-
-const { Search } = Input;
-
-const onSearch = (value) => {
-  console.log(value);
-};
+import Searcher from './Searcher';
 
 const MealAdder = (props) => {
+  const [filteredList, setFilteredList] = useState([]);
+  const [value, setValue] = useState('');
+  useEffect(() => {
+    console.log('Hello');
+  }, []);
+
   return (
-    <div style={{ width: '500px', maxHeight: '700px' }}>
+    <div style={{ height: '700px', width: '500px', maxHeight: '700px' }}>
       <h1>Add a Meal</h1>
-      <Search
-        style={{ marginBottom: '1.5em' }}
-        placeholder="input search text"
-        onSearch={onSearch}
-        enterButton
+      <Searcher
+        value={value}
+        setValue={setValue}
+        filteredList={filteredList}
+        setFilteredList={setFilteredList}
+        reList={props.recipes}
       />
-      {props.recipes.map((recipe) => {
+      {filteredList.map((recipe) => {
         return (
           <MealSnippet
             setOpenPopup={props.setOpenPopup}
@@ -29,11 +30,6 @@ const MealAdder = (props) => {
         );
       })}
       <h2>Recently Viewed</h2>
-      {/* <MealSnippet
-        setOpenPopup={props.setOpenPopup}
-        listId={props.listId}
-        title={props.title}
-      /> */}
     </div>
   );
 };

@@ -7,9 +7,6 @@ const Popup = (props) => {
 
   return (
     <Dialog open={openPopup}>
-      {/* <DialogTitle>
-        <div>Title yay</div>
-      </DialogTitle> */}
       <DialogContent>{children}</DialogContent>
       <Button
         onClick={() => {

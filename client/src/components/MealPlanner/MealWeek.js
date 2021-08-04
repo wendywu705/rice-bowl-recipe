@@ -8,6 +8,7 @@ import './MPlanner.css';
 import List from './List';
 import store from '../MealPlanner/data';
 import ContextApi from './ContextApi';
+import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -103,11 +104,37 @@ const MealWeek = () => {
     console.log('newDataList', newdataList);
   };
 
+  const handleOnClickRight = () => {
+    console.log('Clicked Right');
+  };
+
+  const handleOnClickLeft = () => {
+    console.log('Clicked Left');
+  };
+
   return (
     <ContextApi.Provider value={{ addMeal, removeMeal }}>
       <div className="boxes">
         <h1>Meal Planner</h1>
-        <h2 style={{ textAlign: 'center' }}>Aug 1, 2021 - Aug 7, 2021</h2>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <LeftOutlined
+            style={{
+              marginTop: '0.2em',
+              marginRight: '0.5em',
+              fontSize: '2em',
+            }}
+            onClick={handleOnClickLeft}
+          />
+          <h2 style={{ textAlign: 'center' }}>Aug 1, 2021 - Aug 7, 2021</h2>
+          <RightOutlined
+            style={{
+              marginTop: '0.2em',
+              marginLeft: '0.5em',
+              fontSize: '2em',
+            }}
+            onClick={handleOnClickRight}
+          />
+        </div>
         <div style={{ display: 'flex' }}>
           {data.listsIdx.map((listIdx) => {
             const list = data.lists[listIdx];

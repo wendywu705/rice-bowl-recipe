@@ -28,12 +28,14 @@ const MPlanner = (props) => {
       <h2 className={classes.center}>{props.day}</h2>
       <Paper className={classes.root}>
         {Object.keys(props.list.meals).map(function (key, index) {
-          return <List title={key} meals={props.list.meals[key]} />;
+          return (
+            <List
+              title={key}
+              meals={props.list.meals[key]}
+              listId={props.list.id}
+            />
+          );
         })}
-
-        {/* <List title="Breakfast" />
-        <List title="Lunch" />
-        <List title="Dinner" /> */}
       </Paper>
     </div>
   );

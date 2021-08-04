@@ -26,11 +26,19 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-const MealSnippet = () => {
+const MealSnippet = ({ setOpenPopup, listId, title }) => {
   const classes = useStyle();
   const { addMeal } = useContext(ContextApi);
   const handleOnClick = () => {
-    addMeal('Delicious Food');
+    const snippy = {
+      name: 'Delicious Food',
+      rating: 4,
+      category: ['Delicious'],
+      prepHour: 0.5,
+      cookingHour: 1,
+    };
+    addMeal(snippy, listId, title);
+    setOpenPopup(false);
   };
 
   return (

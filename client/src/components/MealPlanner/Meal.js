@@ -58,18 +58,6 @@ const Meal = (props) => {
             }}
             twoToneColor="#eb2f96"
           />
-          {/* <Button
-            style={{
-              height: '30px',
-              width: '40px',
-              marginLeft: 'auto',
-              marginRight: 0,
-            }}
-            type="primary"
-            danger
-          >
-            X
-          </Button> */}
         </div>
       </Paper>
     </div>

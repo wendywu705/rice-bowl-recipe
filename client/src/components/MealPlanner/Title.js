@@ -26,8 +26,12 @@ const useStyle = makeStyles((theme) => ({
 const Title = (props) => {
   const classes = useStyle();
   const [open, setOpen] = useState(false);
+
+  const titleCase = (str) => {
+    return str[0].toUpperCase() + str.slice(1).toLowerCase();
+  };
   return (
-    <div>
+    <div style={{ marginTop: '1em' }}>
       {open ? (
         <div>
           <InputBase
@@ -45,7 +49,7 @@ const Title = (props) => {
             onClick={() => setOpen(!open)}
             className={classes.editableTitle}
           >
-            {props.title}
+            {titleCase(props.title)}
           </Typography>
           <MoreHorizIcon />
         </div>

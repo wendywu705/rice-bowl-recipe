@@ -19,14 +19,18 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
-const Add = () => {
+const Add = (props) => {
   const [openPopup, setOpenPopup] = useState(false);
   const classes = useStyle();
   return (
     <div>
       <Paper className={classes.addMeal} elevation={0}>
         <Popup openPopup={openPopup} setOpenPopup={setOpenPopup}>
-          <MealAdder />
+          <MealAdder
+            setOpenPopup={setOpenPopup}
+            listId={props.listId}
+            title={props.title}
+          />
         </Popup>
         <Button
           onClick={() => {

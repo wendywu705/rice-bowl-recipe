@@ -24,10 +24,7 @@ const List = (props) => {
         {props.meals.map((meal) => {
           return <Meal meal={meal} />;
         })}
-        {/* <Meal />
-        <Meal />
-        <Meal /> */}
-        <Add />
+        <Add listId={props.listId} title={props.title} />
       </Paper>
     </div>
   );

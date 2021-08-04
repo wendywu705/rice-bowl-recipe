@@ -4,12 +4,7 @@ import './Sider.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-import { 
-  Layout, 
-  Menu, 
-  AutoComplete, 
-  Button
-} from 'antd';
+import { Layout, Menu, AutoComplete, Button } from 'antd';
 
 import {
   HomeOutlined,
@@ -17,7 +12,7 @@ import {
   CalendarOutlined,
   ShoppingCartOutlined,
   LogoutOutlined,
-  LoginOutlined
+  LoginOutlined,
 } from '@ant-design/icons';
 
 const { Sider } = Layout;
@@ -28,14 +23,13 @@ const recipes = [
   { value: 'Recipe 3' },
 ];
 
-
 const SideBar = () => {
-  const [ reg, setReg ] = useState(false);
-  const [ name, setName ] = useState('');
+  const [reg, setReg] = useState(false);
+  const [name, setName] = useState('');
   useEffect(() => {
     fetchUser();
   }, []);
-  
+
   const fetchUser = async () => {
     try {
       const userRes = await axios({
@@ -45,9 +39,9 @@ const SideBar = () => {
       });
       const data = userRes.data;
       setName(data.displayName.split(' ')[0]);
-      setReg(true)
+      setReg(true);
     } catch (err) {
-      setReg(false)
+      setReg(false);
       console.log(err);
     }
   };
@@ -68,7 +62,7 @@ const SideBar = () => {
   return (
     <Layout>
       <Sider
-        width = '280'
+        width="280"
         style={{
           overflow: 'auto',
           height: '100vh',
@@ -77,101 +71,85 @@ const SideBar = () => {
           left: 0,
         }}
       >
-          <a href={'/home'}>
-        <div className="logo">
-          <img 
-            className='riceimage' 
-            src={process.env.PUBLIC_URL + '/logo-blue.png'} 
-            alt="rice logo" 
-          />
-          <div className="title">
-            Rice Bowl
+        <a href={'/home'}>
+          <div className="logo">
+            <img
+              className="riceimage"
+              src={process.env.PUBLIC_URL + '/logo-blue.png'}
+              alt="rice logo"
+            />
+            <div className="title">Rice Bowl</div>
           </div>
-        </div>
-          </a>
-        <div 
+        </a>
+        <div
           style={{
-            display:'flex',
-            justifyContent:'center', 
-            paddingBottom:15, 
-            paddingTop: 10
-          }}>
+            display: 'flex',
+            justifyContent: 'center',
+            paddingBottom: 15,
+            paddingTop: 10,
+          }}
+        >
           <AutoComplete
             style={{ width: 230 }}
             placeholder="Search Recipes"
             options={recipes}
           />
         </div>
-        <Menu  
-          mode="inline"
-          defaultSelectedKeys={[ '1' ]}
-        >
-          <Menu.Item 
-            className='itemClass'
-            key="1" 
-            icon={<HomeOutlined className='itemIcon'/>}
-          ><Link to="/home">
-            Home
-            </Link>
+        <Menu mode="inline" defaultSelectedKeys={['1']}>
+          <Menu.Item
+            className="itemClass"
+            key="1"
+            icon={<HomeOutlined className="itemIcon" />}
+          >
+            <Link to="/home">Home</Link>
           </Menu.Item>
-          <Menu.Item 
-            className='itemClass' 
-            key="2" 
-            icon={<GlobalOutlined className='itemIcon' />}
+          <Menu.Item
+            className="itemClass"
+            key="2"
+            icon={<GlobalOutlined className="itemIcon" />}
           >
             Browse
           </Menu.Item>
-          <Menu.Item 
-            className='itemClass' 
-            key="3" 
-            icon={<CalendarOutlined className='itemIcon' />}
+          <Menu.Item
+            className="itemClass"
+            key="3"
+            icon={<CalendarOutlined className="itemIcon" />}
           >
-            Meal Planner
+            <Link to="/mealplanner">Meal Planner</Link>
           </Menu.Item>
-          <Menu.Item 
-            className='itemClass' 
-            key="4" 
-            icon={<ShoppingCartOutlined className='itemIcon' />}
+          <Menu.Item
+            className="itemClass"
+            key="4"
+            icon={<ShoppingCartOutlined className="itemIcon" />}
           >
             Cart
           </Menu.Item>
         </Menu>
-        <div 
+        <div
           style={{
-            position:'absolute', 
-            bottom:0
+            position: 'absolute',
+            bottom: 0,
           }}
         >
           <Link to="/">
-          {reg ?
-          <Button
-          className='signButton'
-          onClick={signOut}
-          icon={<LogoutOutlined  
-            className='BtnIcon'
-          />}
-        >
-          Sign Out
-        </Button>
-          :
-          <Button
-            className='signButton'
-            icon={<LoginOutlined 
-              className='BtnIcon'
-            />}
-          >
-            Sign In
-          </Button>
-          }
+            {reg ? (
+              <Button
+                className="signButton"
+                onClick={signOut}
+                icon={<LogoutOutlined className="BtnIcon" />}
+              >
+                Sign Out
+              </Button>
+            ) : (
+              <Button
+                className="signButton"
+                icon={<LoginOutlined className="BtnIcon" />}
+              >
+                Sign In
+              </Button>
+            )}
           </Link>
-          {reg ?
-            <Button
-              className='userButton'
-            >
-              Hi, {name}
-            </Button>
-            : null
-          }
+          {reg ? <Button className="userButton">Hi, {name}</Button> : null}
         </div>
       </Sider>
     </Layout>

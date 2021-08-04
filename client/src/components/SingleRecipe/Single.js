@@ -384,6 +384,7 @@ const SingleRecipe = () => {
                 <InputNumber
                   min={1}
                   max={10000}
+                  disabled={newFoodData && !newFoodData.servingSize}
                   defaultValue={(newFoodData && newFoodData.servingSize)}
                   onChange={(value) => {
                     updateRatio(value);

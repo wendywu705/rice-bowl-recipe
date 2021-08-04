@@ -8,7 +8,8 @@ import './MPlanner.css';
 import List from './List';
 import store from '../MealPlanner/data';
 import ContextApi from './ContextApi';
-import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
+import { LeftOutlined, RightOutlined, SaveFilled } from '@ant-design/icons';
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -31,6 +32,20 @@ const MealWeek = () => {
   const [savedRecipes, setSavedRecipes] = useState([]);
   const [mealData, setMealData] = useState(null);
   const classes = useStyle();
+  const [plan, setPlan] = useState([]);
+
+  const handleSave = async () => {
+    console.log('Saving Meal Planner');
+    try {
+      const resp = await axios({
+        method: 'post',
+        timeout: 1000,
+        url: `/api/mealplanner/`,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const dataFetch = async () => {
     try {
@@ -46,9 +61,23 @@ const MealWeek = () => {
     }
   };
 
+  const planFetch = async () => {
+    try {
+      const resp = await axios({
+        method: 'get',
+        timeout: 1000,
+        url: `/api/mealplanner/`,
+      });
+      console.log('meal plan data', resp.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     console.log('in Use Effect');
     dataFetch();
+    planFetch();
   }, []);
 
   const addMeal = (meal, listId, title) => {
@@ -134,6 +163,18 @@ const MealWeek = () => {
             }}
             onClick={handleOnClickRight}
           />
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: '2em',
+          }}
+        >
+          <Button onClick={handleSave} type="primary">
+            <SaveFilled />
+            Save Plan
+          </Button>
         </div>
         <div style={{ display: 'flex' }}>
           {data.listsIdx.map((listIdx) => {

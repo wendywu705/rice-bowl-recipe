@@ -22,7 +22,7 @@ const List = (props) => {
         <CssBaseline />
         <Title title={props.title} />
         {props.meals.map((meal) => {
-          return <Meal meal={meal} />;
+          return <Meal meal={meal} listId={props.listId} title={props.title} />;
         })}
         <Add listId={props.listId} title={props.title} />
       </Paper>

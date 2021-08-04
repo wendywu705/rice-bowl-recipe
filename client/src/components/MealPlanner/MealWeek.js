@@ -54,11 +54,35 @@ const MealWeek = () => {
   };
 
   const removeMeal = (listId, title, mealId) => {
-    console.log('remove meal');
+    console.log(listId, title, mealId);
+    const dataList = data.lists;
+    const mealList = dataList[listId].meals[title];
+    const newMealList = mealList.filter((meal) => {
+      return meal.recipeid !== mealId;
+    });
+    const newdataList = {
+      ...dataList,
+      [listId]: {
+        ...dataList[listId],
+        meals: {
+          ...dataList[listId].meals,
+          [title]: newMealList,
+        },
+      },
+    };
+
+    setData({
+      ...data,
+      lists: { ...newdataList },
+    });
+
+    console.log('MealList', mealList);
+    console.log('newMealList', newMealList);
+    console.log('newDataList', newdataList);
   };
 
   return (
-    <ContextApi.Provider value={{ addMeal }}>
+    <ContextApi.Provider value={{ addMeal, removeMeal }}>
       <div className="boxes">
         <h1>Meal Planner</h1>
         <h2 style={{ textAlign: 'center' }}>Aug 1, 2021 - Aug 7, 2021</h2>

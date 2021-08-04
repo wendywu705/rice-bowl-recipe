@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Paper, Typography } from '@material-ui/core';
 import { Tag, Divider } from 'antd';
 import Chip from '@material-ui/core/Chip';
 import { makeStyles } from '@material-ui/core/styles';
 import { Button } from 'antd';
+import ContextApi from './ContextApi';
 
 import { CloseSquareTwoTone } from '@ant-design/icons';
 
@@ -30,6 +31,13 @@ const useStyle = makeStyles((theme) => ({
 
 const Meal = (props) => {
   const classes = useStyle();
+
+  const { removeMeal } = useContext(ContextApi);
+  const handleOnClose = () => {
+    console.log('Click X');
+    console.log(props);
+    removeMeal(props.listId, props.title, props.meal.recipeid);
+  };
   return (
     <div>
       <Paper className={classes.meal}>
@@ -43,8 +51,8 @@ const Meal = (props) => {
             <Typography>{props.meal.name}</Typography>
             <Tag color="lime">{props.meal.category[0]}</Tag>
 
-            <Typography>Prep: 25 min</Typography>
-            <Typography>Cook: 25 min</Typography>
+            <Typography>Prep: {props.meal.prepHour} hours</Typography>
+            <Typography>Cook: {props.meal.cookingHour} hours</Typography>
           </div>
 
           <CloseSquareTwoTone
@@ -53,9 +61,7 @@ const Meal = (props) => {
               marginRight: 0,
               fontSize: '20px',
             }}
-            onClick={() => {
-              console.log('hello');
-            }}
+            onClick={handleOnClose}
             twoToneColor="#eb2f96"
           />
         </div>

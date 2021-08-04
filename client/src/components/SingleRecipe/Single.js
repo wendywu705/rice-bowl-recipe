@@ -428,6 +428,7 @@ const SingleRecipe = () => {
                   onChange={(value) => {
                     updateRatio(value);
                   }}
+                  disabled={newFoodData && newFoodData.servingSize ? false : true}
                   style={{
                     marginLeft: 10,
                     width: 70,

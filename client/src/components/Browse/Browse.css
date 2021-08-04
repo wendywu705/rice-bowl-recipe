@@ -49,3 +49,32 @@
     font-size: medium;
     color: white;
 }
+
+.browseTile {
+  border: 3px solid #0d6efd;
+  border-radius: 30px;
+  min-height: 240px;
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+  height: max-content;
+  
+}
+
+.tileContent {
+  position: absolute;
+  top: 50%;
+  left:auto;
+  transform: translate(0, -50%);
+  width: 100%;
+}
+
+.tileInfo {
+  color: black !important;
+}
+
+.tileImage {
+  max-width: 100%;
+  height: auto;
+  max-height: 100px;
+}

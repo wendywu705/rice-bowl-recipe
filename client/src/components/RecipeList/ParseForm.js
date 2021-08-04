@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Form, Input } from 'reactstrap';
 import axios from 'axios';
 import './RecipeList.css';
+import '../Layout/Footer.css';
 
 class ParseForm extends Component{
   constructor(){
@@ -49,7 +50,7 @@ class ParseForm extends Component{
 
   render() {
     return (
-      <div className="all-recipe">
+      <div className="all-recipe" id="pageContainer">
         <h1>Parse Recipe From URL</h1><br/>
         <Form className="search-bar" method="POST" onSubmit={this.handleSubmit}>
           <span className="span">URL: </span>

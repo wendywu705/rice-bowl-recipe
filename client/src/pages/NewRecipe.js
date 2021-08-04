@@ -1,12 +1,14 @@
-import Form from '../components/NewRecipe/Form'
-import PageLayout from "../components/Layout/Layout";
 import React from "react";
+import Form from '../components/NewRecipe/Form'
+import SideBar from "../components/Layout/Sider";
+import WebsiteFooter from '../components/Layout/Footer';
 
 function NewRecipe() {
     return (
         <div>
-            <PageLayout />
+            <SideBar />
             <Form/>
+            <WebsiteFooter />
         </div>
     );
 }

@@ -1,12 +1,14 @@
-import Browse from '../components/Browse/Browse';
-import PageLayout from "../components/Layout/Layout";
 import React from "react";
+import Browse from '../components/Browse/Browse';
+import SideBar from "../components/Layout/Sider";
+import WebsiteFooter from '../components/Layout/Footer';
 
 function Home() {
     return (
         <div>
-            <PageLayout />
+            <SideBar />
             <Browse/>
+            <WebsiteFooter />
         </div>
     );
 }

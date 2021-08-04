@@ -1,11 +1,12 @@
-import './RecipeList.css';
-import {Col, Row} from 'antd';
-import {ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
-import {Link} from 'react-router-dom';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {AiOutlinePushpin, AiOutlineSave} from 'react-icons/ai';
+import { AiOutlinePushpin, AiOutlineSave } from 'react-icons/ai';
+import RecipeTiles from '../Layout/RecipeTiles';
 import axios from "axios";
+import './RecipeList.css';
+import '../Layout/Footer.css';
 
 class RecipeList extends Component {
     constructor(props) {
@@ -79,16 +80,8 @@ class RecipeList extends Component {
     }
 
     render() {
-        const style = {
-            background: '#6495ED',
-            padding: '25px 0 15px 10px',
-            opacity: 0.8,
-            height: '300px',
-            width: '300px'
-        };
-
         return (
-            <div className="all-recipe">
+            <div className="all-recipe" id="pageContainer">
                 <h1><b>YOUR RECIPES</b></h1><br/>
                 <div className="search-bar">
                     {/* TODO: search function to be design */}
@@ -117,22 +110,7 @@ class RecipeList extends Component {
                 </div>
                 <hr></hr>
                 <div className="recipe-card">
-                    <Row gutter={[10, 25]}>
-                        {this.state.pinned.map((res) => (
-                            <Col className="recipe-row" span={6}>
-                                <div style={style}>
-                                    <Link to= {`recipe/${res.recipeId}`}>
-                                        <div>
-                                            <h5 style={{color: '#fff'}}>{res.name}</h5>
-                                            <img src={res.imageUrl} alt="Recipe thumbnail" height="130px" width="130px"/><br/>
-                                            <span>Rate: {res.meta && res.meta.rating}/5</span><br/>
-                                            <span>Votes: {res.meta && res.meta.votes} </span>
-                                        </div>
-                                    </Link>
-                                </div>
-                            </Col>
-                        ))}
-                    </Row>
+                  <RecipeTiles data={this.state.pinned} />
                 </div>
                 <br />
                 <div className="flex">
@@ -152,22 +130,7 @@ class RecipeList extends Component {
                 </div>
                 <hr></hr>
                 <div className="recipe-card">
-                    <Row gutter={[10, 25]}>
-                        {this.state.saved.map((res) => (
-                            <Col className="recipe-row" span={6} key={res.recipeId}>
-                                <div style={style}>
-                                    <Link to= {`recipe/${res.recipeId}`}>
-                                        <div>
-                                            <h5 style={{color: '#fff'}}>{res.name}</h5>
-                                            <img src={res.imageUrl} alt="Recipe thumbnail" height="130px" width="200px"/><br/>
-                                            <span>Rate: {res.meta && res.meta.rating}/5</span><br/>
-                                            <span>Votes: {res.meta && res.meta.votes} </span>
-                                        </div>
-                                    </Link>
-                                </div>
-                            </Col>
-                        ))}
-                    </Row>
+                  <RecipeTiles data={this.state.saved} />
                 </div>
             </div>
         );

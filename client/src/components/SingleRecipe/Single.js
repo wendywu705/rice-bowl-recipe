@@ -1,15 +1,16 @@
 import { React, useState, useEffect } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Ratings from 'react-ratings-declarative';
-import './Single.css';
+import InappTimer from '../Timer/DisplayTimer';
 import DisplayTimes  from './DisplayTime';
 import ListDirections from './Directions';
 import ListIngredients from './ListIngredients';
-import InAppTimer from './AppTimer';
 import App from '../PDF/genPDF';
+import axios from 'axios';
+import './Single.css';
+import '../Layout/Footer.css'
 
 import { Divider, InputNumber, Button } from 'antd';
 
@@ -30,6 +31,7 @@ window.onload = function() {
 
 const SingleRecipe = () => {
   const [newFoodData, setNewFoodData] = useState(null);
+  // const [isVisible, setVisible] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -211,191 +213,196 @@ const SingleRecipe = () => {
   return (
     <div
       className="SingleContainer"
+      id="pageContainer"
       style={{
         margin: '10px 100px 0px 300px',
       }}
-    >
-      {console.log(newFoodData)}
-      <Button
-        type="link"
-        href={'/home'}
-        icon={
-          <LeftOutlined
-            style={{
-              display: 'inline-block',
-              verticalAlign: 'middle',
-            }}
-          />
-        }
-        style={{
-          marginTop: 10,
-          textAlign: 'left',
-          paddingLeft: 0,
-          fontSize: 20,
-          display: 'inline-flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        Back to Home
-      </Button>
-      <div className="TitleContainer">
-        <h1 style={{ paddingTop: 10 }}>{newFoodData && newFoodData.name}</h1>
+    > 
+      {newFoodData &&
         <div>
-          <Button
-            shape="circle"
-            className="circleButton"
-            size="large"
-            style={{
-              display: 'inline-flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onClick={(value) => updateFavourite(value)}
-            icon={
-              <SaveOutlined
-                className="circleIcon"
-                style={{
-                  color: determineColor('fav'),
-                  fontSize:20
-                }}
-              />
-            }
-          >
-          </Button>
-          <Button
-            shape="circle"
-            className="circleButton"
-            size="large"
-            style={{
-              display: 'inline-flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginLeft:10
-            }}
-            onClick={(value) => updatePinned(value)}
-            icon={
-              <PushpinOutlined
-                className="circleIcon"
-                style={{
-                  color: determineColor('pin'),
-                  fontSize:20
-                }}
-              />
-            }
-          >
-          </Button>
-        </div>
-      </div>
-      <Divider style={{ marginTop: 5, marginBottom: 0 }} />
-      <div className="underDivider">
-        <Button
-
-          type="link"
-          href={printUrl(newFoodData)}
-          style={{
-            fontSize: 'large',
-            paddingLeft: 0,
-            fontStyle: 'italic'
-          }}
-        >
-          {"@"+printUrl(newFoodData)}
-        </Button>
-        <div className="editContainer">
+          {console.log(newFoodData)}
           <Button
             type="link"
-            icon={<EditOutlined />}
+            href={'/home'}
+            icon={
+              <LeftOutlined
+                style={{
+                  display: 'inline-block',
+                  verticalAlign: 'middle',
+                }}
+              />
+            }
             style={{
-              fontSize: '17px',
-              lineHeight: '17px',
+              marginTop: 10,
+              textAlign: 'left',
+              paddingLeft: 0,
+              fontSize: 20,
+              display: 'inline-flex',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
-            Edit
+            Back to ALL
           </Button>
-        </div>
-      </div>
-      <Carousel className="imageGallery" style={{ marginTop: 100 }}>
-        {/* {newFoodData.pictureData &&
-          newFoodData.pictureData.map((data, index) => (
+          <div className="TitleContainer">
+            <h1 style={{ paddingTop: 10 }}>{newFoodData && newFoodData.name}</h1>
             <div>
-              <img src={data.url} alt={index} />
-              <p className="legend">{data.name}</p>
+              <Button
+                shape="circle"
+                className="circleButton"
+                size="large"
+                style={{
+                  display: 'inline-flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onClick={(value) => updateFavourite(value)}
+                icon={
+                  <SaveOutlined
+                    className="circleIcon"
+                    style={{
+                      color: determineColor('fav'),
+                      fontSize:20
+                    }}
+                  />
+                }
+              >
+              </Button>
+              <Button
+                shape="circle"
+                className="circleButton"
+                size="large"
+                style={{
+                  display: 'inline-flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginLeft:10
+                }}
+                onClick={(value) => updatePinned(value)}
+                icon={
+                  <PushpinOutlined
+                    className="circleIcon"
+                    style={{
+                      color: determineColor('pin'),
+                      fontSize:20
+                    }}
+                  />
+                }
+              >
+              </Button>
             </div>
-          ))} */}
-        <div>
-          <img src={newFoodData ? newFoodData.imageUrl :  null} alt={newFoodData ? newFoodData.name : null} />
-          <p className="legend">{newFoodData ? newFoodData.name : null}</p>
-        </div>
-      </Carousel>
-      <div className="bottomContainer">
-        <div className="leftContainer">
-          <div className="ServingAmt" key={newFoodData && newFoodData.servingSize}>
-            Servings:
-            <InputNumber
-              min={1}
-              max={10000}
-              defaultValue={(newFoodData && newFoodData.servingSize)}
-              onChange={(value) => {
-                updateRatio(value);
-              }}
+          </div>
+          <Divider style={{ marginTop: 5, marginBottom: 0 }} />
+          <div className="underDivider">
+            <Button
+
+              type="link"
+              href={printUrl(newFoodData)}
               style={{
-                marginLeft: 10,
-                width: 70,
+                fontSize: 'large',
+                paddingLeft: 0,
+                fontStyle: 'italic'
               }}
-            />
-          </div>
-          <div className="Ratings">
-            <Ratings
-              name="ratings"
-              rating={
-                newFoodData && newFoodData.meta
-                  ? newFoodData.newRating
-                    ? newFoodData.newRating
-                    : newFoodData.meta.rating
-                  : 0
-              }
-              widgetRatedColors="#1C94FC"
-              widgetHoverColors="#E6F7FF"
-              widgetDimensions="25px"
-              widgetSpacings="3px"
-              changeRating={(value) => updateRating(value)}
             >
-              <Ratings.Widget />
-              <Ratings.Widget />
-              <Ratings.Widget />
-              <Ratings.Widget />
-              <Ratings.Widget />
-            </Ratings>
-            <div className="ReviewAmt">
-              {reviewNum(newFoodData)}
-              Review
-              {determineS(newFoodData)}
+              {"@"+printUrl(newFoodData)}
+            </Button>
+            <div className="editContainer">
+              <Button
+                type="link"
+                icon={<EditOutlined />}
+                style={{
+                  fontSize: '17px',
+                  lineHeight: '17px',
+                }}
+              >
+                Edit
+              </Button>
             </div>
           </div>
-          <ListIngredients
-            ingredients={newFoodData && newFoodData.ingredients}
-            editRatio={newFoodData && newFoodData.editRatio}
-            pdf={false}
-          />
-        </div>
-        <div className="rightContainer">
-          <div style={{display:'flex', paddingBottom:10}}>
-            <DisplayTimes time={newFoodData && newFoodData.time} />
-            <App
-              data={newFoodData}
-              name={newFoodData && newFoodData.name}
-            />
+          <Carousel className="imageGallery" style={{ marginTop: 100 }}>
+            {/* {newFoodData.pictureData &&
+              newFoodData.pictureData.map((data, index) => (
+                <div>
+                  <img src={data.url} alt={index} />
+                  <p className="legend">{data.name}</p>
+                </div>
+              ))} */}
+            <div>
+              <img src={newFoodData ? newFoodData.imageUrl :  null} alt={newFoodData ? newFoodData.name : null} />
+              <p className="legend">{newFoodData ? newFoodData.name : null}</p>
+            </div>
+          </Carousel>
+          <div className="bottomContainer">
+            <div className="leftContainer">
+              <div className="ServingAmt" key={newFoodData && newFoodData.servingSize}>
+                Servings:
+                <InputNumber
+                  min={1}
+                  max={10000}
+                  defaultValue={(newFoodData && newFoodData.servingSize)}
+                  onChange={(value) => {
+                    updateRatio(value);
+                  }}
+                  style={{
+                    marginLeft: 10,
+                    width: 70,
+                  }}
+                />
+              </div>
+              <div className="Ratings">
+                <Ratings
+                  name="ratings"
+                  rating={
+                    newFoodData && newFoodData.meta
+                      ? newFoodData.newRating
+                        ? newFoodData.newRating
+                        : newFoodData.meta.rating
+                      : 0
+                  }
+                  widgetRatedColors="#1C94FC"
+                  widgetHoverColors="#E6F7FF"
+                  widgetDimensions="25px"
+                  widgetSpacings="3px"
+                  changeRating={(value) => updateRating(value)}
+                >
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                  <Ratings.Widget />
+                </Ratings>
+                <div className="ReviewAmt">
+                  {reviewNum(newFoodData)}
+                  Review
+                  {determineS(newFoodData)}
+                </div>
+              </div>
+              <ListIngredients
+                ingredients={newFoodData && newFoodData.ingredients}
+                editRatio={newFoodData && newFoodData.editRatio}
+                pdf={false}
+              />
+            </div>
+            <div className="rightContainer">
+              <div style={{display:'flex', paddingBottom:10}}>
+                <DisplayTimes time={newFoodData && newFoodData.time} />
+                <App
+                  data={newFoodData}
+                  name={newFoodData && newFoodData.name}
+                />
+              </div>
+                <InappTimer directions={newFoodData && newFoodData.directions}/>
+                <h3 className="subHeader">Directions</h3>
+                <ListDirections
+                  directions= {
+                    newFoodData &&
+                    newFoodData.directions
+                  }
+                />
+            </div>
           </div>
-            <InAppTimer />
-            <h3 className="subHeader">Directions</h3>
-            <ListDirections
-              directions= {
-                newFoodData &&
-                newFoodData.directions
-              }
-            />
         </div>
-      </div>
+      }
     </div>
   );
 };

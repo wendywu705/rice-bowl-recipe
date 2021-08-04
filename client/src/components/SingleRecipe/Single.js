@@ -1,15 +1,16 @@
 import { React, useState, useEffect } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Ratings from 'react-ratings-declarative';
-import './Single.css';
 import InappTimer from '../Timer/DisplayTimer';
 import DisplayTimes  from './DisplayTime';
 import ListDirections from './Directions';
 import ListIngredients from './ListIngredients';
 import App from '../PDF/genPDF';
+import axios from 'axios';
+import './Single.css';
+import '../Layout/Footer.css'
 
 import { Divider, InputNumber, Button } from 'antd';
 
@@ -212,6 +213,7 @@ const SingleRecipe = () => {
   return (
     <div
       className="SingleContainer"
+      id="pageContainer"
       style={{
         margin: '10px 100px 0px 300px',
       }}

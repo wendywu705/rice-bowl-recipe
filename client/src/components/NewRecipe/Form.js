@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import './Form.css';
+import '../Layout/Footer.css'
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -212,7 +213,7 @@ function Form() {
   };
 
   return (
-      <div className="Form">
+      <div className="Form" id="pageContainer">
         <div>
           <h1 className="new-recipes-title">New Recipe:</h1>
           <form id="recipeForm" encType="multipart/form-data" method="POST">

@@ -1,11 +1,12 @@
-import './RecipeList.css';
+import React, { Component } from 'react';
 import { ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AiOutlinePushpin, AiOutlineSave } from 'react-icons/ai';
 import RecipeTiles from '../Layout/RecipeTiles';
 import axios from "axios";
+import './RecipeList.css';
+import '../Layout/Footer.css';
 
 class RecipeList extends Component {
     constructor(props) {
@@ -80,7 +81,7 @@ class RecipeList extends Component {
 
     render() {
         return (
-            <div className="all-recipe">
+            <div className="all-recipe" id="pageContainer">
                 <h1><b>YOUR RECIPES</b></h1><br/>
                 <div className="search-bar">
                     {/* TODO: search function to be design */}

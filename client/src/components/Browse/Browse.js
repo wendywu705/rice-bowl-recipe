@@ -1,10 +1,15 @@
-import './Browse.css';
-import {ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
-import { Link } from 'react-router-dom';
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
 import RecipeTiles from '../Layout/RecipeTiles';
+import './Browse.css';
+import '../Layout/Footer.css'
+import {
+  ButtonDropdown, 
+  DropdownItem, 
+  DropdownMenu, 
+  DropdownToggle
+} from 'reactstrap';
 
 
 class Browse extends Component {
@@ -67,7 +72,7 @@ class Browse extends Component {
 
     render() {
         return (
-            <div className="all-recipe">
+            <div className="all-recipe" id="pageContainer">
                 <h1><b>BROWSE RECIPES</b></h1><br/>
                 <div className="search-bar">
                     {/* TODO: search function to be design */}

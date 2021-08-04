@@ -14,19 +14,12 @@ import App from '../PDF/genPDF';
 import { Divider, InputNumber, Button } from 'antd';
 
 import {
+  DeleteOutlined,
   EditOutlined,
   LeftOutlined,
   SaveOutlined,
   PushpinOutlined
 } from '@ant-design/icons';
-
-window.onload = function() {
-  console.log('location',window.location);
-  if(!window.location.hash && window.location.pathname.includes('/recipe/')) {
-    window.location = window.location + '#loaded';
-    window.location.reload();
-  }
-}
 
 const SingleRecipe = () => {
   const [newFoodData, setNewFoodData] = useState(null);
@@ -73,7 +66,6 @@ const SingleRecipe = () => {
 
     const fetchSingleRecipe = async () => {
       try {
-        window.onload();
         const recipeRes = await axios({
           method: 'get',
           timeout: 1000,
@@ -96,6 +88,34 @@ const SingleRecipe = () => {
     };
     fetchSingleRecipe().then(recipeObj => console.log('done fetch for recipeId = ',recipeObj.recipeId));
   }, [id]);
+
+  const handleDelete = async () => {
+    let response;
+    console.log('try to delete');
+    try{
+      response = await axios({
+        method: 'post',
+        timeout: 1000,
+        url: `https://localhost:9000/remove/${id}`,
+      });
+      if (response.status === 200) {
+        console.log(response.data);
+        if (Object.keys(response.data).length>1) {
+          console.log('ok removed and hidden!');
+          window.alert('Success, recipe deleted!');
+          window.location.replace('/home');
+        } else if (Object.keys(response.data).length === 1){
+          console.log('ok removed!');
+          window.alert('Success, recipe removed from lists!');
+          window.location.replace('/home');
+        } else{
+          window.alert('Failed to delete recipe');
+        }
+      }} catch (e) {
+      console.log('err', e);
+      window.alert('Failed to delete recipe')
+    }
+  }
 
   const updateFavourite = async () => {
     let newFav;
@@ -189,11 +209,11 @@ const SingleRecipe = () => {
   const newAvg = (newValue) => {
     if (newFoodData && newFoodData.meta) {
       return (
-        (
-          newFoodData.meta.rating +
-          (newValue - newFoodData.meta.rating) / (newFoodData.meta.votes + 1)
-        )
-          .toFixed(2)
+          (
+              newFoodData.meta.rating +
+              (newValue - newFoodData.meta.rating) / (newFoodData.meta.votes + 1)
+          )
+              .toFixed(2)
       );
     }
   };
@@ -241,8 +261,8 @@ const SingleRecipe = () => {
       return null;
     }
     if (
-      (type === 'fav' && newFoodData.isFavourite === true) ||
-      (type === 'pin' && newFoodData.isPinned === true)
+        (type === 'fav' && newFoodData.isFavourite === true) ||
+        (type === 'pin' && newFoodData.isPinned === true)
     ) {
       return '#1C94FC';
     } else {
@@ -250,194 +270,209 @@ const SingleRecipe = () => {
     }
   }
   return (
-    <div
-      className="SingleContainer"
-      style={{
-        margin: '10px 100px 0px 300px',
-      }}
-    >
-      {console.log(newFoodData)}
-      <Button
-        type="link"
-        href={'/home'}
-        icon={
-          <LeftOutlined
-            style={{
-              display: 'inline-block',
-              verticalAlign: 'middle',
-            }}
-          />
-        }
-        style={{
-          marginTop: 10,
-          textAlign: 'left',
-          paddingLeft: 0,
-          fontSize: 20,
-          display: 'inline-flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        Back to ALL
-      </Button>
-      <div className="TitleContainer">
-        <h1 style={{ paddingTop: 10 }}>{newFoodData && newFoodData.name}</h1>
-        <div>
-          <Button
-            shape="circle"
-            className="circleButton"
-            size="large"
-            style={{
-              display: 'inline-flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onClick={(value) => updateFavourite(value)}
-            icon={
-              <SaveOutlined
-                className="circleIcon"
-                style={{
-                  color: determineColor('fav'),
-                  fontSize:20
-                }}
-              />
-            }
-          >
-          </Button>
-          <Button
-            shape="circle"
-            className="circleButton"
-            size="large"
-            style={{
-              display: 'inline-flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginLeft:10
-            }}
-            onClick={(value) => updatePinned(value)}
-            icon={
-              <PushpinOutlined
-                className="circleIcon"
-                style={{
-                  color: determineColor('pin'),
-                  fontSize:20
-                }}
-              />
-            }
-          >
-          </Button>
-        </div>
-      </div>
-      <Divider style={{ marginTop: 5, marginBottom: 0 }} />
-      <div className="underDivider">
-        <Button
-
-          type="link"
-          href={printUrl(newFoodData)}
+      <div
+          className="SingleContainer"
           style={{
-            fontSize: 'large',
-            paddingLeft: 0,
-            fontStyle: 'italic'
+            margin: '10px 100px 0px 300px',
           }}
-        >
-          {"@"+printUrl(newFoodData)}
-        </Button>
-        <div className="editContainer">
-          <Button
+      >
+        {console.log(newFoodData)}
+        <Button
             type="link"
-            icon={<EditOutlined />}
+            href={'/home'}
+            icon={
+              <LeftOutlined
+                  style={{
+                    display: 'inline-block',
+                    verticalAlign: 'middle',
+                  }}
+              />
+            }
             style={{
-              fontSize: '17px',
-              lineHeight: '17px',
+              marginTop: 10,
+              textAlign: 'left',
+              paddingLeft: 0,
+              fontSize: 20,
+              display: 'inline-flex',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
-          >
-            Edit
-          </Button>
+        >
+          Back to ALL
+        </Button>
+        <div className="TitleContainer">
+          <h1 style={{ paddingTop: 10 }}>{newFoodData && newFoodData.name}</h1>
+          <div>
+            <Button
+                shape="circle"
+                className="circleButton"
+                size="large"
+                style={{
+                  display: 'inline-flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onClick={(value) => updateFavourite(value)}
+                icon={
+                  <SaveOutlined
+                      className="circleIcon"
+                      style={{
+                        color: determineColor('fav'),
+                        fontSize:20
+                      }}
+                  />
+                }
+            >
+            </Button>
+            <Button
+                shape="circle"
+                className="circleButton"
+                size="large"
+                style={{
+                  display: 'inline-flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginLeft:10
+                }}
+                onClick={(value) => updatePinned(value)}
+                icon={
+                  <PushpinOutlined
+                      className="circleIcon"
+                      style={{
+                        color: determineColor('pin'),
+                        fontSize:20
+                      }}
+                  />
+                }
+            >
+            </Button>
+          </div>
         </div>
-      </div>
-      <Carousel className="imageGallery" style={{ marginTop: 100 }}>
-        {/* {newFoodData.pictureData &&
+        <Divider style={{ marginTop: 5, marginBottom: 0 }} />
+        <div className="underDivider">
+          <Button
+              type="link"
+              href={printUrl(newFoodData)}
+              style={{
+                fontSize: 'large',
+                paddingLeft: 0,
+                fontStyle: 'italic'
+              }}
+          >
+            {"@"+printUrl(newFoodData)}
+          </Button>
+          <div className="editContainer">
+            <Button
+                type="link"
+                icon={<EditOutlined />}
+                style={{
+                  fontSize: '17px',
+                  lineHeight: '17px',
+                }}
+            >
+              Edit
+            </Button>
+            <Button
+                type = "button"
+                icon={<DeleteOutlined />}
+                style={{
+                  fontSize: '17px',
+                  lineHeight: '17px',
+                }}
+                onClick = {() => {
+                  const confirmBox = window.confirm("Are you sure you want to delete this recipe?")
+                  if (confirmBox === true){
+                    handleDelete()
+                  }
+                }}
+            >
+              Delete
+            </Button>
+          </div>
+        </div>
+        <Carousel className="imageGallery" style={{ marginTop: 100 }}>
+          {/* {newFoodData.pictureData &&
           newFoodData.pictureData.map((data, index) => (
             <div>
               <img src={data.url} alt={index} />
               <p className="legend">{data.name}</p>
             </div>
           ))} */}
-        <div>
-          <img src={newFoodData ? newFoodData.imageUrl :  null} alt={newFoodData ? newFoodData.name : null} />
-          <p className="legend">{newFoodData ? newFoodData.name : null}</p>
-        </div>
-      </Carousel>
-      <div className="bottomContainer">
-        <div className="leftContainer">
-          <div className="ServingAmt" key={newFoodData && newFoodData.servingSize}>
-            Servings:
-            <InputNumber
-              min={1}
-              max={10000}
-              defaultValue={(newFoodData && newFoodData.servingSize)}
-              onChange={(value) => {
-                updateRatio(value);
-              }}
-              style={{
-                marginLeft: 10,
-                width: 70,
-              }}
-            />
+          <div>
+            <img src={newFoodData ? newFoodData.imageUrl :  null} alt={newFoodData ? newFoodData.name : null} />
+            <p className="legend">{newFoodData ? newFoodData.name : null}</p>
           </div>
-          <div className="Ratings">
-            <Ratings
-              name="ratings"
-              rating={
-                newFoodData && newFoodData.meta
-                  ? newFoodData.newRating
-                    ? newFoodData.newRating
-                    : newFoodData.meta.rating
-                  : 0
-              }
-              widgetRatedColors="#1C94FC"
-              widgetHoverColors="#E6F7FF"
-              widgetDimensions="25px"
-              widgetSpacings="3px"
-              changeRating={(value) => updateRating(value)}
-            >
-              <Ratings.Widget />
-              <Ratings.Widget />
-              <Ratings.Widget />
-              <Ratings.Widget />
-              <Ratings.Widget />
-            </Ratings>
-            <div className="ReviewAmt">
-              {reviewNum(newFoodData)}
-              Review
-              {determineS(newFoodData)}
+        </Carousel>
+        <div className="bottomContainer">
+          <div className="leftContainer">
+            <div className="ServingAmt" key={newFoodData && newFoodData.servingSize}>
+              Servings:
+              <InputNumber
+                  min={1}
+                  max={10000}
+                  defaultValue={(newFoodData && newFoodData.servingSize)}
+                  onChange={(value) => {
+                    updateRatio(value);
+                  }}
+                  style={{
+                    marginLeft: 10,
+                    width: 70,
+                  }}
+              />
             </div>
-          </div>
-          <ListIngredients
-            ingredients={newFoodData && newFoodData.ingredients}
-            editRatio={newFoodData && newFoodData.editRatio}
-            pdf={false}
-          />
-        </div>
-        <div className="rightContainer">
-          <div style={{display:'flex', paddingBottom:10}}>
-            <DisplayTimes time={newFoodData && newFoodData.time} />
-            <App
-              data={newFoodData}
-              name={newFoodData && newFoodData.name}
+            <div className="Ratings">
+              <Ratings
+                  name="ratings"
+                  rating={
+                    newFoodData && newFoodData.meta
+                        ? newFoodData.newRating
+                            ? newFoodData.newRating
+                            : newFoodData.meta.rating
+                        : 0
+                  }
+                  widgetRatedColors="#1C94FC"
+                  widgetHoverColors="#E6F7FF"
+                  widgetDimensions="25px"
+                  widgetSpacings="3px"
+                  changeRating={(value) => updateRating(value)}
+              >
+                <Ratings.Widget />
+                <Ratings.Widget />
+                <Ratings.Widget />
+                <Ratings.Widget />
+                <Ratings.Widget />
+              </Ratings>
+              <div className="ReviewAmt">
+                {reviewNum(newFoodData)}
+                Review
+                {determineS(newFoodData)}
+              </div>
+            </div>
+            <ListIngredients
+                ingredients={newFoodData && newFoodData.ingredients}
+                editRatio={newFoodData && newFoodData.editRatio}
+                pdf={false}
             />
           </div>
+          <div className="rightContainer">
+            <div style={{display:'flex', paddingBottom:10}}>
+              <DisplayTimes time={newFoodData && newFoodData.time} />
+              <App
+                  data={newFoodData}
+                  name={newFoodData && newFoodData.name}
+              />
+            </div>
             <InAppTimer />
             <h3 className="subHeader">Directions</h3>
             <ListDirections
-              directions= {
-                newFoodData &&
-                newFoodData.directions
-              }
+                directions= {
+                  newFoodData &&
+                  newFoodData.directions
+                }
             />
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 

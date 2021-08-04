@@ -284,9 +284,6 @@ module.exports = (app) => {
         if (recipe && !addedToUser) {
           console.log('recipe added publicly, but no author');
         }
-        if (addedToUser) {
-          console.log('recipe added but cannot find userId in DB');
-        }
         console.log('done!');
       }
     } catch (err3) {
@@ -321,7 +318,54 @@ module.exports = (app) => {
     }
   });
 
-  // TODO: add auth and add delete photo from cloud
+  app.post('/remove/:recipeId', async (req, res) => {
+    const { recipeId } = req.params;
+    let isOwner = false;
+    try {
+      const results = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
+      const user = results[0];
+      console.log(user);
+      if (user) {
+        if (user.recipesOwned.includes(recipeId)) {
+          isOwner = true;
+        }
+        const updateDoc = {
+          $pull: {
+            recipesOwned: recipeId,
+            recipesStarred: recipeId,
+            recipesPinned: recipeId,
+          },
+        };
+        try {
+          const response = await UserModel.updateOne({ _id: userId }, updateDoc);
+          if (response) {
+            console.log('recipe removed from user successfully');
+            if (isOwner) {
+              const hiddenResponse = await RecipeModel.updateOne({ recipeId },
+                { $set: { hidden: true } });
+              if (hiddenResponse) {
+                console.log('recipe hidden successfully');
+                res.json({ recipeId, hidden: true });
+              } else {
+                console.log('failure to hide recipe');
+              }
+            } else {
+              console.log('user is not owner');
+              res.json({ recipeId });
+            }
+          } else {
+            console.log('fail to find user');
+          }
+        } catch (e) {
+          console.log('error removing recipe:', e);
+        }
+      }
+    } catch (err) {
+      console.log('error find user and removing recipe:', err);
+    }
+  });
+
+  // perhaps for admin deletion
   app.delete('/recipes/:id', async (req, res) => {
     console.log(req.params);
     const query = { _id: mongoose.Types.ObjectId(req.params.id) };
@@ -505,9 +549,6 @@ module.exports = (app) => {
         }
         if (parseRecipe && !addedToUser) {
           console.log('recipe added publicly, but no author');
-        }
-        if (addedToUser) {
-          console.log('recipe added but cannot find userId in DB');
         }
         console.log('done!');
       }

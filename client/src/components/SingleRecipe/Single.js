@@ -54,6 +54,24 @@ const SingleRecipe = () => {
       return false;
     }
 
+    const checkPinned= async() =>{
+      try{
+        const savedResponse = await axios({
+          method: 'get',
+          timeout: 1000,
+          url: `/pinned/${id}`,
+        });
+        if ( [200, 304].includes(savedResponse.status) ){
+          if (savedResponse.data === id){
+            return true;
+          }
+        }
+      } catch(err){
+        console.log('err',err);
+      }
+      return false;
+    }
+
     const fetchSingleRecipe = async () => {
       try {
         window.onload();
@@ -67,6 +85,7 @@ const SingleRecipe = () => {
           ...body,
           editRatio: 1,
           isFavourite: await checkSaved(),
+          isPinned: await checkPinned(),
           haveReview: false,
           newRating: null,
         };
@@ -122,19 +141,45 @@ const SingleRecipe = () => {
     return newFav;
   };
 
-  const updatePinned = (value) => {
-    let newpin;
-    if (newFoodData.isPinned == null) {
-      newpin = false;
+  const updatePinned = async () => {
+    let newPin;
+    if (newFoodData.isPinned === true) {
+      console.log('attemping to pin');
+      newPin = false;
+      try {
+        const response = await axios({
+          method: 'post',
+          timeout: 1000,
+          url: `https://localhost:9000/pin/remove/${id}`,
+        });
+        if (response.status === 200) {
+          console.log('ok pinned!');
+        }
+      } catch (err) {
+        console.log('err', err);
+      }
     } else {
-      newpin = !newFoodData.isPinned;
+      console.log('attempting to un-pin');
+      newPin = !newFoodData.isPinned;
+      try {
+        const response = await axios({
+          method: 'post',
+          timeout: 1000,
+          url: `https://localhost:9000/pin/add/${id}`,
+        });
+        if (response.status === 200) {
+          console.log('ok un-pinned!');
+        }
+      } catch (err) {
+        console.log('err', err);
+      }
     }
     let temppin = {
       ...newFoodData,
-      isPinned: newpin,
+      isPinned: newPin,
     };
     setNewFoodData(temppin);
-    return newpin;
+    return newPin;
   };
 
   const updateRatio = (value) => {

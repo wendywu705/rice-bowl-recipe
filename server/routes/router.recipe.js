@@ -42,6 +42,24 @@ module.exports = (app) => {
     next();
   };
 
+  app.get('/pinned/:id', checkAuth, async (req, res) => {
+    const recipeId = req.params.id;
+    const results = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
+    const user = results[0];
+    if (!user) {
+      res.json([]);
+      return;
+    }
+    const recipeIds = user.recipesPinned;
+    console.log(recipeIds);
+
+    if (recipeIds.includes(recipeId.toString())) {
+      res.json(recipeId);
+      return;
+    }
+    res.json([]);
+  });
+
   app.get('/pinned', checkAuth, async (req, res) => {
     const results = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
     const user = results[0];

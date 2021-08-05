@@ -17,7 +17,6 @@ import { Link } from 'react-router-dom';
 import { Divider, InputNumber, Button } from 'antd';
 
 import {
-  DeleteOutlined,
   EditOutlined,
   LeftOutlined,
   SaveOutlined,
@@ -37,7 +36,6 @@ const SingleRecipe = () => {
   const { id } = useParams();
 
   useEffect(() => {
-
     console.log('recipeId:', id);
     const checkSaved= async() =>{
       try{

@@ -1,13 +1,13 @@
 import React from "react";
-import Form from '../components/NewRecipe/Form'
 import SideBar from "../components/Layout/Sider";
 import WebsiteFooter from '../components/Layout/Footer';
+import Form from "../components/NewRecipe/Form";
 
 function NewRecipe() {
     return (
         <div>
             <SideBar />
-            <Form/>
+            <Form type="new"/>
             <WebsiteFooter />
         </div>
     );

@@ -1,13 +1,15 @@
 import React from "react";
 import SideBar from "../components/Layout/Sider";
 import WebsiteFooter from '../components/Layout/Footer';
-import Edit from "../components/NewRecipe/Edit";
+import Form from "../components/NewRecipe/Form";
 
 function EditRecipe() {
     return (
         <div>
             <SideBar />
-            <Edit />
+            <Form 
+              type="edit"
+            />
             <WebsiteFooter />
         </div>
     );

@@ -1,16 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Edit from "./Edit";
+import New from "./New";
 import './Form.css';
-import '../Layout/Footer.css'
-import FormTemplate from './FormTemplate';
+import '../Layout/Footer.css';
 
-import { Input, Upload, Button, InputNumber, Checkbox, Row, Col, Divider } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-const { TextArea } = Input;
-
-const { v4: uuidv4 } = require('uuid');
-
-function Form() {
+const Form = (props) => {
+  const [file, setFile] = useState([]);
   const [state, setState] = useState({
     name: '',
     ingredients: '',
@@ -29,7 +25,7 @@ function Form() {
   });
   // Holds the uploaded image file in a state
   let [selectedFile, setSelectedFile] = useState(null);
-
+  
   const test = async () => {
     const res = await axios.get('https://localhost:9000/home/');
     console.log('heyo', res);
@@ -37,62 +33,76 @@ function Form() {
   useEffect(() => {
     test();
   }, []);
-
+  
   // Form data to be embedded in post requests
   let formData = new FormData();
   let recipeData = new FormData();
-  let newFileName = '';
 
-  // Handles the AJAX request for uploading the user image
-  const uploadRequest = async () => {
-    try{
-      const response = await axios({
-        method: 'post',
-        timeout: 1000,
-        url: `https://localhost:9000/api/imageupload`,
-        data: formData,
-      });
-      if (response.status === 200){
-        console.log('res',response);
-        return response.data;
+  const parseDirections = (dir) => {
+    let resDir = ""
+    for (let i=0; i<dir.length; i++) {
+      console.log('part dir', dir[i])
+      resDir += dir[i]
+      if (i < dir.length-1) {
+        resDir += "\n"
       }
-      return null;
-    } catch (err){
-      console.log('err',err);
-      return null;
     }
-  };
+    return resDir;
+  }
 
-  // Handles the AJAX request for uploading the recipe data
-  const recipeRequest = async () => {
-    try{
-      const response = await axios({
-        method: 'post',
-        timeout: 2000,
-        url: `https://localhost:9000/recipes/new`,
-        data: recipeData,
-      });
-      if (response.status === 200){
-        console.log('res',response);
-        return response.data;
-      }
-      return null;
-    } catch (err){
-      console.log('err',err);
-      return null;
-    }
-  };
+  const updateState = (
+    name, 
+    imageUrl,
+    category,
+    ingre_string,
+    prepMin,
+    prepHour,
+    cookHour,
+    cookMin,
+    servingSize,
+    rating,
+    directions,
+    url,
+    hidden,
+    recipeId
+  ) => {
+    console.log('updating state')
+    return(
+      setState({
+        ...state,
+        name: name,
+        imageUrl: imageUrl,
+        category: category,
+        ingredients: ingre_string,
+        prepMin: prepMin,
+        prepHour: prepHour,
+        cookHour: cookHour,
+        cookMin: cookMin,
+        servingSize: servingSize,
+        rating: rating, //TODO: change so that the author cannot change rating
+        directions: parseDirections(directions),
+        url: url ? url : '',
+        hidden: hidden,
+        recipeId: recipeId
+      })
+    );
+  }
 
   // Track the uploaded image as a state
   const onChangeHandler = (e) => {
-    console.log('selected file',e.file)
-    setSelectedFile(e.file);
+    console.log('inchange', e)
+    if (e.file.status === 'removed'){
+      setSelectedFile(null)
+    }
+    else {
+      setSelectedFile(e.file);
+    }
+    setFile(e.fileList);
   };
 
   // General handle change function to update each corresponding value in recipe state
   function handleChange(event) {
     const value = event.target.value;
-    console.log('handleChange',value)
     setState({
       ...state,
       [event.target.name]: value,
@@ -101,7 +111,6 @@ function Form() {
 
   function handleCheckBox(event) {
     console.log('checkbox', event)
-    // handleChange(event);
     setState({...state, "hidden":event.target.checked})
     const hidden = document.getElementById('hidden');
     if (hidden) {
@@ -166,92 +175,64 @@ function Form() {
     return formIsValid;
   }
 
-  // Handles 2 AJAX request, one for uploading the image to GCS, and other for uploading the recipe data
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-
-    //form validation
-    if(!handleValidation()){
-      console.log('Form validation failed');
-      console.log('errors:',state.errors);
-      let errors = JSON.stringify(state.errors).replace(/\\n/g, "\\n");
-      alert(`Form has errors. Cannot submit.\n ${errors}`)
-      return;
-    }
-    let tempData;
-    let userData;
-
-    // Create a unique imageURL for each image
-    //if no image inserted
-    if (!selectedFile){
-      console.log('no image, using stock apron image')
-      let defaultFileName = `c9f85699-7aae-45bf-b47e-5c1913f06d6a-no_image.jpeg`
-      tempData = {
-        ...state,
-        imageUrl: `https://storage.googleapis.com/ricebowl-bucket-1/${defaultFileName}`,
-      };
-    }
-    //image is inserted
-    else{
-      console.log('image inserted');
-      newFileName = uuidv4() + '-' + selectedFile.name;
-      userData = {
-        imageName: newFileName,
-      };
-      tempData = {
-        ...state,
-        imageUrl: `https://storage.googleapis.com/ricebowl-bucket-1/${newFileName}`,
-      };
-      formData.append('file', selectedFile);
-      console.log('selectedFile', selectedFile)
-      formData.append('data', JSON.stringify(userData));
-      console.log('data',JSON.stringify(userData))
-      console.log('form data', formData)
-      let uploadRes = uploadRequest();
-      if (!uploadRes){
-        alert('image submission FAILED!');
-      }
-    }
-    recipeData.append('data', JSON.stringify(tempData));
-    let recipeResId = await recipeRequest();
-    if (recipeResId){
-      alert('Recipe submitted successfully!');
-      console.log('new recipe_id',recipeResId);
-      window.location.assign(`../recipe/${recipeResId}`);
-    }
-    else{
-      alert('Recipe submission FAILED!\nMake sure recipe has ingredients and directions');
-    }
-  };
-  const updateNum = (value, name) => {
-    console.log('in num', name, value)
-    // setState({...state, name : value})
-    let temp={
+  const updateNum = (key, value) => {
+    setState(state=> ({
       ...state,
-      name: value
-    }
-    setState(temp)
+      [key]: value
+    }))    
   }
 
-  return (
-      <div className="Form" id="pageContainer">
-        {console.log('SELECTEDFILE', selectedFile)}
-        <div>
-          <h1 className="new-recipes-title">New Recipe:</h1>
-          <form id="recipeForm" encType="multipart/form-data" method="POST">
-            <FormTemplate 
-              type={"new"}
-              data={state}
-              update={handleChange}
-              check={handleCheckBox}
-              submit={handleSubmit}
-              handle={onChangeHandler}
-              num={updateNum}
-            />
-          </form>
-        </div>
-      </div>
+  const getImgName = (img) => {
+    console.log('imagename', img)
+    let ind = img.lastIndexOf('-');
+    let retImg = img.substring(ind+1, img.length)
+    console.log(typeof retImg)
+    return retImg;
+  }
+
+  if (file.length===0 && state.imageUrl) {
+    console.log('inhere')
+    setFile([
+      {
+        uid: '-1',
+        name: getImgName(state.imageUrl),
+        status: 'done',
+        url: state.imageUrl,
+        thumbUrl: state.imageUrl
+      }
+    ])
+  }
+
+
+  let fullData = {
+    valid: handleValidation,
+    update: handleChange,
+    check: handleCheckBox,
+    handle: onChangeHandler,
+    num: updateNum,
+    data: state,
+    form: formData,
+    recipe: recipeData,
+    selected: selectedFile,
+    pic: file,
+    fill: updateState
+  }
+
+  let partialData = Object.assign(
+    {}, 
+    fullData, 
+    {pic: undefined, fill:undefined}
   );
-}
+  console.log('filelist', file)
+  return(
+    <div>
+      { (props.type==="edit") ?
+        <Edit {...fullData}/>    
+        : 
+        <New {...partialData}/>  
+      }
+    </div>
+  );
+};
 
 export default Form;

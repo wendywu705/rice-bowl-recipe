@@ -2,11 +2,8 @@
 
 .Form {
   margin-left: 280px;
-  /* text-align-last: center; */
   display: flex;
-  /* flex-direction: column; */
   justify-content: center;
-  /* background-color: aqua; */
   min-width: 670px;
   margin-bottom: 40px;
 }
@@ -25,15 +22,6 @@
   margin-left: 15px;
 }
 
-/* .upload-list-inline [class*='-upload-list-rtl'] .ant-upload-list-item {
-  float: right;
-} */
-
-/* .inputBox,
-.uploadButton,
-.inputArea,
-.inputNumber,
-.checkBox */
 
 .inputBox,
 .inputArea {
@@ -65,7 +53,6 @@
 
 #numLabel {
   width: 170px;
-  /* background-color: red; */
 }
 
 .col {
@@ -73,7 +60,6 @@
 }
 
 .numClass {
-  /* margin-left: 10px !important; */
   margin: 15px 0px 0px 10px !important;
 }
 
@@ -84,10 +70,6 @@ label {
   font-family: 'Advent Pro', sans-serif;
   font-weight: 500;
 }
-/* .Category {
-  margin-top: 15px;
-  
-} */
 
 .image {
   width: 100%;

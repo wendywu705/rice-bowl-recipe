@@ -85,9 +85,7 @@ function Form() {
   // Track the uploaded image as a state
   const onChangeHandler = (e) => {
     console.log('selected file',e.file)
-    // console.log('selected file', e.target.files[0])
     setSelectedFile(e.file);
-    // setSelectedFile(e.target.files[0]);
   };
 
   // General handle change function to update each corresponding value in recipe state
@@ -204,7 +202,7 @@ function Form() {
         imageUrl: `https://storage.googleapis.com/ricebowl-bucket-1/${newFileName}`,
       };
       formData.append('file', selectedFile);
-      console.log('selectedFile', +selectedFile)
+      console.log('selectedFile', selectedFile)
       formData.append('data', JSON.stringify(userData));
       console.log('data',JSON.stringify(userData))
       console.log('form data', formData)
@@ -233,7 +231,6 @@ function Form() {
           <form id="recipeForm" encType="multipart/form-data" method="POST">
             <label className="recipe-name-title">
               Recipe Name: <br />
-              {/* <input */}
               <Input
                   className="inputBox"
                   type="text"
@@ -244,17 +241,15 @@ function Form() {
                   required="required"
               />
             </label>{' '}
-            {/* <br /> */}
             <Divider style={{marginBottom:10}} />
             <label className="image">
               Image: 
-              {/* <input type="file" name="file" className="inputBox" onChange={onChangeHandler} /> */}
               <Upload
-                // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                 listType="picture"
-                // defaultFileList={[...fileList]}
                 className="upload-list-inline"
                 onChange={onChangeHandler}
+                beforeUpload={() => false}
+                maxCount={1}
               >
                 <Button 
                   className="uploadButton"
@@ -271,8 +266,6 @@ function Form() {
               </Upload>
             </label>
             <Divider style={{marginBottom:10}} />
-
-            {/* <br /> */}
             <label className="Category">
               Categories: <br />
               <Input
@@ -283,17 +276,8 @@ function Form() {
                   onChange={handleChange}
                   placeholder="Enter Categories seperated by commas. eg) Chinese, Cake, Fish"
               />
-              {/* <input
-                  className="inputBox"
-                  type="text"
-                  name="category"
-                  value={state.category}
-                  onChange={handleChange}
-                  placeholder="Enter Categories seperated by commas. eg) Chinese, Cake, Fish"
-              /> */}
             </label>{' '}
             <Divider style={{marginBottom:10}} />
-            {/* <br /> */}
             <label className="Ingredients">
               Recipe Ingredients: <br />
               <TextArea
@@ -306,14 +290,6 @@ function Form() {
                   placeholder="quantity/unit/ingredient&#13;3 cups carrots &#13;2 eggs &#13;5 cloves garlic &#13;etc..."
                   required
               />
-              {/* <textarea
-                  className="inputBox"
-                  name="ingredients"
-                  value={state.ingredients}
-                  onChange={handleChange}
-                  placeholder="quantity/unit/ingredient&#13;3 cups carrots &#13;2 eggs &#13;5 cloves garlic &#13;etc..."
-                  required
-              /> */}
             </label>{' '}
             <br />
             {console.log('state', state)}
@@ -328,19 +304,9 @@ function Form() {
                       name="prepHour"
                       value={state.prepHour}
                       onChange={(value) => setState({...state, "prepHour" : value})}
-                      // onChange={(value) => numberChange(value, "prepHour")}
-                      // onChange={handleChange}
                       min={0}
                       defaultValue={0}
                   />
-                  {/* <input
-                      className="inputBox"
-                      type="number"
-                      name="prepHour"
-                      value={state.prepHour}
-                      onChange={handleChange}
-                      min="0"
-                  /> */}
                 </label>
               </Col>
 
@@ -357,14 +323,6 @@ function Form() {
                       min={0}
                       defaultValue={0}
                   />
-                  {/* <input
-                      className="inputBox"
-                      type="number"
-                      name="cookHour"
-                      value={state.cookHour}
-                      onChange={handleChange}
-                      min="0"
-                  /> */}
                 </label>
               </Col>
               <Col span={8} className="col">
@@ -380,14 +338,6 @@ function Form() {
                       min={1}
                       defaultValue={1}
                   />
-                  {/* <input
-                      className="inputBox"
-                      type="number"
-                      name="servingSize"
-                      value={state.servingSize}
-                      onChange={handleChange}
-                      min="1"
-                  /> */}
                 </label>
               </Col>
 
@@ -405,15 +355,6 @@ function Form() {
                       max={59}
                       defaultValue={0}
                   />
-                  {/* <input
-                      className="inputBox"
-                      type="number"
-                      name="prepMin"
-                      value={state.prepMin}
-                      onChange={handleChange}
-                      min="0"
-                      max="59"
-                  /> */}
                 </label>{' '}
               </Col>
               <Col span={8} className="col">
@@ -430,18 +371,8 @@ function Form() {
                       max={59}
                       defaultValue={0}
                   />
-                  {/* <input
-                      className="inputBox"
-                      type="number"
-                      name="cookMin"
-                      value={state.cookMin}
-                      onChange={handleChange}
-                      min="0"
-                      max="59"
-                  /> */}
                 </label>{' '}
               </Col>
-
               <Col span={8} className="col">
                 <label className="Rating" id="numLabel">
                   Rating:
@@ -456,23 +387,10 @@ function Form() {
                       max={5}
                       defaultValue={5}
                   />
-                  {/* <input
-                      className="inputBox"
-                      type="number"
-                      name="rating"
-                      value={state.rating}
-                      onChange={handleChange}
-                      min="0"
-                      max="5"
-                  /> */}
                 </label>{' '}
               </Col>
             </Row>
             <Divider style={{marginBottom:10}} />
-
-            {/* <br /> */}
-            {/* <br /> */}
-            {/* <br /> */}
             <label>
               Recipe Steps: <br />
               <TextArea
@@ -483,16 +401,7 @@ function Form() {
                   placeholder="Chop up all carrots and garlic. &#13;&#13;Pour water over the carrots and add along the chopped garlic."
                   required
               />
-              {/* <textarea
-                  className="inputBox"
-                  name="directions"
-                  value={state.directions}
-                  onChange={handleChange}
-                  placeholder="Chop up all carrots and garlic. &#13;&#13;Pour water over the carrots and add along the chopped garlic."
-                  required
-              /> */}
             </label>{' '}
-            {/* <br /> */}
             <Divider style={{marginBottom:10}} />
             <label className="url">
               Video Clip: <br />
@@ -504,14 +413,6 @@ function Form() {
                   onChange={handleChange}
                   placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
               />
-              {/* <input
-                  className="inputBox"
-                  type="text"
-                  name="url"
-                  value={state.url}
-                  onChange={handleChange}
-                  placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-              /> */}
             </label>{' '}
             {/* <br /> */}
             <Divider style={{marginBottom:10}} />
@@ -526,13 +427,6 @@ function Form() {
                   onChange={handleCheckBox}
                   defaultValue={false}
               />
-              {/* <input
-                  className="inputBox"
-                  type="checkbox"
-                  name="hidden"
-                  value="true"
-                  onChange={handleCheckBox}
-              /> */}
             </label>{' '}
             <br />
             <div className="align-center">
@@ -544,9 +438,6 @@ function Form() {
               >
                 Submit
               </Button>
-              {/* <button className="Submit" type="submit" onClick={handleSubmit}>
-                Submit
-              </button> */}
             </div>
           </form>
         </div>

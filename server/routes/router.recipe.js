@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const parseIngredient = require('parse-ingredient');
 const { ObjectId } = require('mongodb');
 const recipeScraper = require('recipe-scraper');
-const alert = require('alert');
 const RecipeModel = require('../models/Recipe');
 const UserModel = require('../models/User');
 
@@ -28,7 +27,6 @@ module.exports = (app) => {
       recipeId: 1,
       time: 1,
     });
-    //console.log('query:', query);
     res.json(query);
   });
 
@@ -325,15 +323,13 @@ module.exports = (app) => {
         if (recipe && !addedToUser) {
           console.log('recipe added publicly, but no author');
         }
-        if (addedToUser) {
-          console.log('recipe added but cannot find userId in DB');
-        }
         console.log('done!');
       }
     } catch (err3) {
       console.log('error, cant create new recipes');
       console.log(err3);
     }
+    res.json(newId);
   });
 
   // NEED TO DO:  modify
@@ -361,6 +357,59 @@ module.exports = (app) => {
     }
   });
 
+  app.post('/remove/:recipeId', async (req, res) => {
+    const { recipeId } = req.params;
+    let isOwner = false;
+    try {
+      const results = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
+      const user = results[0];
+      console.log(user);
+      if (user) {
+        if (user.recipesOwned.includes(recipeId)) {
+          isOwner = true;
+        }
+        const updateDoc = {
+          $pull: {
+            recipesOwned: recipeId,
+            recipesStarred: recipeId,
+            recipesPinned: recipeId,
+          },
+        };
+        try {
+          const response = await UserModel.updateOne(
+            { _id: userId },
+            updateDoc
+          );
+          if (response) {
+            console.log('recipe removed from user successfully');
+            if (isOwner) {
+              const hiddenResponse = await RecipeModel.updateOne(
+                { recipeId },
+                { $set: { hidden: true } }
+              );
+              if (hiddenResponse) {
+                console.log('recipe hidden successfully');
+                res.json({ recipeId, hidden: true });
+              } else {
+                console.log('failure to hide recipe');
+              }
+            } else {
+              console.log('user is not owner');
+              res.json({ recipeId });
+            }
+          } else {
+            console.log('fail to find user');
+          }
+        } catch (e) {
+          console.log('error removing recipe:', e);
+        }
+      }
+    } catch (err) {
+      console.log('error find user and removing recipe:', err);
+    }
+  });
+
+  // perhaps for admin deletion
   app.delete('/recipes/:id', async (req, res) => {
     console.log(req.params);
     const query = { _id: mongoose.Types.ObjectId(req.params.id) };
@@ -426,31 +475,144 @@ module.exports = (app) => {
       }
       postReq.directions = newInstruct;
 
-      postReq.time = {
-        prepHour: recipe.time.total ? recipe.time.total.substring(0, 1) : 0,
-        cookHour: 0,
-        prepMin: recipe.time.prep ? recipe.time.prep.replace(' mins', '') : 0,
-        cookMin: recipe.time.cook ? recipe.time.cook.replace(' mins', '') : 0,
-      };
-      postReq.servingSize = recipe.servings;
-      postReq.imageUrl = recipe.image;
-      // console.log(postReq);
+      function isNumber(n) {
+        return !Number.isNaN(parseFloat(n)) && !Number.isNaN(n - 0);
+      }
 
-      // TODO insert try-catch
+      // https://stackoverflow.com/questions/17885850/how-to-parse-a-string-containing-text-for-a-number-float-in-javascript
+      // parses string for num
+      function parseSentenceForNumber(sentence) {
+        const matches = sentence.match(/(\+|-)?((\d+(\.\d+)?)|(\.\d+))/);
+        return (matches && matches[0]) || null;
+      }
+
+      // http://www.4codev.com/javascript/convert-seconds-to-time-value-hours-minutes-seconds-idpx6943853585885165320.html
+      function convertHMS(value) {
+        // convert seconds to hours and minutes
+        const sec = parseInt(value, 10);
+        const hours = Math.floor(sec / 3600);
+        const minutes = Math.floor((sec - hours * 3600) / 60);
+        return { hours, minutes };
+      }
+
+      // https://stackoverflow.com/questions/5772197/javascript-converting-a-string-ie-1-hour-2-minutes-to-time-in-seconds
+      function timespanMillis(s) {
+        const tMillis = {
+          second: 1000,
+          min: 60 * 1000,
+          mins: 60 * 1000,
+          minute: 60 * 1000,
+          minutes: 60 * 1000,
+          hr: 60 * 60 * 1000,
+          hour: 60 * 60 * 1000,
+          hours: 60 * 60 * 1000,
+          hrs: 60 * 60 * 1000,
+        };
+        const regex =
+          /(\d+)\s*(second|min|mins|minute|minutes|hr|hours|hour|hrs)/g;
+        let ms = 0;
+        let m;
+        let x;
+        while ((m = regex.exec(s))) {
+          x = Number(m[1]) * (tMillis[m[2]] || 0);
+          ms += x;
+        }
+        return x ? convertHMS(ms / 1000) : { hours: 0, minutes: 0 };
+      }
+
+      let cookHour = 0;
+      let cookMin = 0;
+      let prepHour = 0;
+      let prepMin = 0;
+      if (recipe.time.cook) {
+        cookHour = timespanMillis(recipe.time.cook).hours;
+        cookMin = timespanMillis(recipe.time.cook).minutes;
+      } else if (recipe.time.total && recipe.time.prep) {
+        cookHour =
+          timespanMillis(recipe.time.total).hours -
+          timespanMillis(recipe.time.prep).hours;
+        cookMin =
+          timespanMillis(recipe.time.total).minutes -
+          timespanMillis(recipe.time.prep).minutes;
+      }
+      if (recipe.time.prep) {
+        prepHour = timespanMillis(recipe.time.prep).hours;
+        prepMin = timespanMillis(recipe.time.prep).minutes;
+      } else if (recipe.time.total && recipe.time.cook) {
+        prepHour =
+          timespanMillis(recipe.time.total).hours -
+          timespanMillis(recipe.time.cook).hours;
+        prepMin =
+          timespanMillis(recipe.time.total).minutes -
+          timespanMillis(recipe.time.cook).minutes;
+      }
+
+      console.log('time', cookHour, cookMin, prepHour, prepMin);
+      postReq.time = {
+        cookHour,
+        cookMin,
+        prepHour,
+        prepMin,
+      };
+
+      if (isNumber(recipe.servings)) {
+        postReq.servingSize = recipe.servings;
+      } else {
+        postReq.servingSize = parseSentenceForNumber(recipe.servings);
+      }
+      postReq.imageUrl = recipe.image;
+
+      let parseRecipe;
       try {
-        const parseRecipe = await RecipeModel.create(postReq);
+        parseRecipe = await RecipeModel.create(postReq);
         if (parseRecipe) {
           console.log('Parsed recipe inserted successfully');
-          res.json(newId);
         } else {
           console.log('Fail to parse new recipe');
         }
       } catch (err) {
-        alert(
-          'Error: Failed to parse domain, please entry a correct domain URL'
-        );
-        throw err;
+        console.log('error:', err);
       }
+
+      // add to user owned
+      let addedToUser = false;
+
+      console.log(userId);
+      if (userId && parseRecipe) {
+        try {
+          const userRes = await UserModel.find({ _id: ObjectId(userId) }).limit(
+            1
+          );
+          const user = userRes[0];
+          console.log('userRes:', userRes);
+          if (user) {
+            const updateDoc = {
+              $addToSet: { recipesOwned: newId, recipesStarred: newId },
+            };
+            try {
+              const response = await UserModel.updateOne(
+                { _id: ObjectId(userId) },
+                updateDoc
+              );
+              if (response) {
+                addedToUser = true;
+                console.log('added recipe to recipesOwned successfully');
+              } else {
+                console.log('failed to add to recipesOwned');
+              }
+            } catch (err2) {
+              console.log(err2, 'fail to add recipe to user DB');
+            }
+          }
+        } catch (err) {
+          console.log(err, 'fail to find user in DB to add recipe');
+        }
+        if (parseRecipe && !addedToUser) {
+          console.log('recipe added publicly, but no author');
+        }
+        console.log('done!');
+      }
+      res.json(newId);
     });
   });
 };

@@ -1,15 +1,15 @@
 import { Layout } from 'antd';
+import { fixControlledValue } from 'antd/lib/input/Input';
 const { Footer } = Layout;
 
 const WebsiteFooter = () => {
   return(
-    <Layout style={{marginLeft:100, marginTop:20}} >
+    <Layout style={{marginLeft:280, marginTop:20}} >
       <Footer style={{
           height:'100px', 
           backgroundColor:'#e6f7ff',
           display:'flex',
-          justifyContent:'center',
-          
+          justifyContent:'center'
         }}
       >
         <img

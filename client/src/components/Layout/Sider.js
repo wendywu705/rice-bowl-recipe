@@ -4,7 +4,11 @@ import './Sider.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-import { Layout, Menu, AutoComplete, Button } from 'antd';
+import { 
+  Layout, 
+  Menu, 
+  Button,
+} from 'antd';
 
 import {
   HomeOutlined,
@@ -16,12 +20,6 @@ import {
 } from '@ant-design/icons';
 
 const { Sider } = Layout;
-
-const recipes = [
-  { value: 'Recent Search 1' },
-  { value: 'Recipe 2' },
-  { value: 'Recipe 3' },
-];
 
 const SideBar = () => {
   const [reg, setReg] = useState(false);
@@ -103,17 +101,11 @@ const SideBar = () => {
         </a>
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'center',
-            paddingBottom: 15,
-            paddingTop: 10,
-          }}
-        >
-          <AutoComplete
-            style={{ width: 230 }}
-            placeholder="Search Recipes"
-            options={recipes}
-          />
+            display:'flex',
+            justifyContent:'center', 
+            paddingBottom:15, 
+            paddingTop: 10
+          }}>
         </div>
         <Menu mode="inline" selectedKeys={key}>
           <Menu.Item

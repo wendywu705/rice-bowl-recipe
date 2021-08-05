@@ -1,16 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Unica+One&display=swap');
 
 .Form {
-    /*width: 100%;*/
-    display: flex;
-    /*justify-content: center;*/
-    margin-left: 22em;
-    align-items: center;
-    padding: 0.5em;
-    background-color: white;
-    color: black;
-    font-family: "Unica One", serif;
-    font-size: large;
+  margin-left: 280px;
+  display: flex;
+  justify-content: center;
+  min-width: 670px;
+  margin-bottom: 40px;
 }
 
 .new-recipes-title,
@@ -19,14 +14,14 @@
     margin-bottom: 2vh;
 }
 
-.recipe-name-title, .url, .Category {
-    /*width: 65%;*/
+.upload-list-inline .ant-upload-list-item {
+  float: left;
+  width: 190px;
+  margin-right: 8px;
 }
 
-form{
-    justify-content: center;
-    align-items: center;
-    color: tomato;
+.uploadButton {
+  margin-left: 15px;
 }
 
 label{
@@ -40,76 +35,67 @@ label{
     font-size: xx-large;
 }
 
-.Prep input, .Cook input, .Serving-Size input, .Rating input{
-    margin-left: 1em;
-    margin-right: 15em;
-    width: 5em;
+.inputBox,
+.inputArea {
+  width: 650px;
 }
-
 .inputBox {
-    font-family: "Calibri", serif;
-    text-align: left;
-    color: black;
-    padding: 0.5em;
-    width: 80em;
-    margin-bottom: 1em;
-    font-size: medium;
-    border-radius: 10px; /*rounding textbox corners*/
+  height: 40px;
+}
+.inputArea {
+  min-height: 100px !important;
+}
+#ingredientsId {
+  height: 130px;
 }
 
-textarea{
-    height: 10em;
+.inputArea::-webkit-scrollbar {
+  width: 10px;
 }
 
-.Ingredients input{
-    color: purple;
-    height: 10em;
+.inputArea::-webkit-scrollbar-thumb {
+  background-color: #dfe6eb; 
+  border-radius: 20px;     
 }
 
-.Prep{
-    color: darkred;
+.inputNumber {
+  width: 70px;
+  float: right;
 }
 
-.Cook{
-    color: darkorchid;
+#numLabel {
+  width: 170px;
 }
 
-.Time, .Serving-Size, .Rating{
-    color:green;
+.col {
+  width: 0px;
 }
 
-.hidden input{
-    width: 25%;
-    margin-bottom: 1em;
+.numClass {
+  margin: 15px 0px 0px 10px !important;
 }
 
-.Serving-Size {
-    margin-right: 0.2em;
+label {
+  color: #1c94fc;
+  /* margin-top: 15px; */
+  font-size: 18px;
+  font-family: 'Advent Pro', sans-serif;
+  font-weight: 500;
 }
 
-.Submit{
-    background-color: #1c94fc;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 0.6em;
-    width: 20%;
-    font-size: large;
-    border-radius: 10px; /*rounding textbox corners*/
+.image {
+  width: 100%;
 }
 
-.align-center{
-    margin-left: 20px;
-    display: flex;
-    justify-content: center;
+.hidden {
+  display: flex;
+  align-items: baseline;
 }
 
-.hidden{
-    display: flex;
-    /*align-items: center;*/
-    width: 100%;
+.checkBox {
+  margin-left: 15px;
+  /* font-size: 100px; */
+  transform: scale(1.3)
 }
 
 #exist-image{
@@ -117,3 +103,13 @@ textarea{
     height: 150px;
 }
 
+.Submit {
+  font-family: 'Advent Pro', sans-serif;
+  font-weight: 500;
+  font-size: 17px;
+  text-transform: uppercase;
+  width: 200px;
+  height: 50px;
+  margin: auto;
+  display: block;
+}

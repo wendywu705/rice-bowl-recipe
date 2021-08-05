@@ -4,6 +4,10 @@ import './Form.css';
 import '../Layout/Footer.css'
 import FormTemplate from './FormTemplate';
 
+import { Input, Upload, Button, InputNumber, Checkbox, Row, Col, Divider } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+const { TextArea } = Input;
+
 const { v4: uuidv4 } = require('uuid');
 
 function Form() {
@@ -231,6 +235,7 @@ function Form() {
 
   return (
       <div className="Form" id="pageContainer">
+        {console.log('SELECTEDFILE', selectedFile)}
         <div>
           <h1 className="new-recipes-title">New Recipe:</h1>
           <form id="recipeForm" encType="multipart/form-data" method="POST">

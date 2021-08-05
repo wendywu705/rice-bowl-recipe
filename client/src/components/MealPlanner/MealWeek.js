@@ -96,13 +96,19 @@ const MealWeek = () => {
         url: `/api/mealplanner/`,
       });
       console.log('meal plan data', resp.data[0].weeks);
-      setPlan(resp.data[0].weeks);
-      resp.data[0].weeks.find((value, idx) => {
-        if (value.dates === currentWeek) {
-          console.log('current val', value);
-          setCurrentData(value);
-        }
-      });
+      console.log('store', store);
+      if (resp.data[0].weeks.length === 0) {
+        setPlan(store);
+        setCurrentData(store[0]);
+      } else {
+        setPlan(resp.data[0].weeks);
+        resp.data[0].weeks.find((value, idx) => {
+          if (value.dates === currentWeek) {
+            console.log('current val', value);
+            setCurrentData(value);
+          }
+        });
+      }
     } catch (err) {
       console.log(err);
     }

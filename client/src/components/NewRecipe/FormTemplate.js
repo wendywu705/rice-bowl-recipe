@@ -83,7 +83,8 @@ const FormTemplate = (props) => {
             rating: res.meta.rating, //TODO: change so that the author cannot change rating
             directions: parseDirections(res.directions),
             url: res.url ? res.url : '',
-            hidden: res.hidden
+            hidden: res.hidden,
+            recipeId: res.recipeId
           });
         });
       }
@@ -124,7 +125,7 @@ const FormTemplate = (props) => {
 
   // Handles the AJAX request for uploading the recipe data
   const recipeEdit = async () => {
-    console.log('receipeEdit')
+    console.log('recipeData', recipeData)
     try{
       const response = await axios({
         method: 'post',
@@ -139,6 +140,9 @@ const FormTemplate = (props) => {
       return null;
     } catch (err){
       console.log('err',err);
+      console.log('err code',err.code);
+      console.log('err msg',err.message);
+      console.log('err stack',err.stack);
       return null;
     }
   };
@@ -253,6 +257,8 @@ const FormTemplate = (props) => {
         ...state,
         imageUrl: `https://storage.googleapis.com/ricebowl-bucket-1/${newFileName}`,
       };
+      setState(tempData);
+      console.log('tempData', tempData)
       formData.append('file', selectedFile);
       formData.append('data', JSON.stringify(userData));
       let uploadRes = uploadRequest();
@@ -260,7 +266,8 @@ const FormTemplate = (props) => {
         alert('image submission FAILED!');
       }
     }
-    recipeData.append('data', JSON.stringify(tempData));
+    console.log('pre data', JSON.stringify(tempData))
+    recipeData.append('data', JSON.stringify(state));
     let recipeResId = await recipeEdit();
     if (recipeResId){
       alert('Recipe submitted successfully!');

@@ -433,23 +433,29 @@ module.exports = (app) => {
   });
 
   app.post('/recipes/edit/:recipeId', multer.single('file'), async (req, res) => {
-    let resId = req.params.recipeId;
-    if(userId) console.log('Updating recipe', resId);
-    console.log('user ', userId, ' is updating the recipe');
+    console.log('in post')
+    const resId = req.params.recipeId;
+    console.log('req params', req.params)
+    if (userId) {
+      console.log('Updating recipe', resId);
+      console.log('user ', userId, ' is updating the recipe');
+    }
     try {
-      const filter = {recipeId: req.params.recipeId}
+      const filter = { recipeId: req.params.recipeId };
+      // console.log('filter', filter);
+      // console.log('req', JSON.parse(JSON.stringify(req.body)));
       const query = JSON.parse(req.body.data);
       console.log('q::::', query);
       const postReq = {};
       if (query.category) {
         console.log(query.category);
-        if (query.category.includes(",")){
+        if (query.category.includes(',')) {
           postReq.category = query.category
             .replace(', ', ',')
             .replace(' ,', ',')
-            .split(','); 
+            .split(',');
         } else {
-          postReq.category = query.category
+          postReq.category = query.category;
         }
       }
       if (query.ingredients) {
@@ -475,7 +481,10 @@ module.exports = (app) => {
       postReq.url = query.url;
       postReq.imageUrl = query.imageUrl; // Embed the Google Cloud Storage image URL
       postReq.servingSize = +query.servingSize;
-      await RecipeModel.findOneAndUpdate(filter, postReq, {upsert: true}, function(err, result){
+      await RecipeModel.findOneAndUpdate(filter, postReq, {
+        upsert: true,
+        returnOriginal: false,
+      },function (err, result) {
         if (err) res.send(500, {error: err})
         console.log('recipe updated successfully', result);
         res.json(resId);

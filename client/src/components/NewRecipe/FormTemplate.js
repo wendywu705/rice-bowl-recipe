@@ -5,6 +5,15 @@ import './Form.css';
 import '../Layout/Footer.css'
 // import FormTemplate from './FormTemplate';
 
+import './Form.css';
+import '../Layout/Footer.css'
+
+import { Input, Upload, Button, InputNumber, Checkbox, Row, Col, Divider } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+const { TextArea } = Input;
+
+
+
 const { v4: uuidv4 } = require('uuid');
 
 const FormTemplate = (props) => {
@@ -286,165 +295,390 @@ const FormTemplate = (props) => {
 
 
   // let state = props.data
+
   return(
     // <form id="recipeForm" encType="multipart/form-data" method="POST">
-    <div>
-        <label className="recipe-name-title">
-          Recipe Name: <br />
-          <input
-              className="inputBox"
-              type="text"
-              name="name"
-              value={state.name}
-              onChange={props.check}
-              placeholder="Enter Recipe Title"
-              required="required"
-          />
-        </label>{' '}
-        <br />
-        Image: <br />
-        <div className="wrap-imge">
-          <img id="exist-image" alt="recipe image" src={state.imageUrl}/>
-        </div>
-        <input type="file" name="file" className="inputBox" onChange={props.handle} />
-        <br />
-        <label className="Category">
-          Categories: <br />
-          <input
-              className="inputBox"
-              type="text"
-              name="category"
-              value={state.category}
-              onChange={props.check}
-              placeholder="Enter Categories seperated by commas. eg) Chinese, Cake, Fish"
-          />
-        </label>{' '}
-        <br />
-        <label className="Ingredients">
-          Recipe Ingredients: <br />
-          <textarea
-              className="inputBox"
-              name="ingredients"
-              value={state.ingredients}
-              onChange={props.check}
-              placeholder="quantity/unit/ingredient&#13;3 cups carrots &#13;2 eggs &#13;5 cloves garlic &#13;etc..."
-              required
-          />
-        </label>{' '}
-        <br />
-        <label className="Prep">
-          Prep Hours:
-          <input
-              className="inputBox"
-              type="number"
-              name="prepHour"
-              value={state.prepHour}
-              onChange={props.check}
-              min="0"
-          />
-        </label>
-        <label className="Prep">
-          Prep Mins:
-          <input
-              className="inputBox"
-              type="number"
-              name="prepMin"
-              value={state.prepMin}
-              onChange={props.check}
-              min="0"
-              max="59"
-          />
-        </label>{' '}
-        <br />
-        <label className="Cook">
-          Cook Hours:
-          <input
-              className="inputBox"
-              type="number"
-              name="cookHour"
-              value={state.cookHour}
-              onChange={props.check}
-              min="0"
-          />
-        </label>
-        <label className="Cook">
-          Cook Mins:
-          <input
-              className="inputBox"
-              type="number"
-              name="cookMin"
-              value={state.cookMin}
-              onChange={props.check}
-              min="0"
-              max="59"
-          />
-        </label>{' '}
-        <br />
-        <label className="Serving-Size">
-          Serving Size:
-          <input
-              className="inputBox"
-              type="number"
-              name="servingSize"
-              value={state.servingSize}
-              onChange={props.check}
-              min="1"
-          />
-        </label>
-        <label className="Rating">
-          Rating:
-          <input
-              className="inputBox"
-              type="number"
-              name="rating"
-              value={state.rating}
-              readOnly
-          />
-        </label>{' '}
-        <br />
-        <label>
-          Recipe Steps: <br />
-          <textarea
-              className="inputBox"
-              name="directions"
-              value={state.directions}
-              onChange={props.check}
-              placeholder="Chop up all carrots and garlic. &#13;&#13;Pour water over the carrots and add along the chopped garlic."
-              required
-          />
-        </label>{' '}
-        <br />
-        <label className="url">
-          Video Clip: <br />
-          <input
-              className="inputBox"
-              type="text"
-              name="url"
-              value={state.url}
-              onChange={props.check}
-              placeholder="e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-          />
-        </label>{' '}
-        <br />
-        <label className="hidden">
-          <p>Only Private View?</p>
-          <input
-              id="checkbox"
-              className="inputBox"
-              type="checkbox"
-              name="hidden"
-              value={state.hidden}
-              onChange={props.check}
-          />
-        </label>{' '}
-        <br />
-        <div className="align-center">
-          <button className="Submit" type="button" onClick={props.submit}>
-            Submit
-          </button>
-        </div>
+    <div className="Form" id="pageContainer">
+      {/* {console.log('SELECTEDFILE', selectedFile)} */}
+      <div>
+        <h1 className="new-recipes-title">New Recipe:</h1>
+        <form id="recipeForm" encType="multipart/form-data" method="POST">
+          <label className="recipe-name-title">
+            Recipe Name: <br />
+            <Input
+                className="inputBox"
+                type="text"
+                name="name"
+                value={state.name}
+                onChange={props.update}
+                placeholder="Enter Recipe Title"
+                required="required"
+            />
+          </label>{' '}
+          <Divider style={{marginBottom:10}} />
+          <label className="image">
+            Image: 
+            <Upload
+              listType="picture"
+              className="upload-list-inline"
+              onChange={props.handle}
+              // onChange={onChangeHandler}
+              beforeUpload={() => false}
+              maxCount={1}
+            >
+              <Button 
+                className="uploadButton"
+                icon={<UploadOutlined />}
+                size="large"
+                style={{
+                  display: 'inline-flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                Upload
+              </Button>
+            </Upload>
+          </label>
+          <Divider style={{marginBottom:10}} />
+          <label className="Category">
+            Categories: <br />
+            <Input
+                className="inputBox"
+                type="text"
+                name="category"
+                value={state.category}
+                onChange={props.update}
+                placeholder="Enter Categories seperated by commas. eg) Chinese, Cake, Fish"
+            />
+          </label>{' '}
+          <Divider style={{marginBottom:10}} />
+          <label className="Ingredients">
+            Recipe Ingredients: <br />
+            <TextArea
+                className="inputArea"
+                name="ingredients"
+                id="ingredientsId"
+                // value={"1 item\n2 item\n3 items"}
+                value={state.ingredients}
+                onChange={props.update}
+                placeholder="quantity/unit/ingredient&#13;3 cups carrots &#13;2 eggs &#13;5 cloves garlic &#13;etc..."
+                required
+            />
+          </label>{' '}
+          <br />
+          {console.log('state', state)}
+          <Divider style={{marginBottom:10}} />
+          <Row gutter={[10, 8]} className="numClass">
+          <Col span={8} className="col">
+              <label className="Prep" id="numLabel">
+                Prep Hours:
+                <InputNumber
+                    className="inputNumber"
+                    type="number"
+                    name="prepHour"
+                    value={state.prepHour}
+                    onChange={(value) => props.num('prepHour', value)}
+                    // onChange={(value) => setState({...state, "prepHour" : value})}
+                    min={0}
+                    defaultValue={0}
+                />
+              </label>
+            </Col>
 
+            <Col span={8} className="col">
+              <label className="Cook" id="numLabel">
+                Cook Hours:
+                <InputNumber
+                    className="inputNumber"
+                    type="number"
+                    name="cookHour"
+                    value={state.cookHour}
+                    // onChange={handleChange}
+                    // onChange={(value) => setState({...state, "cookHour" : value})}
+                    min={0}
+                    defaultValue={0}
+                />
+              </label>
+            </Col>
+            <Col span={8} className="col">
+              <label className="Serving-Size" id="numLabel">
+                Serving Size:
+                <InputNumber
+                    className="inputNumber"
+                    type="number"
+                    name="servingSize"
+                    value={state.servingSize}
+                    // onChange={(value) => setState({...state, "servingSize" : value})}
+                    // onChange={handleChange}
+                    min={1}
+                    defaultValue={1}
+                />
+              </label>
+            </Col>
+
+            <Col span={8} className="col">
+              <label className="Prep" id="numLabel">
+                Prep Mins:
+                <InputNumber
+                    className="inputNumber"
+                    type="number"
+                    name="prepMin"
+                    value={state.prepMin}
+                    // onChange={(value) => setState({...state, "prepMin" : value})}
+                    // onChange={handleChange}
+                    min={0}
+                    max={59}
+                    defaultValue={0}
+                />
+              </label>{' '}
+            </Col>
+            <Col span={8} className="col">
+              <label className="Cook" id="numLabel">
+                Cook Mins:
+                <InputNumber
+                    className="inputNumber"
+                    type="number"
+                    name="cookMin"
+                    value={state.cookMin}
+                    // onChange={(value) => setState({...state, "cookMin" : value})}
+                    // onChange={handleChange}
+                    min={0}
+                    max={59}
+                    defaultValue={0}
+                />
+              </label>{' '}
+            </Col>
+            <Col span={8} className="col">
+              <label className="Rating" id="numLabel">
+                Rating:
+                <InputNumber
+                    className="inputNumber"
+                    type="number"
+                    name="rating"
+                    value={state.rating}
+                    // onChange={(value) => setState({...state, "rating" : value})}
+                    // onChange={handleChange}
+                    min={0}
+                    max={5}
+                    defaultValue={5}
+                />
+              </label>{' '}
+            </Col>
+          </Row>
+          <Divider style={{marginBottom:10}} />
+          <label>
+            Recipe Steps: <br />
+            <TextArea
+                className="inputArea"
+                name="directions"
+                value={state.directions}
+                onChange={props.update}
+                placeholder="Chop up all carrots and garlic. &#13;&#13;Pour water over the carrots and add along the chopped garlic."
+                required
+            />
+          </label>{' '}
+          <Divider style={{marginBottom:10}} />
+          <label className="url">
+            Video Clip: <br />
+            <Input
+                className="inputBox"
+                type="text"
+                name="url"
+                value={state.url}
+                onChange={props.update}
+                placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            />
+          </label>{' '}
+          {/* <br /> */}
+          <Divider style={{marginBottom:10}} />
+
+          <label className="hidden">
+            Only Private View?
+            <Checkbox
+                className="checkBox"
+                id="checkbox"
+                type="checkbox"
+                name="hidden"
+                // value="true"
+                onChange={props.check}
+                defaultValue={false}
+            />
+          </label>{' '}
+          <br />
+          <div className="align-center">
+            <Button 
+              className="Submit" 
+              type="primary" 
+              htmlType="submit" 
+              onClick={props.submit}
+            >
+              Submit
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
+
+    
+    
+    // <div>
+    //     <label className="recipe-name-title">
+    //       Recipe Name: <br />
+    //       <input
+    //           className="inputBox"
+    //           type="text"
+    //           name="name"
+    //           value={state.name}
+    //           onChange={props.check}
+    //           placeholder="Enter Recipe Title"
+    //           required="required"
+    //       />
+    //     </label>{' '}
+    //     <br />
+    //     Image: <br />
+    //     <div className="wrap-imge">
+    //       <img id="exist-image" alt="recipe image" src={state.imageUrl}/>
+    //     </div>
+    //     <input type="file" name="file" className="inputBox" onChange={props.handle} />
+    //     <br />
+    //     <label className="Category">
+    //       Categories: <br />
+    //       <input
+    //           className="inputBox"
+    //           type="text"
+    //           name="category"
+    //           value={state.category}
+    //           onChange={props.check}
+    //           placeholder="Enter Categories seperated by commas. eg) Chinese, Cake, Fish"
+    //       />
+    //     </label>{' '}
+    //     <br />
+    //     <label className="Ingredients">
+    //       Recipe Ingredients: <br />
+    //       <textarea
+    //           className="inputBox"
+    //           name="ingredients"
+    //           value={state.ingredients}
+    //           onChange={props.check}
+    //           placeholder="quantity/unit/ingredient&#13;3 cups carrots &#13;2 eggs &#13;5 cloves garlic &#13;etc..."
+    //           required
+    //       />
+    //     </label>{' '}
+    //     <br />
+    //     <label className="Prep">
+    //       Prep Hours:
+    //       <input
+    //           className="inputBox"
+    //           type="number"
+    //           name="prepHour"
+    //           value={state.prepHour}
+    //           onChange={props.check}
+    //           min="0"
+    //       />
+    //     </label>
+    //     <label className="Prep">
+    //       Prep Mins:
+    //       <input
+    //           className="inputBox"
+    //           type="number"
+    //           name="prepMin"
+    //           value={state.prepMin}
+    //           onChange={props.check}
+    //           min="0"
+    //           max="59"
+    //       />
+    //     </label>{' '}
+    //     <br />
+    //     <label className="Cook">
+    //       Cook Hours:
+    //       <input
+    //           className="inputBox"
+    //           type="number"
+    //           name="cookHour"
+    //           value={state.cookHour}
+    //           onChange={props.check}
+    //           min="0"
+    //       />
+    //     </label>
+    //     <label className="Cook">
+    //       Cook Mins:
+    //       <input
+    //           className="inputBox"
+    //           type="number"
+    //           name="cookMin"
+    //           value={state.cookMin}
+    //           onChange={props.check}
+    //           min="0"
+    //           max="59"
+    //       />
+    //     </label>{' '}
+    //     <br />
+    //     <label className="Serving-Size">
+    //       Serving Size:
+    //       <input
+    //           className="inputBox"
+    //           type="number"
+    //           name="servingSize"
+    //           value={state.servingSize}
+    //           onChange={props.check}
+    //           min="1"
+    //       />
+    //     </label>
+    //     <label className="Rating">
+    //       Rating:
+    //       <input
+    //           className="inputBox"
+    //           type="number"
+    //           name="rating"
+    //           value={state.rating}
+    //           readOnly
+    //       />
+    //     </label>{' '}
+    //     <br />
+    //     <label>
+    //       Recipe Steps: <br />
+    //       <textarea
+    //           className="inputBox"
+    //           name="directions"
+    //           value={state.directions}
+    //           onChange={props.check}
+    //           placeholder="Chop up all carrots and garlic. &#13;&#13;Pour water over the carrots and add along the chopped garlic."
+    //           required
+    //       />
+    //     </label>{' '}
+    //     <br />
+    //     <label className="url">
+    //       Video Clip: <br />
+    //       <input
+    //           className="inputBox"
+    //           type="text"
+    //           name="url"
+    //           value={state.url}
+    //           onChange={props.check}
+    //           placeholder="e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    //       />
+    //     </label>{' '}
+    //     <br />
+    //     <label className="hidden">
+    //       <p>Only Private View?</p>
+    //       <input
+    //           id="checkbox"
+    //           className="inputBox"
+    //           type="checkbox"
+    //           name="hidden"
+    //           value={state.hidden}
+    //           onChange={props.check}
+    //       />
+    //     </label>{' '}
+    //     <br />
+    //     <div className="align-center">
+    //       <button className="Submit" type="button" onClick={props.submit}>
+    //         Submit
+    //       </button>
+    //     </div>
+
+    // </div>
     // <div>
     //     <label className="recipe-name-title">
     //       Recipe Name: <br />

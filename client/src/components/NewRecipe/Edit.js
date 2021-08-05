@@ -287,6 +287,15 @@ function Edit() {
       alert('Recipe submission FAILED!\nMake sure recipe has ingredients and directions');
     }
   };
+  const updateNum = (value, name) => {
+    console.log('in num', name, value)
+    // setState({...state, name : value})
+    let temp={
+      ...state,
+      name: value
+    }
+    setState(temp)
+  }
   return (
       <div className="Form" id="pageContainer">
         <div>
@@ -298,6 +307,7 @@ function Edit() {
               check={handleCheckBox}
               submit={handleSubmit}
               handle={onChangeHandler}
+              num={updateNum}
             />
           </form>
         </div>

@@ -30,7 +30,7 @@ function Form() {
   let [selectedFile, setSelectedFile] = useState(null);
 
   const test = async () => {
-    const res = await axios.get('/api/home/');
+    const res = await axios.get('https://backend-cepdewy2ta-nn.a.run.app/home/');
     console.log('heyo', res);
   };
   useEffect(() => {
@@ -48,7 +48,7 @@ function Form() {
       const response = await axios({
         method: 'post',
         timeout: 1000,
-        url: `/api/imageupload`,
+        url: `https://backend-cepdewy2ta-nn.a.run.app/imageupload`,
         data: formData,
       });
       if (response.status === 200){
@@ -68,7 +68,7 @@ function Form() {
       const response = await axios({
         method: 'post',
         timeout: 2000,
-        url: `/api/recipes/new`,
+        url: `https://backend-cepdewy2ta-nn.a.run.app/recipes/new`,
         data: recipeData,
       });
       if (response.status === 200){

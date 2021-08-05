@@ -53,7 +53,7 @@ const SideBar = () => {
       const userRes = await axios({
         method: 'get',
         timeout: 1000,
-        url: `/api/current_user_obj`,
+        url: `https://backend-cepdewy2ta-nn.a.run.app/current_user_obj`,
       });
       const data = userRes.data;
       setName(data.displayName.split(' ')[0]);
@@ -69,7 +69,7 @@ const SideBar = () => {
       const outRes = await axios({
         method: 'get',
         timeout: 1000,
-        url: `/api/auth/logout`,
+        url: `https://backend-cepdewy2ta-nn.a.run.app/auth/logout`,
       });
       const outd = outRes.data;
     } catch (err) {

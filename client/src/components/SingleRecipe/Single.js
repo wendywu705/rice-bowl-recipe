@@ -42,7 +42,7 @@ const SingleRecipe = () => {
         const savedResponse = await axios({
           method: 'get',
           timeout: 1000,
-          url: `/api/saved/${id}`,
+          url: `https://backend-cepdewy2ta-nn.a.run.app/saved/${id}`,
         });
         if ( [200, 304].includes(savedResponse.status) ){
           if (savedResponse.data === id){
@@ -60,7 +60,7 @@ const SingleRecipe = () => {
         const savedResponse = await axios({
           method: 'get',
           timeout: 1000,
-          url: `/api/pinned/${id}`,
+          url: `https://backend-cepdewy2ta-nn.a.run.app/pinned/${id}`,
         });
         if ( [200, 304].includes(savedResponse.status) ){
           if (savedResponse.data === id){
@@ -79,7 +79,7 @@ const SingleRecipe = () => {
         const recipeRes = await axios({
           method: 'get',
           timeout: 1000,
-          url: `/api/recipes/${id}`,
+          url: `https://backend-cepdewy2ta-nn.a.run.app/recipes/${id}`,
         });
         const body = recipeRes.data;
         let tempinit = {
@@ -106,7 +106,7 @@ const SingleRecipe = () => {
       response = await axios({
         method: 'post',
         timeout: 1000,
-        url: `/api/remove/${id}`,
+        url: `https://backend-cepdewy2ta-nn.a.run.app/remove/${id}`,
       });
       if (response.status === 200) {
         console.log(response.data);
@@ -135,7 +135,7 @@ const SingleRecipe = () => {
         const response = await axios({
           method: 'post',
           timeout: 1000,
-          url: `/api/star/remove/${id}`,
+          url: `https://backend-cepdewy2ta-nn.a.run.app/star/remove/${id}`,
         });
         if (response.status === 200) {
           console.log('ok starred!');
@@ -149,7 +149,7 @@ const SingleRecipe = () => {
         const response = await axios({
           method: 'post',
           timeout: 1000,
-          url: `/api/star/add/${id}`,
+          url: `https://backend-cepdewy2ta-nn.a.run.app/star/add/${id}`,
         });
         if (response.status === 200) {
           console.log('ok un-starred!');
@@ -175,7 +175,7 @@ const SingleRecipe = () => {
         const response = await axios({
           method: 'post',
           timeout: 1000,
-          url: `/api/pin/remove/${id}`,
+          url: `https://backend-cepdewy2ta-nn.a.run.app/pin/remove/${id}`,
         });
         if (response.status === 200) {
           console.log('ok un-pinned!');
@@ -189,7 +189,7 @@ const SingleRecipe = () => {
         const response = await axios({
           method: 'post',
           timeout: 1000,
-          url: `/api/pin/add/${id}`,
+          url: `https://backend-cepdewy2ta-nn.a.run.app/pin/add/${id}`,
         });
         if (response.status === 200) {
           console.log('ok pinned!');

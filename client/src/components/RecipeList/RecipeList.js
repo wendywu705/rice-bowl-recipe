@@ -48,13 +48,13 @@ class RecipeList extends Component {
             const pinnedResponse = await axios({
                 method: 'get',
                 timeout: 1000,
-                url: `/api/pinned`,
+                url: `https://backend-cepdewy2ta-nn.a.run.app/pinned`,
             });
 
             const savedResponse = await axios({
                 method: 'get',
                 timeout: 1000,
-                url: `/api/saved`,
+                url: `https://backend-cepdewy2ta-nn.a.run.app/saved`,
             });
             if ( [200, 304].includes(savedResponse.status) && [200, 304].includes(pinnedResponse.status)){
                 console.log('approved');

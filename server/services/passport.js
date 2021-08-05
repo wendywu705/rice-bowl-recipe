@@ -12,7 +12,7 @@ const config = {
 
 // Authorization secrets and callback URL to be used to create a new passport Strategy
 const AUTH_OPTIONS = {
-  callbackURL: '/auth/google/callback',
+  callbackURL: 'https://backend-cepdewy2ta-nn.a.run.app/auth/google/callback',
   clientID: config.CLIENT_ID,
   clientSecret: config.CLIENT_SECRET,
 };

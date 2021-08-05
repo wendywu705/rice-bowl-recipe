@@ -1,111 +1,16 @@
 @import url('https://fonts.googleapis.com/css?family=Unica+One&display=swap');
 
 .Form {
-    /*width: 100%;*/
-    display: flex;
-    /*justify-content: center;*/
-    margin-left: 22em;
-    align-items: center;
-    padding: 0.5em;
-    background-color: white;
-    color: black;
-    font-family: "Unica One", serif;
-    font-size: large;
+  margin-left: 280px;
+  /* text-align-last: center; */
+}
+.upload-list-inline .ant-upload-list-item {
+  float: left;
+  width: 200px;
+  margin-right: 8px;
 }
 
-.new-recipes-title{
-    margin-top: 6vh;
-    margin-bottom: 2vh;
+/* .upload-list-inline [class*='-upload-list-rtl'] .ant-upload-list-item {
+  float: right;
 }
-
-.recipe-name-title, .url, .Category {
-    /*width: 65%;*/
-}
-
-form{
-    justify-content: center;
-    align-items: center;
-    color: tomato;
-}
-
-label{
-    margin-top: 1em;
-}
-
-.new-recipes-title{
-    text-align: center;
-    color: black;
-    font-size: xx-large;
-}
-
-.Prep input, .Cook input, .Serving-Size input, .Rating input{
-    margin-left: 1em;
-    margin-right: 15em;
-    width: 5em;
-}
-
-.inputBox {
-    font-family: "Calibri", serif;
-    text-align: left;
-    color: black;
-    padding: 0.5em;
-    width: 80em;
-    margin-bottom: 1em;
-    font-size: medium;
-    border-radius: 10px; /*rounding textbox corners*/
-}
-
-textarea{
-    height: 10em;
-}
-
-.Ingredients input{
-    color: purple;
-    height: 10em;
-}
-
-.Prep{
-    color: darkred;
-}
-
-.Cook{
-    color: darkorchid;
-}
-
-.Time, .Serving-Size, .Rating{
-    color:green;
-}
-
-.hidden input{
-    width: 25%;
-    margin-bottom: 1em;
-}
-
-.Serving-Size {
-    margin-right: 0.2em;
-}
-
-.Submit{
-    background-color: #1c94fc;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 0.6em;
-    width: 20%;
-    font-size: large;
-    border-radius: 10px; /*rounding textbox corners*/
-}
-
-.align-center{
-    margin-left: 20px;
-    display: flex;
-    justify-content: center;
-}
-
-.hidden{
-    display: flex;
-    /*align-items: center;*/
-    width: 100%;
-}
+ */

@@ -3,6 +3,10 @@ import axios from 'axios';
 import './Form.css';
 import '../Layout/Footer.css'
 
+import { Input, Upload, Button, InputNumber, Checkbox } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+const { TextArea } = Input;
+
 const { v4: uuidv4 } = require('uuid');
 
 function Form() {
@@ -84,8 +88,18 @@ function Form() {
   };
 
   // General handle change function to update each corresponding value in recipe state
+  const numberChange = (value, name) => setState({...state, name:value});
+  // const numberChange = (value, name) => {
+  //   console.log(name, state.name)
+  //   // setState({
+  //   //   ...state,
+  //   //   name: value,
+  //   // });
+  //   setState({...state, name:value})
+  // }
   function handleChange(event) {
     const value = event.target.value;
+    console.log('handleChange',value)
     setState({
       ...state,
       [event.target.name]: value,
@@ -93,7 +107,9 @@ function Form() {
   }
 
   function handleCheckBox(event) {
-    handleChange(event);
+    console.log('checkbox', event)
+    // handleChange(event);
+    setState({...state, "hidden":event.target.checked})
     const hidden = document.getElementById('hidden');
     if (hidden) {
       hidden.value = hidden !== true;
@@ -219,7 +235,8 @@ function Form() {
           <form id="recipeForm" encType="multipart/form-data" method="POST">
             <label className="recipe-name-title">
               Recipe Name: <br />
-              <input
+              {/* <input */}
+              <Input
                   className="inputBox"
                   type="text"
                   name="name"
@@ -231,11 +248,28 @@ function Form() {
             </label>{' '}
             <br />
             Image: <br />
-            <input type="file" name="file" className="inputBox" onChange={onChangeHandler} />
+            {/* <input type="file" name="file" className="inputBox" onChange={onChangeHandler} /> */}
+            <Upload
+              // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              listType="picture"
+              // defaultFileList={[...fileList]}
+              className="upload-list-inline"
+            >
+              <Button 
+                icon={<UploadOutlined />}
+                style={{
+                  display: 'inline-flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                Upload
+              </Button>
+            </Upload>
             <br />
             <label className="Category">
               Categories: <br />
-              <input
+              <Input
                   className="inputBox"
                   type="text"
                   name="category"
@@ -243,11 +277,19 @@ function Form() {
                   onChange={handleChange}
                   placeholder="Enter Categories seperated by commas. eg) Chinese, Cake, Fish"
               />
+              {/* <input
+                  className="inputBox"
+                  type="text"
+                  name="category"
+                  value={state.category}
+                  onChange={handleChange}
+                  placeholder="Enter Categories seperated by commas. eg) Chinese, Cake, Fish"
+              /> */}
             </label>{' '}
             <br />
             <label className="Ingredients">
               Recipe Ingredients: <br />
-              <textarea
+              <TextArea
                   className="inputBox"
                   name="ingredients"
                   value={state.ingredients}
@@ -255,22 +297,53 @@ function Form() {
                   placeholder="quantity/unit/ingredient&#13;3 cups carrots &#13;2 eggs &#13;5 cloves garlic &#13;etc..."
                   required
               />
+              {/* <textarea
+                  className="inputBox"
+                  name="ingredients"
+                  value={state.ingredients}
+                  onChange={handleChange}
+                  placeholder="quantity/unit/ingredient&#13;3 cups carrots &#13;2 eggs &#13;5 cloves garlic &#13;etc..."
+                  required
+              /> */}
             </label>{' '}
             <br />
+            {console.log('state', state)}
             <label className="Prep">
               Prep Hours:
-              <input
+              <InputNumber
+                  className="inputBox"
+                  type="number"
+                  name="prepHour"
+                  value={state.prepHour}
+                  onChange={(value) => setState({...state, "prepHour" : value})}
+                  // onChange={(value) => numberChange(value, "prepHour")}
+                  // onChange={handleChange}
+                  min={0}
+                  defaultValue={0}
+              />
+              {/* <input
                   className="inputBox"
                   type="number"
                   name="prepHour"
                   value={state.prepHour}
                   onChange={handleChange}
                   min="0"
-              />
+              /> */}
             </label>
             <label className="Prep">
               Prep Mins:
-              <input
+              <InputNumber
+                  className="inputBox"
+                  type="number"
+                  name="prepMin"
+                  value={state.prepMin}
+                  onChange={(value) => setState({...state, "prepMin" : value})}
+                  // onChange={handleChange}
+                  min={0}
+                  max={59}
+                  defaultValue={0}
+              />
+              {/* <input
                   className="inputBox"
                   type="number"
                   name="prepMin"
@@ -278,23 +351,44 @@ function Form() {
                   onChange={handleChange}
                   min="0"
                   max="59"
-              />
+              /> */}
             </label>{' '}
             <br />
             <label className="Cook">
               Cook Hours:
-              <input
+              <InputNumber
+                  className="inputBox"
+                  type="number"
+                  name="cookHour"
+                  value={state.cookHour}
+                  // onChange={handleChange}
+                  onChange={(value) => setState({...state, "cookHour" : value})}
+                  min={0}
+                  defaultValue={0}
+              />
+              {/* <input
                   className="inputBox"
                   type="number"
                   name="cookHour"
                   value={state.cookHour}
                   onChange={handleChange}
                   min="0"
-              />
+              /> */}
             </label>
             <label className="Cook">
               Cook Mins:
-              <input
+              <InputNumber
+                  className="inputBox"
+                  type="number"
+                  name="cookMin"
+                  value={state.cookMin}
+                  onChange={(value) => setState({...state, "cookMin" : value})}
+                  // onChange={handleChange}
+                  min={0}
+                  max={59}
+                  defaultValue={0}
+              />
+              {/* <input
                   className="inputBox"
                   type="number"
                   name="cookMin"
@@ -302,23 +396,44 @@ function Form() {
                   onChange={handleChange}
                   min="0"
                   max="59"
-              />
+              /> */}
             </label>{' '}
             <br />
             <label className="Serving-Size">
               Serving Size:
-              <input
+              <InputNumber
+                  className="inputBox"
+                  type="number"
+                  name="servingSize"
+                  value={state.servingSize}
+                  onChange={(value) => setState({...state, "servingSize" : value})}
+                  // onChange={handleChange}
+                  min={1}
+                  defaultValue={1}
+              />
+              {/* <input
                   className="inputBox"
                   type="number"
                   name="servingSize"
                   value={state.servingSize}
                   onChange={handleChange}
                   min="1"
-              />
+              /> */}
             </label>
             <label className="Rating">
               Rating:
-              <input
+              <InputNumber
+                  className="inputBox"
+                  type="number"
+                  name="rating"
+                  value={state.rating}
+                  onChange={(value) => setState({...state, "rating" : value})}
+                  // onChange={handleChange}
+                  min={0}
+                  max={5}
+                  defaultValue={5}
+              />
+              {/* <input
                   className="inputBox"
                   type="number"
                   name="rating"
@@ -326,12 +441,12 @@ function Form() {
                   onChange={handleChange}
                   min="0"
                   max="5"
-              />
+              /> */}
             </label>{' '}
             <br />
             <label>
               Recipe Steps: <br />
-              <textarea
+              <TextArea
                   className="inputBox"
                   name="directions"
                   value={state.directions}
@@ -339,11 +454,19 @@ function Form() {
                   placeholder="Chop up all carrots and garlic. &#13;&#13;Pour water over the carrots and add along the chopped garlic."
                   required
               />
+              {/* <textarea
+                  className="inputBox"
+                  name="directions"
+                  value={state.directions}
+                  onChange={handleChange}
+                  placeholder="Chop up all carrots and garlic. &#13;&#13;Pour water over the carrots and add along the chopped garlic."
+                  required
+              /> */}
             </label>{' '}
             <br />
             <label className="url">
               Video Clip: <br />
-              <input
+              <Input
                   className="inputBox"
                   type="text"
                   name="url"
@@ -351,23 +474,42 @@ function Form() {
                   onChange={handleChange}
                   placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
               />
+              {/* <input
+                  className="inputBox"
+                  type="text"
+                  name="url"
+                  value={state.url}
+                  onChange={handleChange}
+                  placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+              /> */}
             </label>{' '}
             <br />
             <label className="hidden">
               <p>Only Private View?</p>
-              <input
+              <Checkbox
+                  className="inputBox"
+                  type="checkbox"
+                  name="hidden"
+                  // value="true"
+                  onChange={handleCheckBox}
+                  defaultValue={false}
+              />
+              {/* <input
                   className="inputBox"
                   type="checkbox"
                   name="hidden"
                   value="true"
                   onChange={handleCheckBox}
-              />
+              /> */}
             </label>{' '}
             <br />
             <div className="align-center">
-              <button className="Submit" type="submit" onClick={handleSubmit}>
+              <Button className="Submit" type="primary" htmlType="submit" onClick={handleSubmit}>
                 Submit
-              </button>
+              </Button>
+              {/* <button className="Submit" type="submit" onClick={handleSubmit}>
+                Submit
+              </button> */}
             </div>
           </form>
         </div>

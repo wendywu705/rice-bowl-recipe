@@ -70,6 +70,18 @@ const MealWeek = () => {
     12: 'Dec',
   };
 
+  const testWeek = () => {
+    console.log('testweek');
+    const currentDate = moment().format('L');
+    const currentThing = moment().format('dddd').toLowerCase();
+    // const startDate = moment(currentDate)
+    //   .subtract(daysMapper[currentThing], 'days')
+    //   .format('L');
+    const startDate = moment(currentDate).subtract(8, 'days').format('L');
+    console.log('cur date', currentDate);
+    console.log('subed date', startDate);
+  };
+
   const parseWeek = (currentWeek) => {
     let parsedDates = currentWeek.split('to');
     // Starting Month
@@ -211,7 +223,7 @@ const MealWeek = () => {
       });
       if (resp.data[0].weeks.length === 0) {
         setPlan(store);
-        setCurrentData(findThisWeek());
+        setCurrentWeek(findThisWeek());
       } else {
         setPlan(resp.data[0].weeks);
         resp.data[0].weeks.find((value, idx) => {
@@ -235,10 +247,11 @@ const MealWeek = () => {
   };
 
   useEffect(() => {
+    testWeek();
     dataFetch();
     planFetch();
     printableDate(currentWeek);
-  }, [currentWeek]);
+  }, [plan, currentWeek]);
 
   const addMeal = (meal, listId, title) => {
     const newMeal = {

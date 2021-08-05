@@ -1,6 +1,6 @@
 const weekData = [
   {
-    dates: '0725021to07312021',
+    dates: '07/25/2021to07/31/2021',
     lists: [
       {
         listId: '0',
@@ -61,7 +61,7 @@ const weekData = [
     ],
   },
   {
-    dates: '08012021to08072021',
+    dates: '08/01/2021to08/07/2021',
     lists: [
       {
         listId: '0',
@@ -123,7 +123,7 @@ const weekData = [
   },
   // Next
   {
-    dates: '08082021to08142021',
+    dates: '08/08/2021to08/14/2021',
     lists: [
       {
         listId: '0',

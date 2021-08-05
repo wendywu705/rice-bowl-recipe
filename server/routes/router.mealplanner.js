@@ -19,23 +19,321 @@ module.exports = (app) => {
 
   app.get('/api/mealplanner', checkAuth, async (req, res) => {
     console.log(userId);
-    const resp = await MealPlanner.find({ userId });
-    console.log('resp', resp);
-    res.send(`Welcome user:${userId}`);
+    try {
+      const resp = await MealPlanner.find({ userId });
+      console.log('resp', resp);
+      res.json(resp);
+    } catch (err) {
+      console.log(err);
+    }
   });
 
-  app.post('/api/mealplanner', checkAuth, (req, res) => {
+  app.post('/api/mealplanner', checkAuth, async (req, res) => {
     console.log(userId);
-    const weeks = [
+    console.log(req.body.mealplanner);
+    const weeks = req.body.mealplanner;
+    const weekz = [
       {
         dates: '08012021to08072021',
         lists: [
           {
-            listId: 'list-1',
+            listId: '0',
             meals: {
               breakfast: [
                 {
-                  recipeId: '1',
+                  recipeId: '102',
+                  name: 'Potato Soup',
+                  category: ['Light', 'Breakfast'],
+                  time: {
+                    cookHour: 0.5,
+                    cookMin: 0,
+                    prepHour: 0.5,
+                    prepMin: 0,
+                  },
+                  imageUrl:
+                    'https://www.tasteofhome.com/wp-content/uploads/2018/01/Potato-Soup_EXPS_CWDJ17_44986_C08_19_5b-4.jpg',
+                },
+              ],
+              lunch: [],
+              dinner: [],
+            },
+          },
+          {
+            listId: '1',
+            meals: {
+              breakfast: [
+                {
+                  recipeId: '102',
+                  name: 'Potato Soup',
+                  category: ['Light', 'Breakfast'],
+                  time: {
+                    cookHour: 0.5,
+                    cookMin: 0,
+                    prepHour: 0.5,
+                    prepMin: 0,
+                  },
+                  imageUrl:
+                    'https://www.tasteofhome.com/wp-content/uploads/2018/01/Potato-Soup_EXPS_CWDJ17_44986_C08_19_5b-4.jpg',
+                },
+              ],
+              lunch: [],
+              dinner: [],
+            },
+          },
+          {
+            listId: '2',
+            meals: {
+              breakfast: [
+                {
+                  recipeId: '102',
+                  name: 'Potato Soup',
+                  category: ['Light', 'Breakfast'],
+                  time: {
+                    cookHour: 0.5,
+                    cookMin: 0,
+                    prepHour: 0.5,
+                    prepMin: 0,
+                  },
+                  imageUrl:
+                    'https://www.tasteofhome.com/wp-content/uploads/2018/01/Potato-Soup_EXPS_CWDJ17_44986_C08_19_5b-4.jpg',
+                },
+              ],
+              lunch: [],
+              dinner: [],
+            },
+          },
+          {
+            listId: '3',
+            meals: {
+              breakfast: [
+                {
+                  recipeId: '102',
+                  name: 'Potato Soup',
+                  category: ['Light', 'Breakfast'],
+                  time: {
+                    cookHour: 0.5,
+                    cookMin: 0,
+                    prepHour: 0.5,
+                    prepMin: 0,
+                  },
+                  imageUrl:
+                    'https://www.tasteofhome.com/wp-content/uploads/2018/01/Potato-Soup_EXPS_CWDJ17_44986_C08_19_5b-4.jpg',
+                },
+              ],
+              lunch: [],
+              dinner: [],
+            },
+          },
+          {
+            listId: '4',
+            meals: {
+              breakfast: [
+                {
+                  recipeId: '102',
+                  name: 'Potato Soup',
+                  category: ['Light', 'Breakfast'],
+                  time: {
+                    cookHour: 0.5,
+                    cookMin: 0,
+                    prepHour: 0.5,
+                    prepMin: 0,
+                  },
+                  imageUrl:
+                    'https://www.tasteofhome.com/wp-content/uploads/2018/01/Potato-Soup_EXPS_CWDJ17_44986_C08_19_5b-4.jpg',
+                },
+              ],
+              lunch: [],
+              dinner: [],
+            },
+          },
+          {
+            listId: '5',
+            meals: {
+              breakfast: [
+                {
+                  recipeId: '102',
+                  name: 'Potato Soup',
+                  category: ['Light', 'Breakfast'],
+                  time: {
+                    cookHour: 0.5,
+                    cookMin: 0,
+                    prepHour: 0.5,
+                    prepMin: 0,
+                  },
+                  imageUrl:
+                    'https://www.tasteofhome.com/wp-content/uploads/2018/01/Potato-Soup_EXPS_CWDJ17_44986_C08_19_5b-4.jpg',
+                },
+              ],
+              lunch: [],
+              dinner: [],
+            },
+          },
+          {
+            listId: '6',
+            meals: {
+              breakfast: [
+                {
+                  recipeId: '102',
+                  name: 'Potato Soup',
+                  category: ['Light', 'Breakfast'],
+                  time: {
+                    cookHour: 0.5,
+                    cookMin: 0,
+                    prepHour: 0.5,
+                    prepMin: 0,
+                  },
+                  imageUrl:
+                    'https://www.tasteofhome.com/wp-content/uploads/2018/01/Potato-Soup_EXPS_CWDJ17_44986_C08_19_5b-4.jpg',
+                },
+              ],
+              lunch: [],
+              dinner: [],
+            },
+          },
+        ],
+      },
+      // Next
+      {
+        dates: '08082021to08142021',
+        lists: [
+          {
+            listId: '0',
+            meals: {
+              breakfast: [
+                {
+                  recipeId: '102',
+                  name: 'Potato Soup',
+                  category: ['Light', 'Breakfast'],
+                  time: {
+                    cookHour: 0.5,
+                    cookMin: 0,
+                    prepHour: 0.5,
+                    prepMin: 0,
+                  },
+                  imageUrl:
+                    'https://www.tasteofhome.com/wp-content/uploads/2018/01/Potato-Soup_EXPS_CWDJ17_44986_C08_19_5b-4.jpg',
+                },
+              ],
+              lunch: [],
+              dinner: [],
+            },
+          },
+          {
+            listId: '1',
+            meals: {
+              breakfast: [
+                {
+                  recipeId: '102',
+                  name: 'Potato Soup',
+                  category: ['Light', 'Breakfast'],
+                  time: {
+                    cookHour: 0.5,
+                    cookMin: 0,
+                    prepHour: 0.5,
+                    prepMin: 0,
+                  },
+                  imageUrl:
+                    'https://www.tasteofhome.com/wp-content/uploads/2018/01/Potato-Soup_EXPS_CWDJ17_44986_C08_19_5b-4.jpg',
+                },
+              ],
+              lunch: [],
+              dinner: [],
+            },
+          },
+          {
+            listId: '2',
+            meals: {
+              breakfast: [
+                {
+                  recipeId: '102',
+                  name: 'Potato Soup',
+                  category: ['Light', 'Breakfast'],
+                  time: {
+                    cookHour: 0.5,
+                    cookMin: 0,
+                    prepHour: 0.5,
+                    prepMin: 0,
+                  },
+                  imageUrl:
+                    'https://www.tasteofhome.com/wp-content/uploads/2018/01/Potato-Soup_EXPS_CWDJ17_44986_C08_19_5b-4.jpg',
+                },
+              ],
+              lunch: [],
+              dinner: [],
+            },
+          },
+          {
+            listId: '3',
+            meals: {
+              breakfast: [
+                {
+                  recipeId: '102',
+                  name: 'Potato Soup',
+                  category: ['Light', 'Breakfast'],
+                  time: {
+                    cookHour: 0.5,
+                    cookMin: 0,
+                    prepHour: 0.5,
+                    prepMin: 0,
+                  },
+                  imageUrl:
+                    'https://www.tasteofhome.com/wp-content/uploads/2018/01/Potato-Soup_EXPS_CWDJ17_44986_C08_19_5b-4.jpg',
+                },
+              ],
+              lunch: [],
+              dinner: [],
+            },
+          },
+          {
+            listId: '4',
+            meals: {
+              breakfast: [
+                {
+                  recipeId: '102',
+                  name: 'Potato Soup',
+                  category: ['Light', 'Breakfast'],
+                  time: {
+                    cookHour: 0.5,
+                    cookMin: 0,
+                    prepHour: 0.5,
+                    prepMin: 0,
+                  },
+                  imageUrl:
+                    'https://www.tasteofhome.com/wp-content/uploads/2018/01/Potato-Soup_EXPS_CWDJ17_44986_C08_19_5b-4.jpg',
+                },
+              ],
+              lunch: [],
+              dinner: [],
+            },
+          },
+          {
+            listId: '5',
+            meals: {
+              breakfast: [
+                {
+                  recipeId: '102',
+                  name: 'Potato Soup',
+                  category: ['Light', 'Breakfast'],
+                  time: {
+                    cookHour: 0.5,
+                    cookMin: 0,
+                    prepHour: 0.5,
+                    prepMin: 0,
+                  },
+                  imageUrl:
+                    'https://www.tasteofhome.com/wp-content/uploads/2018/01/Potato-Soup_EXPS_CWDJ17_44986_C08_19_5b-4.jpg',
+                },
+              ],
+              lunch: [],
+              dinner: [],
+            },
+          },
+          {
+            listId: '6',
+            meals: {
+              breakfast: [
+                {
+                  recipeId: '102',
                   name: 'Potato Soup',
                   category: ['Light', 'Breakfast'],
                   time: {
@@ -55,6 +353,11 @@ module.exports = (app) => {
         ],
       },
     ];
+    const filter = { userId };
+    const update = { weeks };
+    let resp = await MealPlanner.findOneAndUpdate(filter, update, {
+      new: true,
+    });
     res.send(`Welcome user:${userId}`);
   });
 };

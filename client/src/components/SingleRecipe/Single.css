@@ -55,11 +55,6 @@ h1 {
   justify-content: space-between;
   align-items: flex-start;
 }
-/* .editContainer {
-    padding-right: 30px;
-    font-size: 5px;
-    cursor: pointer;
-} */
 
 .bottomContainer {
   display: flex;
@@ -67,9 +62,9 @@ h1 {
 
 .leftContainer {
   max-width: 350px;
+  min-width: 280px;
   padding-left: 30px;
   margin-right: 10px;
-  /* background-color: blue; */
 }
 
 .rightContainer {
@@ -85,9 +80,7 @@ h1 {
 .subHeader {
   font-size: 30px;
   font-family: 'Unica One', cursive;
-  /* margin-bottom: 0px !important; */
   margin-top: 10px;
-  /* padding-bottom: 40px; */
 }
 
 .ServingAmt {

@@ -35,7 +35,6 @@ const MealSnippet = ({ setOpenPopup, listId, title, recipe }) => {
 
   return (
     <div>
-      {console.log('cat', recipe.category)}
       <Paper elevation={1} style={{ marginBottom: '10px' }}>
         <div>
           <div className={classes.flexy}>

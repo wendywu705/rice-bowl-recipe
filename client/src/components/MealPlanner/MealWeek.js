@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { v4 as uuid } from 'uuid';
-import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import MPlanner from './MPlanner';
 import './MPlanner.css';
-import List from './List';
 import store from '../MealPlanner/data';
 import ContextApi from './ContextApi';
 import { Button } from 'antd';
@@ -68,7 +65,8 @@ const MealWeek = () => {
         timeout: 1000,
         url: `/api/mealplanner/`,
       });
-      console.log('meal plan data', resp.data);
+      console.log('meal plan data', resp.data[0].weeks[0]);
+      setPlan(resp.data[0].weeks[0]);
     } catch (err) {
       console.log(err);
     }
@@ -81,9 +79,8 @@ const MealWeek = () => {
   }, []);
 
   const addMeal = (meal, listId, title) => {
-    const newMealId = uuid();
     const newMeal = {
-      recipeid: newMealId,
+      recipeid: meal.recipeId,
       ...meal,
     };
     const dataList = data.lists;
@@ -167,11 +164,28 @@ const MealWeek = () => {
         <div
           style={{
             display: 'flex',
-            justifyContent: 'center',
             marginBottom: '2em',
           }}
         >
-          <Button onClick={handleSave} type="primary">
+          <Button
+            style={{ marginRight: '1em' }}
+            onClick={handleSave}
+            type="primary"
+          >
+            Named Plans
+          </Button>
+          <Button
+            style={{ marginRight: '2em' }}
+            onClick={handleSave}
+            type="primary"
+          >
+            Weekly Plans
+          </Button>
+          <Button
+            style={{ marginLeft: '1em' }}
+            onClick={handleSave}
+            type="primary"
+          >
             <SaveFilled />
             Save Plan
           </Button>

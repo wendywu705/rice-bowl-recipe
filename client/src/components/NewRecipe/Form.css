@@ -3,14 +3,114 @@
 .Form {
   margin-left: 280px;
   /* text-align-last: center; */
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  /* background-color: aqua; */
+  min-width: 670px;
+  margin-bottom: 40px;
 }
+
+.new-recipes-title {
+  text-align: center;
+}
+
 .upload-list-inline .ant-upload-list-item {
   float: left;
-  width: 200px;
+  width: 190px;
   margin-right: 8px;
+}
+
+.uploadButton {
+  margin-left: 15px;
 }
 
 /* .upload-list-inline [class*='-upload-list-rtl'] .ant-upload-list-item {
   float: right;
+} */
+
+/* .inputBox,
+.uploadButton,
+.inputArea,
+.inputNumber,
+.checkBox */
+
+.inputBox,
+.inputArea {
+  width: 650px;
 }
- */
+.inputBox {
+  height: 40px;
+}
+.inputArea {
+  min-height: 100px !important;
+}
+#ingredientsId {
+  height: 130px;
+}
+
+.inputArea::-webkit-scrollbar {
+  width: 10px;
+}
+
+.inputArea::-webkit-scrollbar-thumb {
+  background-color: #dfe6eb; 
+  border-radius: 20px;     
+}
+
+.inputNumber {
+  width: 70px;
+  float: right;
+}
+
+#numLabel {
+  width: 170px;
+  /* background-color: red; */
+}
+
+.col {
+  width: 0px;
+}
+
+.numClass {
+  /* margin-left: 10px !important; */
+  margin: 15px 0px 0px 10px !important;
+}
+
+label {
+  color: #1c94fc;
+  /* margin-top: 15px; */
+  font-size: 18px;
+  font-family: 'Advent Pro', sans-serif;
+  font-weight: 500;
+}
+/* .Category {
+  margin-top: 15px;
+  
+} */
+
+.image {
+  width: 100%;
+}
+
+.hidden {
+  display: flex;
+  align-items: baseline;
+}
+
+.checkBox {
+  margin-left: 15px;
+  /* font-size: 100px; */
+  transform: scale(1.3)
+}
+
+.Submit {
+  font-family: 'Advent Pro', sans-serif;
+  font-weight: 500;
+  font-size: 17px;
+  text-transform: uppercase;
+  width: 200px;
+  height: 50px;
+  margin: auto;
+  display: block;
+}

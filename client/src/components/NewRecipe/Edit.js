@@ -90,7 +90,6 @@ function Edit(props) {
 
   // Handles the AJAX request for uploading the recipe data
   const recipeEdit = async () => {
-    console.log('recipeData', recipeData)
     try{
       const response = await axios({
         method: 'post',
@@ -112,10 +111,8 @@ function Edit(props) {
   // Handles 2 AJAX request, one for uploading the image to GCS, and other for uploading the recipe data
   const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log('insubmit')
 
     // form validation
-    console.log('check for valid props', props.valid())
     if(!props.valid()){
       console.log('Form validation failed');
       console.log('errors:',state.errors);

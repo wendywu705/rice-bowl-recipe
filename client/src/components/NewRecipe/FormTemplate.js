@@ -45,7 +45,6 @@ const FormTemplate = (props) => {
               // fileList={props.pic}
               fileList={props.pic}
             >
-              {console.log('pic',props.pic)}
               <Button 
                 className="uploadButton"
                 icon={<UploadOutlined />}
@@ -86,7 +85,6 @@ const FormTemplate = (props) => {
             />
           </label>{' '}
           <br />
-          {console.log('state', state)}
           <Divider style={{marginBottom:10}} />
           <Row gutter={[10, 8]} className="numClass">
           <Col span={8} className="col">

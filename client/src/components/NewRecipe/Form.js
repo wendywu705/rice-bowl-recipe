@@ -42,7 +42,6 @@ const Form = (props) => {
   const parseDirections = (dir) => {
     let resDir = ""
     for (let i=0; i<dir.length; i++) {
-      console.log('part dir', dir[i])
       resDir += dir[i]
       if (i < dir.length-1) {
         resDir += "\n"
@@ -67,7 +66,6 @@ const Form = (props) => {
     hidden,
     recipeId
   ) => {
-    console.log('updating state')
     return(
       setState({
         ...state,
@@ -91,7 +89,6 @@ const Form = (props) => {
 
   // Track the uploaded image as a state
   const onChangeHandler = (e) => {
-    console.log('inchange', e)
     if (e.file.status === 'removed'){
       setSelectedFile(null)
       setRemove(true)
@@ -104,7 +101,6 @@ const Form = (props) => {
 
   // General handle change function to update each corresponding value in recipe state
   function handleChange(event) {
-    console.log('in props.update (handlechange)')
     const value = event.target.value;
     setState({
       ...state,
@@ -113,7 +109,6 @@ const Form = (props) => {
   }
 
   function handleCheckBox(event) {
-    console.log('in props.check (handleCheckBox)')
     setState({...state, "hidden":event.target.checked})
     const hidden = document.getElementById('hidden');
     if (hidden) {
@@ -122,7 +117,6 @@ const Form = (props) => {
   }
 
   function handleValidation() {
-    console.log('validating')
     let formIsValid = true;
     state.errors = {};
 
@@ -180,7 +174,6 @@ const Form = (props) => {
   }
 
   const updateNum = (key, value) => {
-    console.log('in props.num (updateNum)')
     setState(state=> ({
       ...state,
       [key]: value

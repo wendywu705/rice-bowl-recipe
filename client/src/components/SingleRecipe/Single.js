@@ -390,6 +390,11 @@ const SingleRecipe = () => {
               </Link>
               <Button
                 danger
+                style={{
+                  fontSize: '17px', 
+                  display: 'inline-flex',
+                  alignItems: 'center'
+                }}
                 onClick = {() => {
                   const confirmBox = window.confirm("Are you sure you want to delete this recipe?")
                   if (confirmBox === true){

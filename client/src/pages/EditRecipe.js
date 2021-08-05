@@ -7,9 +7,7 @@ function EditRecipe() {
     return (
         <div>
             <SideBar />
-            <Form 
-              type="edit"
-            />
+            <Form type="edit" />
             <WebsiteFooter />
         </div>
     );

@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MPlanner from './MPlanner';
 import './MPlanner.css';
 import store from '../MealPlanner/data';
+import blank from '../MealPlanner/blank';
 import ContextApi from './ContextApi';
 import { Button } from 'antd';
 import moment from 'moment';
@@ -55,18 +56,37 @@ const MealWeek = () => {
   const [plan, setPlan] = useState([]);
 
   const months = {
-    1: 'Jan',
-    2: 'Feb',
-    3: 'Mar',
-    4: 'Apr',
-    5: 'May',
-    6: 'Jun',
-    7: 'Jul',
-    8: 'Aug',
-    9: 'Sep',
+    '01': 'Jan',
+    '02': 'Feb',
+    '03': 'Mar',
+    '04': 'Apr',
+    '05': 'May',
+    '06': 'Jun',
+    '07': 'Jul',
+    '08': 'Aug',
+    '09': 'Sep',
     10: 'Oct',
     11: 'Nov',
     12: 'Dec',
+  };
+
+  const parseWeek = (currentWeek) => {
+    let parsedDates = currentWeek.split('to');
+    // Starting Month
+    let sm = parsedDates[0].slice(0, 2);
+    // Starting Day
+    let sd = parsedDates[0].slice(2, 4);
+    // Starting Year
+    let sy = parsedDates[0].slice(4, 8);
+
+    // Ending Month, Day, Year
+    let em = parsedDates[1].slice(0, 2);
+    let ed = parsedDates[1].slice(2, 4);
+    let ey = parsedDates[1].slice(4, 8);
+    let smonth = months[sm];
+    let emonth = months[em];
+    let sdate = `${smonth} ${sd}, ${sy} - ${emonth} ${ed}, ${ey}`;
+    return sdate;
   };
 
   const findThisWeek = () => {
@@ -91,7 +111,6 @@ const MealWeek = () => {
   const printableDate = (currentWeek) => {
     let parsedDates = currentWeek.split('to');
     let startDate = moment(parsedDates[0]).format('DD-MM-YYYY');
-    console.log('ddd', startDate);
   };
 
   const findWeek = (direction, currentWeek) => {
@@ -138,14 +157,10 @@ const MealWeek = () => {
 
     let newParsedDate = nsm + nsd + nsy + 'to' + nem + ned + ney;
 
-    console.log('newy', newParsedDate);
     return newParsedDate;
   };
 
   const handleSave = async () => {
-    console.log('Saving Meal Planner');
-    console.log('plan', plan);
-    console.log('currentdata', currentData);
     let idx = 0;
     for (let el of plan) {
       if (el.dates === currentWeek) {
@@ -157,7 +172,6 @@ const MealWeek = () => {
 
     let dataToSend = [...plan];
     dataToSend[idx] = currentData;
-    console.log('dataToSend', dataToSend);
 
     try {
       const resp = await axios({
@@ -188,25 +202,32 @@ const MealWeek = () => {
   };
 
   const planFetch = async () => {
+    let found = false;
     try {
       const resp = await axios({
         method: 'get',
         timeout: 1000,
         url: `/api/mealplanner/`,
       });
-      console.log('meal plan data', resp.data[0].weeks);
-      console.log('store', store);
       if (resp.data[0].weeks.length === 0) {
         setPlan(store);
-        setCurrentData(store[0]);
+        setCurrentData(findThisWeek());
       } else {
         setPlan(resp.data[0].weeks);
         resp.data[0].weeks.find((value, idx) => {
           if (value.dates === currentWeek) {
             console.log('current val', value);
             setCurrentData(value);
+            found = true;
           }
         });
+      }
+      if (!found) {
+        // Do this
+        let newData = blank;
+        newData.dates = findThisWeek();
+        setCurrentData(newData);
+        setCurrentWeek(findThisWeek());
       }
     } catch (err) {
       console.log(err);
@@ -214,7 +235,6 @@ const MealWeek = () => {
   };
 
   useEffect(() => {
-    console.log(findThisWeek());
     dataFetch();
     planFetch();
     printableDate(currentWeek);
@@ -263,13 +283,11 @@ const MealWeek = () => {
   };
 
   const handleOnClickRight = () => {
-    console.log('Clicked Right');
     const newDate = findWeek('right', currentWeek);
     setCurrentWeek(newDate);
   };
 
   const handleOnClickLeft = () => {
-    console.log('Clicked Left');
     const newDate = findWeek('left', currentWeek);
     setCurrentWeek(newDate);
   };
@@ -291,7 +309,8 @@ const MealWeek = () => {
               }}
               onClick={handleOnClickLeft}
             />
-            <h2 style={{ textAlign: 'center' }}>Aug 1, 2021 - Aug 7, 2021</h2>
+            <h2 style={{ textAlign: 'center' }}>{parseWeek(currentWeek)}</h2>
+            {/* <h2 style={{ textAlign: 'center' }}>Aug 1, 2021 - Aug 7, 2021</h2> */}
             <RightOutlined
               style={{
                 marginTop: '0.2em',
@@ -307,20 +326,6 @@ const MealWeek = () => {
               marginBottom: '2em',
             }}
           >
-            <Button
-              style={{ marginRight: '1em' }}
-              onClick={handleSave}
-              type="primary"
-            >
-              Named Plans
-            </Button>
-            <Button
-              style={{ marginRight: '2em' }}
-              onClick={handleSave}
-              type="primary"
-            >
-              Weekly Plans
-            </Button>
             <Button
               style={{ marginLeft: '1em' }}
               onClick={handleSave}

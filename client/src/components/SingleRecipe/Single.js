@@ -389,12 +389,13 @@ const SingleRecipe = () => {
                 </Button>
               </Link>
               <Button
-                  onClick = {() => {
-                    const confirmBox = window.confirm("Are you sure you want to delete this recipe?")
-                    if (confirmBox === true){
-                      handleDelete()
-                    }
-                  }}
+                danger
+                onClick = {() => {
+                  const confirmBox = window.confirm("Are you sure you want to delete this recipe?")
+                  if (confirmBox === true){
+                    handleDelete()
+                  }
+                }}
               >
                 Delete
               </Button>

@@ -7,6 +7,7 @@ import '../Layout/Footer.css';
 
 const Form = (props) => {
   const [file, setFile] = useState([]);
+  const [remove, setRemove] =  useState(false);
   const [state, setState] = useState({
     name: '',
     ingredients: '',
@@ -93,6 +94,7 @@ const Form = (props) => {
     console.log('inchange', e)
     if (e.file.status === 'removed'){
       setSelectedFile(null)
+      setRemove(true)
     }
     else {
       setSelectedFile(e.file);
@@ -191,7 +193,7 @@ const Form = (props) => {
     return retImg;
   }
 
-  if (file.length===0 && state.imageUrl) {
+  if (file.length===0 && state.imageUrl && !remove) {
     setFile([
       {
         uid: '-1',

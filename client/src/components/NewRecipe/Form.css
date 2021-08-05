@@ -111,3 +111,9 @@ textarea{
     /*align-items: center;*/
     width: 100%;
 }
+
+#exist-image{
+    width: auto !important;
+    height: 150px;
+}
+

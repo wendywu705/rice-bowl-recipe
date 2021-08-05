@@ -57,8 +57,8 @@ const InappTimer = (props) => {
           </Button>,
         ]}
       >
-        {(getTimeArr() && getTimeArr().length!==0 )? 
-          getTimeArr().map(data => {
+        {getTimeArr().length!==0 ? 
+          getTimeArr().map((data, index, arr) => {
             return (
               <div style={{display:'flex', alignItems:'center'}}>
                 <div style={{

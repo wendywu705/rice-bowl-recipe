@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './Form.css';
 import '../Layout/Footer.css'
@@ -25,12 +26,63 @@ const FormTemplate = (props) => {
   });
   // Holds the uploaded image file in a state
   let [selectedFile, setSelectedFile] = useState(null);
+  const { id } = useParams();
 
   const test = async () => {
     const res = await axios.get('https://localhost:9000/home/');
     console.log('heyo', res);
+    if (state.hidden){
+      document.getElementById('checkbox').checked = true;
+    } else {
+      document.getElementById('checkbox').checked = false;
+    }
   };
+
+  const editRequest = async () => {
+    try{
+      const editResponse = await axios({
+        method: 'get',
+        timeout: 1000,
+        url: `https://localhost:9000/recipes/edit/${id}`
+      });
+      if( [200, 304].includes(editResponse.status)){
+        console.log('mesg from edit', editResponse.data);
+        Object.values(editResponse).map((res) => {
+          let ingre_string = '';
+          if (res.ingredients != null && res.ingredients != undefined){
+            Object.values(res.ingredients).map((ing) => {
+              let quantity = ing.quantity ? ing.quantity : 0;
+              let description = ing.description ? ing.description : '';
+              let unit = ing.unitOfMeasure ? ing.unitOfMeasure : '';
+              ingre_string += quantity + ' ' + unit + ' ' + description + '\n';
+            })
+          }
+          console.log(res.directions.toString());
+          setState({
+            ...state,
+            name: res.name,
+            imageUrl: res.imageUrl,
+            category: res.category,
+            ingredients: ingre_string,
+            prepMin: res.time.prepMin,
+            prepHour: res.time.prepHour,
+            cookHour: res.time.cookHour,
+            cookMin: res.time.cookMin,
+            servingSize: res.servingSize,
+            rating: res.meta.rating, //TODO: change so that the author cannot change rating
+            directions: res.directions.toString().split('.').join('.\n'),
+            url: res.url ? res.url : '',
+            hidden: res.hidden
+          });
+        });
+      }
+    } catch (err){
+      console.log('err',err);
+    }
+  }
+
   useEffect(() => {
+    editRequest();
     test();
   }, []);
 
@@ -60,15 +112,15 @@ const FormTemplate = (props) => {
   };
 
   // Handles the AJAX request for uploading the recipe data
-  const recipeRequest = async () => {
+  const recipeEdit = async () => {
     try{
       const response = await axios({
         method: 'post',
         timeout: 2000,
-        url: `https://localhost:9000/recipes/new`,
+        url: `https://localhost:9000/recipes/edit/${id}`,
         data: recipeData,
       });
-      if (response.status === 200){
+      if ( [200, 304].includes(response.status) ){
         console.log('res',response);
         return response.data;
       }
@@ -176,12 +228,7 @@ const FormTemplate = (props) => {
     // Create a unique imageURL for each image
     //if no image inserted
     if (!selectedFile){
-      console.log('no image, using stock apron image')
-      let defaultFileName = `c9f85699-7aae-45bf-b47e-5c1913f06d6a-no_image.jpeg`
-      tempData = {
-        ...state,
-        imageUrl: `https://storage.googleapis.com/ricebowl-bucket-1/${defaultFileName}`,
-      };
+      console.log('did not change the image, use the old one')
     }
     //image is inserted
     else{
@@ -202,11 +249,11 @@ const FormTemplate = (props) => {
       }
     }
     recipeData.append('data', JSON.stringify(tempData));
-    let recipeResId = await recipeRequest();
+    let recipeResId = await recipeEdit();
     if (recipeResId){
       alert('Recipe submitted successfully!');
-      console.log('new recipe_id',recipeResId);
-      window.location.assign(`../recipe/${recipeResId}`);
+      console.log('edited recipe_id',recipeResId);
+      window.location.assign(`../${recipeResId}`);
     }
     else{
       alert('Recipe submission FAILED!\nMake sure recipe has ingredients and directions');
@@ -233,6 +280,7 @@ const FormTemplate = (props) => {
         </label>{' '}
         <br />
         Image: <br />
+        <div className="wrap-imge"><img id="exist-image" alt="recipe image" src={state.imageUrl}/></div>
         <input type="file" name="file" className="inputBox" onChange={onChangeHandler} />
         <br />
         <label className="Category">
@@ -325,9 +373,7 @@ const FormTemplate = (props) => {
               type="number"
               name="rating"
               value={state.rating}
-              onChange={handleChange}
-              min="0"
-              max="5"
+              readOnly
           />
         </label>{' '}
         <br />
@@ -351,17 +397,18 @@ const FormTemplate = (props) => {
               name="url"
               value={state.url}
               onChange={handleChange}
-              placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+              placeholder="e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ"
           />
         </label>{' '}
         <br />
         <label className="hidden">
           <p>Only Private View?</p>
           <input
+              id="checkbox"
               className="inputBox"
               type="checkbox"
               name="hidden"
-              value="true"
+              value={state.hidden}
               onChange={handleCheckBox}
           />
         </label>{' '}

@@ -322,6 +322,26 @@ module.exports = (app) => {
     }
   });
 
+  app.get('/recipes/edit/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+      // faster to use find().limit(1) instead of findOne()
+      const results = await RecipeModel.find({ recipeId: +id }).limit(1);
+      const recipe = results[0];
+      if (recipe) {
+        console.log('parse content of recipe to edit page');
+        res.send(recipe);
+      } else {
+        const dne = 'no such recipe with this id';
+        console.log(dne);
+        res.json({ error: dne });
+      }
+    } catch (err) {
+      console.log('fail to go to edit page');
+      res.json({ error: err.message });
+    }
+  });
+
   app.delete('/recipes/:id', async (req, res) => {
     console.log(req.params);
     const query = { _id: mongoose.Types.ObjectId(req.params.id) };
@@ -410,5 +430,59 @@ module.exports = (app) => {
         throw err;
       }
     });
+  });
+
+  app.post('/recipes/edit/:recipeId', multer.single('file'), async (req, res) => {
+    let resId = req.params.recipeId;
+    if(userId) console.log('Updating recipe', resId);
+    console.log('user ', userId, ' is updating the recipe');
+    try {
+      const filter = {recipeId: req.params.recipeId}
+      const query = JSON.parse(req.body.data);
+      console.log('q::::', query);
+      const postReq = {};
+      if (query.category) {
+        console.log(query.category);
+        if (query.category.includes(",")){
+          postReq.category = query.category
+            .replace(', ', ',')
+            .replace(' ,', ',')
+            .split(','); 
+        } else {
+          postReq.category = query.category
+        }
+      }
+      if (query.ingredients) {
+        postReq.ingredients = parseIngredient(query.ingredients.toLowerCase());
+      }
+      if (query.directions) {
+        postReq.directions = query.directions
+          .replace(/[\r]/g, '')
+          .split('\n')
+          .filter((T) => T.length > 0)
+          .map((item) => item.trim());
+      }
+      postReq.hidden = !!query.hidden;
+      postReq.name = query.name;
+      postReq.votes = +1;
+      postReq.time = {
+        prepHour: query.prepHour,
+        prepMin: query.prepMin,
+        cookHour: query.cookHour,
+        cookMin: query.cookMin,
+      };
+      postReq.meta = { votes: 1, rating: query.rating };
+      postReq.url = query.url;
+      postReq.imageUrl = query.imageUrl; // Embed the Google Cloud Storage image URL
+      postReq.servingSize = +query.servingSize;
+      await RecipeModel.findOneAndUpdate(filter, postReq, {upsert: true}, function(err, result){
+        if (err) res.send(500, {error: err})
+        console.log('recipe updated successfully', result);
+        res.json(resId);
+      })
+    } catch (err3) {
+      console.log('error, cant update the recipe');
+      console.log(err3);
+    }
   });
 };

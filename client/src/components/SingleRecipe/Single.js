@@ -24,7 +24,7 @@ import {
 } from '@ant-design/icons';
 
 window.onload = function() {
-  if(!window.location.hash && window.location.pathname.includes('/recipe/')) {
+  if(!window.location.hash && window.location.pathname.includes('/recipes/')) {
     window.location = window.location + '#loaded';
     window.location.reload();
   }

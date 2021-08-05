@@ -37,6 +37,17 @@ const FormTemplate = (props) => {
       document.getElementById('checkbox').checked = false;
     }
   };
+  const parseDirections = (dir) => {
+    let resDir = ""
+    for (let i=0; i<dir.length; i++) {
+      console.log('part dir', dir[i])
+      resDir += dir[i]
+      if (i < dir.length-1) {
+        resDir += "\n"
+      }
+    }
+    return resDir;
+  }
 
   const editRequest = async () => {
     try{
@@ -57,7 +68,7 @@ const FormTemplate = (props) => {
               ingre_string += quantity + ' ' + unit + ' ' + description + '\n';
             })
           }
-          console.log(res.directions.toString());
+          // console.log(res.directions.toString());
           setState({
             ...state,
             name: res.name,
@@ -70,7 +81,7 @@ const FormTemplate = (props) => {
             cookMin: res.time.cookMin,
             servingSize: res.servingSize,
             rating: res.meta.rating, //TODO: change so that the author cannot change rating
-            directions: res.directions.toString().split('.').join('.\n'),
+            directions: parseDirections(res.directions),
             url: res.url ? res.url : '',
             hidden: res.hidden
           });
@@ -113,6 +124,7 @@ const FormTemplate = (props) => {
 
   // Handles the AJAX request for uploading the recipe data
   const recipeEdit = async () => {
+    console.log('receipeEdit')
     try{
       const response = await axios({
         method: 'post',
@@ -280,7 +292,9 @@ const FormTemplate = (props) => {
         </label>{' '}
         <br />
         Image: <br />
-        <div className="wrap-imge"><img id="exist-image" alt="recipe image" src={state.imageUrl}/></div>
+        <div className="wrap-imge">
+          <img id="exist-image" alt="recipe image" src={state.imageUrl}/>
+        </div>
         <input type="file" name="file" className="inputBox" onChange={onChangeHandler} />
         <br />
         <label className="Category">

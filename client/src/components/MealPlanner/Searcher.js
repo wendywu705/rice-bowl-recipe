@@ -10,14 +10,27 @@ const Searcher = ({
   filteredList,
   setFilteredList,
 }) => {
+  const findTag = (recipe) => {
+    for (let tag of recipe['category']) {
+      if (tag.toLowerCase().includes(value.toLowerCase())) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   useEffect(() => {
     if (value === '') {
       setFilteredList(reList);
     } else {
       setFilteredList(
-        reList.filter((recipe) =>
-          recipe['name'].toLowerCase().includes(value.toLowerCase())
-        )
+        reList.filter((recipe) => {
+          findTag(recipe);
+          return (
+            recipe['name'].toLowerCase().includes(value.toLowerCase()) ||
+            findTag(recipe)
+          );
+        })
       );
     }
   }, [value, reList]);

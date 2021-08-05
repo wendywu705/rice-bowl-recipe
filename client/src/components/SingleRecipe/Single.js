@@ -15,22 +15,23 @@ import '../Layout/Footer.css'
 import { Divider, InputNumber, Button } from 'antd';
 
 import {
+  DeleteOutlined,
   EditOutlined,
   LeftOutlined,
   SaveOutlined,
   PushpinOutlined
 } from '@ant-design/icons';
 
-window.onload = function() {
-  if(!window.location.hash && window.location.pathname.includes('/recipe/')) {
-    window.location = window.location + '#loaded';
-    window.location.reload();
-  }
-}
+// window.onload = function() {
+//   console.log('location',window.location);
+//   if(!window.location.hash && window.location.pathname.includes('/recipe/')) {
+//     window.location = window.location + '#loaded';
+//     window.location.reload();
+//   }
+// }
 
 const SingleRecipe = () => {
   const [newFoodData, setNewFoodData] = useState(null);
-  // const [isVisible, setVisible] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -74,7 +75,7 @@ const SingleRecipe = () => {
 
     const fetchSingleRecipe = async () => {
       try {
-        window.onload();
+        // window.onload();
         const recipeRes = await axios({
           method: 'get',
           timeout: 1000,
@@ -98,13 +99,38 @@ const SingleRecipe = () => {
     fetchSingleRecipe().then(recipeObj => console.log('done fetch for recipeId = ',recipeObj.recipeId));
   }, [id]);
 
-
+  const handleDelete = async () => {
+    let response;
+    console.log('try to delete');
+    try{
+      response = await axios({
+        method: 'post',
+        timeout: 1000,
+        url: `https://localhost:9000/remove/${id}`,
+      });
+      if (response.status === 200) {
+        console.log(response.data);
+        if (Object.keys(response.data).length>1) {
+          console.log('ok removed and hidden!');
+          window.alert('Success, recipe deleted!');
+          window.location.replace('/home');
+        } else if (Object.keys(response.data).length === 1){
+          console.log('ok removed!');
+          window.alert('Success, recipe removed from lists!');
+          window.location.replace('/home');
+        } else{
+          window.alert('Failed to delete recipe');
+        }
+      }} catch (e) {
+      console.log('err', e);
+      window.alert('Failed to delete recipe')
+    }
+  }
 
   const updateFavourite = async () => {
     let newFav;
     if (newFoodData.isFavourite === true) {
-      console.log('attemping to star');
-      newFav = false;
+      console.log('attemping to un-star');
       try {
         const response = await axios({
           method: 'post',
@@ -118,8 +144,7 @@ const SingleRecipe = () => {
         console.log('err', err);
       }
     } else {
-      console.log('attempting to un-star');
-      newFav = !newFoodData.isFavourite;
+      console.log('attempting to star');
       try {
         const response = await axios({
           method: 'post',
@@ -133,6 +158,7 @@ const SingleRecipe = () => {
         console.log('err', err);
       }
     }
+    newFav = !newFoodData.isFavourite;
     let tempfav = {
       ...newFoodData,
       isFavourite: newFav,
@@ -144,8 +170,7 @@ const SingleRecipe = () => {
   const updatePinned = async () => {
     let newPin;
     if (newFoodData.isPinned === true) {
-      console.log('attemping to pin');
-      newPin = false;
+      console.log('attemping to un-pin');
       try {
         const response = await axios({
           method: 'post',
@@ -153,14 +178,13 @@ const SingleRecipe = () => {
           url: `https://localhost:9000/pin/remove/${id}`,
         });
         if (response.status === 200) {
-          console.log('ok pinned!');
+          console.log('ok un-pinned!');
         }
       } catch (err) {
         console.log('err', err);
       }
     } else {
-      console.log('attempting to un-pin');
-      newPin = !newFoodData.isPinned;
+      console.log('attempting to pin');
       try {
         const response = await axios({
           method: 'post',
@@ -168,12 +192,13 @@ const SingleRecipe = () => {
           url: `https://localhost:9000/pin/add/${id}`,
         });
         if (response.status === 200) {
-          console.log('ok un-pinned!');
+          console.log('ok pinned!');
         }
       } catch (err) {
         console.log('err', err);
       }
     }
+    newPin = !newFoodData.isPinned;
     let temppin = {
       ...newFoodData,
       isPinned: newPin,
@@ -194,11 +219,11 @@ const SingleRecipe = () => {
   const newAvg = (newValue) => {
     if (newFoodData && newFoodData.meta) {
       return (
-        (
-          newFoodData.meta.rating +
-          (newValue - newFoodData.meta.rating) / (newFoodData.meta.votes + 1)
-        )
-          .toFixed(2)
+          (
+              newFoodData.meta.rating +
+              (newValue - newFoodData.meta.rating) / (newFoodData.meta.votes + 1)
+          )
+              .toFixed(2)
       );
     }
   };
@@ -246,8 +271,8 @@ const SingleRecipe = () => {
       return null;
     }
     if (
-      (type === 'fav' && newFoodData.isFavourite === true) ||
-      (type === 'pin' && newFoodData.isPinned === true)
+        (type === 'fav' && newFoodData.isFavourite === true) ||
+        (type === 'pin' && newFoodData.isPinned === true)
     ) {
       return '#1C94FC';
     } else {
@@ -261,7 +286,7 @@ const SingleRecipe = () => {
       style={{
         margin: '10px 100px 0px 300px',
       }}
-    > 
+    >
       {newFoodData &&
         <div>
           {console.log(newFoodData)}
@@ -360,6 +385,22 @@ const SingleRecipe = () => {
                 }}
               >
                 Edit
+              </Button>
+              <Button
+                  type = "button"
+                  icon={<DeleteOutlined />}
+                  style={{
+                    fontSize: '17px',
+                    lineHeight: '17px',
+                  }}
+                  onClick = {() => {
+                    const confirmBox = window.confirm("Are you sure you want to delete this recipe?")
+                    if (confirmBox === true){
+                      handleDelete()
+                    }
+                  }}
+              >
+                Delete
               </Button>
             </div>
           </div>

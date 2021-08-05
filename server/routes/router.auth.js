@@ -1,4 +1,5 @@
 const passport = require('passport');
+require('dotenv').config();
 
 module.exports = (app) => {
   // This function checks that the user is Authenticated
@@ -27,7 +28,7 @@ module.exports = (app) => {
     '/auth/google/callback',
     passport.authenticate('google', {
       failureRedirect: '/error',
-      successRedirect: 'http://localhost:3000/home',
+      successRedirect: `${process.env.CLIENT_URL}/home`,
       session: true,
     }),
     (_req, _res) => {

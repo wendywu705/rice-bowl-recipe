@@ -23,8 +23,6 @@ services:
     restart: unless-stopped
   client:
     container_name: 'client'
-    volumes:
-      - ./certs:/etc/nginx/certs
     build: #
       context: ./client
       dockerfile: ./dockerfile
@@ -33,7 +31,7 @@ services:
       - backend
     image: "ricebowl-client:latest" #
     ports:
-      - "3000:80"
+      - "80:80"
     restart: unless-stopped
     environment:
       - NODE_ENV=development

@@ -2,8 +2,8 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://localhost:3000/",
-  "proxy": "https://localhost:9000/",
+  "homepage": "http://localhost:3000",
+  "proxy": "http://localhost:9000",
   "dependencies": {
     "@react-pdf/renderer": "^2.0.17",
     "@testing-library/jest-dom": "^5.11.4",
@@ -12,6 +12,7 @@
     "antd": "^4.16.7",
     "axios": "^0.21.1",
     "bootstrap": "^5.0.2",
+    "dotenv": "^8.2.0",
     "install": "^0.13.0",
     "npm": "^7.20.3",
     "react": "^17.0.2",

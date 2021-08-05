@@ -1,12 +1,12 @@
-const fs = require('fs');
 const cors = require('cors');
-const https = require('https'); // for serving SSL/HTTPS (placeholder until replaced by nginx)
+// const https = require('https'); // for serving SSL/HTTPS (placeholder until replaced by nginx)
 const helmet = require('helmet'); // for application security
 const logger = require('morgan');
 const express = require('express');
 const passport = require('passport'); // for authentication
 const cookieSession = require('cookie-session');
 const mongoose = require('mongoose');
+const http = require('http');
 const userRouter = require('./routes/router.user');
 require('dotenv').config();
 require('./models/User');
@@ -86,14 +86,7 @@ app.use('/user', userRouter);
 // Self-signed OpenSSL digitial certification for SSL/TLS/https connections
 // Note that this will be replaced with app.listen(), and SSL/TLS will be handled by Nginx
 // once the application is fully deployed on the Google Cloud VM
-https
-  .createServer(
-    {
-      key: fs.readFileSync('./key.pem'),
-      cert: fs.readFileSync('./cert.pem'),
-    },
-    app,
-  )
-  .listen(PORT, () => {
-    console.log(`[Server]: Listening on port: ${PORT}`);
-  });
+http.createServer(
+  app,
+).listen(PORT);
+console.log(`Server running at http://localhost:${PORT}/`);

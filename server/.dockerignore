@@ -1,3 +1,5 @@
 node_modules
 package-lock.json~origin_master
 .env
+cert.pem
+key.pem

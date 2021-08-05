@@ -119,6 +119,7 @@ const Form = (props) => {
   }
 
   function handleValidation() {
+    console.log('validating')
     let formIsValid = true;
     state.errors = {};
 
@@ -164,14 +165,14 @@ const Form = (props) => {
       state.errors["time"] = "Time cannot be negative.";
     }
 
-    //url
-    let valid = /^(https?:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/;
-    if (state.url.length>0) {
-      if (!valid.exec(state.url)) {
-        state.errors["url"] = "Invalid youtube url";
-      }
+    // url
+    try {
+      new URL(state.url);
+    } catch (e) {
+      console.error(e);
+      state.errors["url"] = "Invalid youtube url";
+      formIsValid  = false;
     }
-
     return formIsValid;
   }
 
@@ -183,15 +184,12 @@ const Form = (props) => {
   }
 
   const getImgName = (img) => {
-    console.log('imagename', img)
     let ind = img.lastIndexOf('-');
     let retImg = img.substring(ind+1, img.length)
-    console.log(typeof retImg)
     return retImg;
   }
 
   if (file.length===0 && state.imageUrl) {
-    console.log('inhere')
     setFile([
       {
         uid: '-1',
@@ -202,7 +200,6 @@ const Form = (props) => {
       }
     ])
   }
-
 
   let fullData = {
     valid: handleValidation,
@@ -223,7 +220,6 @@ const Form = (props) => {
     fullData, 
     {pic: undefined, fill:undefined}
   );
-  console.log('filelist', file)
   return(
     <div>
       { (props.type==="edit") ?

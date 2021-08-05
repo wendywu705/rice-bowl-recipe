@@ -112,9 +112,11 @@ function Edit(props) {
   // Handles 2 AJAX request, one for uploading the image to GCS, and other for uploading the recipe data
   const handleSubmit = async(e) => {
     e.preventDefault();
+    console.log('insubmit')
 
     // form validation
-    if(!props.valid){
+    console.log('check for valid props', props.valid())
+    if(!props.valid()){
       console.log('Form validation failed');
       console.log('errors:',state.errors);
       let errors = JSON.stringify(state.errors).replace(/\\n/g, "\\n");
@@ -172,11 +174,11 @@ function Edit(props) {
           <FormTemplate 
             type="edit"
             data={state}
-            update={props.update}
-            check={props.check}
+            update={props.update()}
+            check={props.check()}
             submit={handleSubmit}
-            handle={props.handle}
-            num={props.num}
+            handle={props.handle()}
+            num={props.num()}
             pic={props.pic}
           />
         </form>

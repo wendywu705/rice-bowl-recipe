@@ -129,7 +129,6 @@ const FormTemplate = (props) => {
                     name="servingSize"
                     value={state.servingSize}
                     onChange={(value) => props.num('servingSize', value)}
-                    // onChange={handleChange}
                     min={1}
                     defaultValue={1}
                 />
@@ -145,7 +144,6 @@ const FormTemplate = (props) => {
                     name="prepMin"
                     value={state.prepMin}
                     onChange={(value) => props.num('prepMin', value)}
-                    // onChange={(value) => setState({...state, "prepMin" : value})}
                     min={0}
                     max={59}
                     defaultValue={0}
@@ -161,7 +159,6 @@ const FormTemplate = (props) => {
                     name="cookMin"
                     value={state.cookMin}
                     onChange={(value) => props.num('cookMin', value)}
-                    // onChange={(value) => setState({...state, "cookMin" : value})}
                     min={0}
                     max={59}
                     defaultValue={0}
@@ -178,7 +175,6 @@ const FormTemplate = (props) => {
                     value={state.rating}
                     disabled={props.type==="edit" ? true : false}
                     onChange={(value) => props.num('rating', value)}
-                    // onChange={(value) => setState({...state, "rating" : value})}
                     min={0}
                     max={5}
                     defaultValue={5}

@@ -59,7 +59,7 @@ function New(props) {
     e.preventDefault();
 
     //form validation
-    if(!props.valid){
+    if(!props.valid()){
       console.log('Form validation failed');
       console.log('errors:',state.errors);
       let errors = JSON.stringify(state.errors).replace(/\\n/g, "\\n");
@@ -117,11 +117,11 @@ function New(props) {
             <FormTemplate 
               type="new"
               data={state}
-              update={props.update}
-              check={props.check}
+              update={props.update()}
+              check={props.check()}
               submit={handleSubmit}
-              handle={props.handle}
-              num={props.num}
+              handle={props.handle()}
+              num={props.num()}
             />
           </form>
         </div>

@@ -11,7 +11,7 @@ import { LeftOutlined, RightOutlined, SaveFilled } from '@ant-design/icons';
 
 const useStyle = makeStyles((theme) => ({
   root: {
-    width: '320px',
+    width: '300px',
     backgroundColor: '#fafafa',
     marginLeft: theme.spacing(1),
     marginTop: theme.spacing(1),
@@ -21,7 +21,7 @@ const useStyle = makeStyles((theme) => ({
     textAlign: 'center',
   },
   divvy: {
-    width: '320px',
+    width: '300px',
   },
 }));
 

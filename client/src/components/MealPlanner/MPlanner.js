@@ -5,7 +5,7 @@ import List from './List';
 
 const useStyle = makeStyles((theme) => ({
   root: {
-    width: '280px',
+    width: '260px',
     backgroundColor: '#fafafa',
     marginLeft: theme.spacing(1),
     marginTop: theme.spacing(1),
@@ -16,7 +16,7 @@ const useStyle = makeStyles((theme) => ({
     color: '#002699',
   },
   divvy: {
-    width: '320px',
+    width: '300px',
   },
   today: {
     color: '#ffdb4d',

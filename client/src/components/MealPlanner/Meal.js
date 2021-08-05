@@ -3,6 +3,7 @@ import { Paper, Typography } from '@material-ui/core';
 import { Tag } from 'antd';
 import { makeStyles } from '@material-ui/core/styles';
 import ContextApi from './ContextApi';
+import { Link } from 'react-router-dom';
 
 import { CloseSquareTwoTone } from '@ant-design/icons';
 
@@ -42,7 +43,9 @@ const Meal = (props) => {
           <img className={classes.image} src={props.meal.imageUrl} alt="food" />
           <div className={classes.food}>
             <Typography style={{ fontWeight: 'bold' }}>
-              {props.meal.name}
+              <Link to={`/recipe/${props.meal.recipeId}`}>
+                {props.meal.name}
+              </Link>
             </Typography>
             <div style={{ display: 'flex' }}>
               {props.meal.category.map((cat) => {
@@ -57,7 +60,7 @@ const Meal = (props) => {
           <CloseSquareTwoTone
             style={{
               marginLeft: 'auto',
-              marginRight: 0,
+              marginRight: '0',
               fontSize: '20px',
             }}
             onClick={handleOnClose}

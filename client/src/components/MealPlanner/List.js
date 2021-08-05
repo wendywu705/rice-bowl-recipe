@@ -7,7 +7,7 @@ import Add from './Add';
 
 const useStyle = makeStyles((theme) => ({
   root: {
-    width: '270px',
+    width: '260px',
     // backgroundColor: '#EBECF0',
     backgroundColor: '#fafcff',
 

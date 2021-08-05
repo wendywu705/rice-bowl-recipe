@@ -117,11 +117,11 @@ function New(props) {
             <FormTemplate 
               type="new"
               data={state}
-              update={props.update()}
-              check={props.check()}
+              update={props.update}
+              check={props.check}
               submit={handleSubmit}
-              handle={props.handle()}
-              num={props.num()}
+              handle={props.handle}
+              num={props.num}
             />
           </form>
         </div>

@@ -174,11 +174,11 @@ function Edit(props) {
           <FormTemplate 
             type="edit"
             data={state}
-            update={props.update()}
-            check={props.check()}
+            update={props.update}
+            check={props.check}
             submit={handleSubmit}
-            handle={props.handle()}
-            num={props.num()}
+            handle={props.handle}
+            num={props.num}
             pic={props.pic}
           />
         </form>

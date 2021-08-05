@@ -102,6 +102,7 @@ const Form = (props) => {
 
   // General handle change function to update each corresponding value in recipe state
   function handleChange(event) {
+    console.log('in props.update (handlechange)')
     const value = event.target.value;
     setState({
       ...state,
@@ -110,7 +111,7 @@ const Form = (props) => {
   }
 
   function handleCheckBox(event) {
-    console.log('checkbox', event)
+    console.log('in props.check (handleCheckBox)')
     setState({...state, "hidden":event.target.checked})
     const hidden = document.getElementById('hidden');
     if (hidden) {
@@ -177,6 +178,7 @@ const Form = (props) => {
   }
 
   const updateNum = (key, value) => {
+    console.log('in props.num (updateNum)')
     setState(state=> ({
       ...state,
       [key]: value

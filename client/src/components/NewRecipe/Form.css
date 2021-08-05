@@ -38,6 +38,8 @@ label{
 .inputBox,
 .inputArea {
   width: 650px;
+  font-size: 17px;
+  font-family: 'Abel';
 }
 .inputBox {
   height: 40px;

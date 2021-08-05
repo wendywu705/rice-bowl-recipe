@@ -6,6 +6,7 @@ import './MPlanner.css';
 import store from '../MealPlanner/data';
 import ContextApi from './ContextApi';
 import { Button } from 'antd';
+import moment from 'moment';
 import { LeftOutlined, RightOutlined, SaveFilled } from '@ant-design/icons';
 
 const useStyle = makeStyles((theme) => ({
@@ -23,6 +24,16 @@ const useStyle = makeStyles((theme) => ({
     width: '320px',
   },
 }));
+
+const daysMapper = {
+  sunday: 0,
+  monday: 1,
+  tuesday: 2,
+  wednesday: 3,
+  thursday: 4,
+  friday: 5,
+  saturday: 6,
+};
 
 const days = [
   'Sunday',
@@ -42,6 +53,13 @@ const MealWeek = () => {
   const [mealData, setMealData] = useState(null);
   const classes = useStyle();
   const [plan, setPlan] = useState([]);
+
+  const findThisWeek = () => {
+    console.log(moment().format('YYYYMMDD'));
+    const dateFormat = moment().format('DDMMYYYY');
+    const today = moment().format('dddd').toLowerCase();
+    console.log(today);
+  };
 
   const handleSave = async () => {
     console.log('Saving Meal Planner');
@@ -116,6 +134,7 @@ const MealWeek = () => {
 
   useEffect(() => {
     console.log('in Use Effect');
+    findThisWeek();
     dataFetch();
     planFetch();
   }, []);
@@ -227,18 +246,6 @@ const MealWeek = () => {
             </Button>
           </div>
           <div style={{ display: 'flex' }}>
-            {/* {data.listsIdx.map((listIdx) => {
-            const list = data.lists[listIdx];
-            console.log('lili', list);
-            return (
-              <MPlanner
-                day={list.title}
-                list={list}
-                key={listIdx}
-                recipes={savedRecipes}
-              />
-            );
-          })} */}
             {currentData.lists.map((list, idx) => {
               return (
                 <MPlanner

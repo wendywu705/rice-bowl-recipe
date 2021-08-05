@@ -11,11 +11,7 @@ const useStyle = makeStyles((theme) => ({
   },
   addMeal: {
     padding: theme.spacing(1, 1, 1, 2),
-    // margin: theme.spacing(0, 1, 1, 1),
-    background: '#EBECF0',
-    // '&:hover': {
-    //   backgroundColor: fade('#000', 0.25),
-    // },
+    background: '#fafcff',
   },
 }));
 

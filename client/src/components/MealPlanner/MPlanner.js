@@ -13,9 +13,13 @@ const useStyle = makeStyles((theme) => ({
   },
   center: {
     textAlign: 'center',
+    color: '#002699',
   },
   divvy: {
     width: '320px',
+  },
+  today: {
+    color: '#ffdb4d',
   },
 }));
 

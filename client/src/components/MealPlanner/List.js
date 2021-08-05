@@ -31,7 +31,7 @@ const List = (props) => {
   return (
     <div>
       <Paper className={classes.root}>
-        <CssBaseline />
+        {/* <CssBaseline /> */}
         <Title
           className={classes.title}
           title={props.title}

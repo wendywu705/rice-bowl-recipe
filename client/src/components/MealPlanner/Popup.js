@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog, DialogTitle, DialogContent } from '@material-ui/core';
+import { Dialog, DialogContent } from '@material-ui/core';
 import { Button } from 'antd';
 
 const Popup = (props) => {

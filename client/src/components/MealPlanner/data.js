@@ -1,36 +1,3 @@
-const meals = [
-  {
-    recipeId: 1,
-    name: 'Chicken Pizza',
-    meta: { votes: 1, rating: 5 },
-    category: ['Chinese'],
-    time: {
-      cookHour: 1,
-      cookMin: 0,
-      prepHour: 1,
-      prepMin: 0,
-    },
-    imageUrl:
-      'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?webp=true&quality=90&resize=620%2C563',
-  },
-  {
-    recipeid: 2,
-    name: 'Chicken Pizza',
-    rating: 4,
-    category: ['Mexican'],
-    prepHour: 2,
-    cookingHour: 2,
-  },
-  {
-    recipeid: 3,
-    name: 'Cheese Burger',
-    rating: 3,
-    category: ['American'],
-    prepHour: 1,
-    cookingHour: 0.5,
-  },
-];
-
 const weekData = {
   lists: {
     'list-1': {

@@ -1,9 +1,7 @@
 import React, { useContext } from 'react';
 import { Paper, Typography } from '@material-ui/core';
-import { Tag, Divider } from 'antd';
-import Chip from '@material-ui/core/Chip';
+import { Tag } from 'antd';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button } from 'antd';
 import ContextApi from './ContextApi';
 
 import { CloseSquareTwoTone } from '@ant-design/icons';
@@ -34,13 +32,11 @@ const Meal = (props) => {
 
   const { removeMeal } = useContext(ContextApi);
   const handleOnClose = () => {
-    console.log('Click X');
-    console.log(props);
-    removeMeal(props.listId, props.title, props.meal.recipeid);
+    console.log(props.listId, props.title, props.meal.recipeId);
+    removeMeal(props.listId, props.title, props.meal.recipeId);
   };
   return (
     <div>
-      {console.log('in Meal:', props.meal)}
       <Paper className={classes.meal}>
         <div className={classes.flexy}>
           <img className={classes.image} src={props.meal.imageUrl} alt="food" />

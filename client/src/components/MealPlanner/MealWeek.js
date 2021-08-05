@@ -24,20 +24,50 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
+const days = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
+
 const MealWeek = () => {
   const [data, setData] = useState(store);
   const [savedRecipes, setSavedRecipes] = useState([]);
+  const [currentWeek, setCurrentWeek] = useState('08012021to08072021');
+  const [currentData, setCurrentData] = useState(null);
   const [mealData, setMealData] = useState(null);
   const classes = useStyle();
   const [plan, setPlan] = useState([]);
 
   const handleSave = async () => {
     console.log('Saving Meal Planner');
+    console.log('plan', plan);
+    console.log('currentdata', currentData);
+    let idx = 0;
+    for (let el of plan) {
+      if (el.dates === currentWeek) {
+        console.log(idx);
+        break;
+      }
+      idx++;
+    }
+
+    let dataToSend = [...plan];
+    dataToSend[idx] = currentData;
+    console.log('dataToSend', dataToSend);
+
     try {
       const resp = await axios({
         method: 'post',
         timeout: 1000,
         url: `/api/mealplanner/`,
+        data: {
+          mealplanner: dataToSend,
+        },
       });
     } catch (err) {
       console.log(err);
@@ -65,8 +95,14 @@ const MealWeek = () => {
         timeout: 1000,
         url: `/api/mealplanner/`,
       });
-      console.log('meal plan data', resp.data[0].weeks[0]);
-      setPlan(resp.data[0].weeks[0]);
+      console.log('meal plan data', resp.data[0].weeks);
+      setPlan(resp.data[0].weeks);
+      resp.data[0].weeks.find((value, idx) => {
+        if (value.dates === currentWeek) {
+          console.log('current val', value);
+          setCurrentData(value);
+        }
+      });
     } catch (err) {
       console.log(err);
     }
@@ -80,54 +116,44 @@ const MealWeek = () => {
 
   const addMeal = (meal, listId, title) => {
     const newMeal = {
-      recipeid: meal.recipeId,
       ...meal,
     };
-    const dataList = data.lists;
+    const currentList = currentData.lists;
     const newMeals = {
-      ...dataList[listId].meals,
-      [title]: [...dataList[listId].meals[title], newMeal],
+      ...currentList[listId].meals,
+      [title]: [...currentList[listId].meals[title], newMeal],
     };
-    const newdataList = {
-      ...dataList,
-      [listId]: {
-        ...dataList[listId],
-        meals: { ...newMeals },
-      },
+    const newCurrentList = [...currentList];
+    newCurrentList[listId] = {
+      ...currentList[listId],
+      meals: newMeals,
     };
 
-    setData({
-      ...data,
-      lists: { ...newdataList },
+    setCurrentData({
+      ...currentData,
+      lists: [...newCurrentList],
     });
   };
 
   const removeMeal = (listId, title, mealId) => {
-    console.log(listId, title, mealId);
-    const dataList = data.lists;
-    const mealList = dataList[listId].meals[title];
+    const currentList = currentData.lists;
+    const mealList = currentList[listId].meals[title];
     const newMealList = mealList.filter((meal) => {
-      return meal.recipeid !== mealId;
+      return meal.recipeId !== mealId;
     });
-    const newdataList = {
-      ...dataList,
-      [listId]: {
-        ...dataList[listId],
-        meals: {
-          ...dataList[listId].meals,
-          [title]: newMealList,
-        },
+    const newCurrentList = [...currentList];
+    newCurrentList[listId] = {
+      ...currentList[listId],
+      meals: {
+        ...currentList[listId].meals,
+        [title]: newMealList,
       },
     };
 
-    setData({
-      ...data,
-      lists: { ...newdataList },
+    setCurrentData({
+      ...currentData,
+      lists: [...newCurrentList],
     });
-
-    console.log('MealList', mealList);
-    console.log('newMealList', newMealList);
-    console.log('newDataList', newdataList);
   };
 
   const handleOnClickRight = () => {
@@ -138,61 +164,66 @@ const MealWeek = () => {
     console.log('Clicked Left');
   };
 
-  return (
-    <ContextApi.Provider value={{ addMeal, removeMeal }}>
-      <div className="boxes">
-        <h1>Meal Planner</h1>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <LeftOutlined
+  if (!currentData) {
+    return null;
+  } else {
+    return (
+      <ContextApi.Provider value={{ addMeal, removeMeal }}>
+        {console.log('currentdata', currentData)}
+        <div className="boxes">
+          <h1>Meal Planner</h1>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <LeftOutlined
+              style={{
+                marginTop: '0.2em',
+                marginRight: '0.5em',
+                fontSize: '2em',
+              }}
+              onClick={handleOnClickLeft}
+            />
+            <h2 style={{ textAlign: 'center' }}>Aug 1, 2021 - Aug 7, 2021</h2>
+            <RightOutlined
+              style={{
+                marginTop: '0.2em',
+                marginLeft: '0.5em',
+                fontSize: '2em',
+              }}
+              onClick={handleOnClickRight}
+            />
+          </div>
+          <div
             style={{
-              marginTop: '0.2em',
-              marginRight: '0.5em',
-              fontSize: '2em',
+              display: 'flex',
+              marginBottom: '2em',
             }}
-            onClick={handleOnClickLeft}
-          />
-          <h2 style={{ textAlign: 'center' }}>Aug 1, 2021 - Aug 7, 2021</h2>
-          <RightOutlined
-            style={{
-              marginTop: '0.2em',
-              marginLeft: '0.5em',
-              fontSize: '2em',
-            }}
-            onClick={handleOnClickRight}
-          />
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            marginBottom: '2em',
-          }}
-        >
-          <Button
-            style={{ marginRight: '1em' }}
-            onClick={handleSave}
-            type="primary"
           >
-            Named Plans
-          </Button>
-          <Button
-            style={{ marginRight: '2em' }}
-            onClick={handleSave}
-            type="primary"
-          >
-            Weekly Plans
-          </Button>
-          <Button
-            style={{ marginLeft: '1em' }}
-            onClick={handleSave}
-            type="primary"
-          >
-            <SaveFilled />
-            Save Plan
-          </Button>
-        </div>
-        <div style={{ display: 'flex' }}>
-          {data.listsIdx.map((listIdx) => {
+            <Button
+              style={{ marginRight: '1em' }}
+              onClick={handleSave}
+              type="primary"
+            >
+              Named Plans
+            </Button>
+            <Button
+              style={{ marginRight: '2em' }}
+              onClick={handleSave}
+              type="primary"
+            >
+              Weekly Plans
+            </Button>
+            <Button
+              style={{ marginLeft: '1em' }}
+              onClick={handleSave}
+              type="primary"
+            >
+              <SaveFilled />
+              Save Plan
+            </Button>
+          </div>
+          <div style={{ display: 'flex' }}>
+            {/* {data.listsIdx.map((listIdx) => {
             const list = data.lists[listIdx];
+            console.log('lili', list);
             return (
               <MPlanner
                 day={list.title}
@@ -201,11 +232,22 @@ const MealWeek = () => {
                 recipes={savedRecipes}
               />
             );
-          })}
+          })} */}
+            {currentData.lists.map((list, idx) => {
+              return (
+                <MPlanner
+                  day={days[idx]}
+                  list={list}
+                  key={idx}
+                  recipes={savedRecipes}
+                />
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </ContextApi.Provider>
-  );
+      </ContextApi.Provider>
+    );
+  }
 };
 
 export default MealWeek;

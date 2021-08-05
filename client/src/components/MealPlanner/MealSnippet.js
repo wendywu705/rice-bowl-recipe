@@ -29,6 +29,7 @@ const MealSnippet = ({ setOpenPopup, listId, title, recipe }) => {
   const classes = useStyle();
   const { addMeal } = useContext(ContextApi);
   const handleOnClick = () => {
+    console.log('Adding Meal:', recipe, listId, title);
     addMeal(recipe, listId, title);
     setOpenPopup(false);
   };

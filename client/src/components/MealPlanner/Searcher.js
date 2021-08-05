@@ -36,9 +36,7 @@ const Searcher = ({
   }, [value, reList]);
 
   useEffect(() => {}, []);
-  const onSearch = (value) => {
-    console.log(value);
-  };
+  const onSearch = (value) => {};
   const handleChange = (e) => {
     setValue(e.target.value);
   };

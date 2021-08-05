@@ -1,5 +1,5 @@
 import React from 'react';
-import { Paper, CssBaseline } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Title from './Title';
 import Meal from './Meal';
@@ -31,7 +31,6 @@ const List = (props) => {
   return (
     <div>
       <Paper className={classes.root}>
-        {/* <CssBaseline /> */}
         <Title
           className={classes.title}
           title={props.title}

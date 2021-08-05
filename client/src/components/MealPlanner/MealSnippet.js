@@ -29,7 +29,6 @@ const MealSnippet = ({ setOpenPopup, listId, title, recipe }) => {
   const classes = useStyle();
   const { addMeal } = useContext(ContextApi);
   const handleOnClick = () => {
-    console.log('Adding Meal:', recipe, listId, title);
     addMeal(recipe, listId, title);
     setOpenPopup(false);
   };
@@ -44,9 +43,16 @@ const MealSnippet = ({ setOpenPopup, listId, title, recipe }) => {
               <Typography className={classes.food}>{recipe.name}</Typography>
               <div style={{ display: 'flex' }}>
                 {recipe.category.map((cate) => {
-                  return <Tag color="blue">{cate}</Tag>;
+                  if (
+                    ['breakfast', 'lunch', 'dinner'].includes(
+                      cate.toLowerCase()
+                    )
+                  ) {
+                    return <Tag color="gold">{cate}</Tag>;
+                  } else {
+                    return <Tag color="blue">{cate}</Tag>;
+                  }
                 })}
-                <Tag color="lime">Homemade</Tag>
               </div>
 
               <Typography>Prep: {recipe.time.prepHour} hours</Typography>

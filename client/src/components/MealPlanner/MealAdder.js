@@ -5,9 +5,7 @@ import Searcher from './Searcher';
 const MealAdder = (props) => {
   const [filteredList, setFilteredList] = useState([]);
   const [value, setValue] = useState('');
-  useEffect(() => {
-    console.log('Hello');
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div style={{ height: '700px', width: '500px', maxHeight: '700px' }}>
@@ -29,7 +27,6 @@ const MealAdder = (props) => {
           />
         );
       })}
-      <h2>Recently Viewed</h2>
     </div>
   );
 };

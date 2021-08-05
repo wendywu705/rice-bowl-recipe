@@ -33,7 +33,6 @@ const Meal = (props) => {
 
   const { removeMeal } = useContext(ContextApi);
   const handleOnClose = () => {
-    console.log(props.listId, props.title, props.meal.recipeId);
     removeMeal(props.listId, props.title, props.meal.recipeId);
   };
   return (
@@ -49,7 +48,13 @@ const Meal = (props) => {
             </Typography>
             <div style={{ display: 'flex' }}>
               {props.meal.category.map((cat) => {
-                return <Tag color="blue">{cat}</Tag>;
+                if (
+                  ['breakfast', 'lunch', 'dinner'].includes(cat.toLowerCase())
+                ) {
+                  return <Tag color="gold">{cat}</Tag>;
+                } else {
+                  return <Tag color="blue">{cat}</Tag>;
+                }
               })}
             </div>
 

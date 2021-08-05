@@ -29,7 +29,6 @@ const MPlanner = (props) => {
   return (
     <div className={classes.divvy}>
       <h2 className={classes.center}>{props.day}</h2>
-      {/* <Paper className={classes.root}> */}
       <div>
         {Object.keys(props.list.meals).map(function (key, index) {
           return (
@@ -42,7 +41,6 @@ const MPlanner = (props) => {
           );
         })}
       </div>
-      {/* </Paper> */}
     </div>
   );
 };

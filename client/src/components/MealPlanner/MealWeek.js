@@ -54,11 +54,92 @@ const MealWeek = () => {
   const classes = useStyle();
   const [plan, setPlan] = useState([]);
 
+  const months = {
+    1: 'Jan',
+    2: 'Feb',
+    3: 'Mar',
+    4: 'Apr',
+    5: 'May',
+    6: 'Jun',
+    7: 'Jul',
+    8: 'Aug',
+    9: 'Sep',
+    10: 'Oct',
+    11: 'Nov',
+    12: 'Dec',
+  };
+
   const findThisWeek = () => {
-    console.log(moment().format('YYYYMMDD'));
-    const dateFormat = moment().format('DDMMYYYY');
     const today = moment().format('dddd').toLowerCase();
-    console.log(today);
+    const startyear = moment().format('YYYY');
+    const startmonth = moment().format('MM');
+    let startdate = moment().format('DD');
+    startdate = parseInt(startdate) - daysMapper[today];
+    if (startdate < 10) {
+      startdate = '0' + startdate;
+    }
+    const start = startmonth + startdate + startyear;
+    let enddate = parseInt(startdate) + 7;
+    if (enddate < 10) {
+      enddate = '0' + enddate;
+    }
+
+    const end = startmonth + enddate + startyear;
+    return start + 'to' + end;
+  };
+
+  const printableDate = (currentWeek) => {
+    let parsedDates = currentWeek.split('to');
+    let startDate = moment(parsedDates[0]).format('DD-MM-YYYY');
+    console.log('ddd', startDate);
+  };
+
+  const findWeek = (direction, currentWeek) => {
+    let parsedDates = currentWeek.split('to');
+    // Starting Month
+    let sm = parsedDates[0].slice(0, 2);
+    // Starting Day
+    let sd = parsedDates[0].slice(2, 4);
+    // Starting Year
+    let sy = parsedDates[0].slice(4, 8);
+
+    // Ending Month, Day, Year
+    let em = parsedDates[1].slice(0, 2);
+    let ed = parsedDates[1].slice(2, 4);
+    let ey = parsedDates[1].slice(4, 8);
+
+    // New Starting Month Day, Year
+    let nsm = sm;
+    let nsd;
+    if (direction === 'right') {
+      nsd = parseInt(sd) + 7;
+    } else {
+      nsd = parseInt(sd) - 7;
+    }
+    let nsy = sy;
+
+    if (nsd < 10) {
+      nsd = '0' + nsd;
+    }
+
+    // New Ending Month Day, Year
+    let nem = em;
+    let ned;
+    if (direction === 'right') {
+      ned = parseInt(ed) + 7;
+    } else {
+      ned = parseInt(ed) - 7;
+    }
+    let ney = ey;
+
+    if (ned < 10) {
+      ned = '0' + ned;
+    }
+
+    let newParsedDate = nsm + nsd + nsy + 'to' + nem + ned + ney;
+
+    console.log('newy', newParsedDate);
+    return newParsedDate;
   };
 
   const handleSave = async () => {
@@ -133,11 +214,11 @@ const MealWeek = () => {
   };
 
   useEffect(() => {
-    console.log('in Use Effect');
-    findThisWeek();
+    console.log(findThisWeek());
     dataFetch();
     planFetch();
-  }, []);
+    printableDate(currentWeek);
+  }, [currentWeek]);
 
   const addMeal = (meal, listId, title) => {
     const newMeal = {
@@ -183,10 +264,14 @@ const MealWeek = () => {
 
   const handleOnClickRight = () => {
     console.log('Clicked Right');
+    const newDate = findWeek('right', currentWeek);
+    setCurrentWeek(newDate);
   };
 
   const handleOnClickLeft = () => {
     console.log('Clicked Left');
+    const newDate = findWeek('left', currentWeek);
+    setCurrentWeek(newDate);
   };
 
   if (!currentData) {

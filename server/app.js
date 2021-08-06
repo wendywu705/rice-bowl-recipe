@@ -13,6 +13,7 @@ require('dotenv').config();
 require('./models/User');
 require('./models/MealPlanner');
 require('./models/Recipe');
+require('./models/Shopping');
 require('./services/passport');
 
 const config = {

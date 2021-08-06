@@ -167,7 +167,7 @@ const Form = (props) => {
       new URL(state.url);
     } catch (e) {
       console.error(e);
-      state.errors["url"] = "Invalid youtube url";
+      state.errors["url"] = "Invalid url";
       formIsValid  = false;
     }
     return formIsValid;

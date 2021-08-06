@@ -57,3 +57,7 @@
   display: inline-block;
   vertical-align: middle;
 }
+
+.ant-layout {
+  margin: 0 !important;
+}

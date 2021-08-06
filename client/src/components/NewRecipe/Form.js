@@ -163,12 +163,14 @@ const Form = (props) => {
     }
 
     // url
-    try {
-      new URL(state.url);
-    } catch (e) {
-      console.error(e);
-      state.errors["url"] = "Invalid url";
-      formIsValid  = false;
+    if (state.url!==""){
+      try {
+        new URL(state.url);
+      } catch (e) {
+        console.error(e);
+        state.errors["url"] = "Invalid url";
+        formIsValid  = false;
+      }
     }
     return formIsValid;
   }

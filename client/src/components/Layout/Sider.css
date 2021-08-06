@@ -61,3 +61,7 @@
 .ant-layout {
   margin: 0 !important;
 }
+
+.ant-layout-sider-children {
+  z-index: 1000 !important;
+}

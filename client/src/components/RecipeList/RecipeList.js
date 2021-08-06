@@ -22,6 +22,7 @@ class RecipeList extends Component {
         this.toggle_new = this.toggle_new.bind(this);
         this.sortByRate = this.sortByRate.bind(this);
         this.sortByPrepTime = this.sortByPrepTime.bind(this);
+        this.sortByTotalTime = this.sortByTotalTime.bind(this);
     }
 
     toggleSaved() {
@@ -78,6 +79,13 @@ class RecipeList extends Component {
             .sort((a,b) => b.time.prepHour*60+b.time.prepMin - a.time.prepHour*60+a.time.prepMin);
         this.setState( {saved: sortPrep} );
         console.log('sort by prep time', sortPrep);
+    }
+
+    sortByTotalTime(){
+        const sortTotal = [].concat(this.state.saved)
+            .sort((a,b) => b.time.prepHour*60+b.time.prepMin+b.time.cookHour*60+b.time.cookMin - a.time.prepHour*60+a.time.prepMin+a.time.cookHour*60+a.time.cookMin);
+        this.setState( {saved: sortTotal} );
+        console.log('sort by total time', sortTotal);
     }
 
     handleInputChange = e => {
@@ -146,6 +154,7 @@ class RecipeList extends Component {
                         <DropdownMenu>
                             <DropdownItem onClick={this.sortByRate}>Rate</DropdownItem>
                             <DropdownItem onClick={this.sortByPrepTime}>Prep Time</DropdownItem>
+                            <DropdownItem onClick={this.sortByTotalTime}>Total Time</DropdownItem>
                         </DropdownMenu>
                     </ButtonDropdown>
                 </div>

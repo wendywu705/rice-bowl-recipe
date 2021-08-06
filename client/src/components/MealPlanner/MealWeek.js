@@ -6,9 +6,10 @@ import './MPlanner.css';
 import store from '../MealPlanner/data';
 import blank from '../MealPlanner/blank';
 import ContextApi from './ContextApi';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import moment from 'moment';
 import { LeftOutlined, RightOutlined, SaveFilled } from '@ant-design/icons';
+import '../Layout/Footer.css';
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -149,6 +150,7 @@ const MealWeek = () => {
           mealplanner: dataToSend,
         },
       });
+      message.success('Meal Plan Successfully Saved');
     } catch (err) {
       console.log(err);
     }
@@ -274,8 +276,8 @@ const MealWeek = () => {
     return (
       <ContextApi.Provider value={{ addMeal, removeMeal }}>
         {console.log('currentdata', currentData)}
-        <div className="boxes">
-          <h1>Meal Planner</h1>
+        <div className="boxes" id="pageContainer">
+          <h1 className="mealTitle">Meal Planner</h1>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <LeftOutlined
               style={{
@@ -303,15 +305,31 @@ const MealWeek = () => {
             }}
           >
             <Button
-              style={{ marginLeft: '1em' }}
+              style={{                 
+                fontSize: 17,
+                width:140,
+                height:40,
+                display: 'inline-flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
               onClick={handleSave}
               type="primary"
+              icon={
+                <SaveFilled 
+                  style={{
+                    fontSize:'16px',
+                    display: 'inline-block',
+                    verticalAlign: 'middle'
+                  }}
+                />
+              }
+             
             >
-              <SaveFilled />
-              Save Plan
+              SAVE PLAN
             </Button>
           </div>
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', flexDirection:'column', marginLeft:'10%' }}>
             {currentData.lists.map((list, idx) => {
               return (
                 <MPlanner

@@ -6,7 +6,7 @@ import List from './List';
 const useStyle = makeStyles((theme) => ({
   root: {
     width: '260px',
-    backgroundColor: '#fafafa',
+    // backgroundColor: '#fafafa',
     marginLeft: theme.spacing(1),
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
@@ -28,8 +28,8 @@ const MPlanner = (props) => {
 
   return (
     <div className={classes.divvy}>
-      <h2 className={classes.center}>{props.day}</h2>
-      <div>
+      <h2 className={classes.center} style={{paddingTop:20, marginBottom:0}}>{props.day}</h2>
+      <div style={{display:'flex'}}>
         {Object.keys(props.list.meals).map(function (key, index) {
           return (
             <List

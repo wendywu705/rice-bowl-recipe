@@ -36,11 +36,11 @@ const SideBar = () => {
       case '/browse':
         currkey = '2';
         break;
-      case '/planner':
+      case '/mealplanner':
         currkey = '3';
         break;
-      case '/cart':
-        currkey = '4';
+      case "/list":
+        currkey = "4"
         break;
       default:
         currkey = '1';
@@ -140,7 +140,9 @@ const SideBar = () => {
             onClick={() => setKey('4')}
             icon={<ShoppingCartOutlined className="itemIcon" />}
           >
-            <Link to="#">Cart</Link>
+            <Link to="/list">
+              Shopping List
+            </Link>
           </Menu.Item>
         </Menu>
         <div

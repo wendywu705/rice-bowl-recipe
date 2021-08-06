@@ -126,6 +126,14 @@ const MealWeek = () => {
           mealplanner: dataToSend,
         },
       });
+      const respi = await axios({
+        method: 'post',
+        timeout: 1000,
+        url: `/api/shopping`,
+        data: {
+          mealplanner: dataToSend,
+        },
+      });
     } catch (err) {
       console.log(err);
     }
@@ -152,11 +160,15 @@ const MealWeek = () => {
         timeout: 1000,
         url: `/api/mealplanner/`,
       });
+      console.log('first time', resp.data[0].weeks);
+      // If the user has no saved meal plans, make a layout
+      // Set loadded to true
       if (resp.data[0].weeks.length === 0) {
         setPlan(store);
         if (!loaded) {
           setLoaded(true);
           setCurrentWeek(getThisWeek());
+          found = true;
         }
       } else {
         setPlan(resp.data[0].weeks);
@@ -167,14 +179,16 @@ const MealWeek = () => {
           }
         });
       }
+      // Okay here is the bug,
+      // Must handle case where there is no current week
       if (!found) {
         // Do this
         let newData = blank;
-        newData.dates = getThisWeek();
+        newData.dates = currentWeek;
         setCurrentData(newData);
         if (!loaded) {
           setLoaded(true);
-          setCurrentWeek(getThisWeek());
+          // setCurrentWeek(getThisWeek());
         }
       }
     } catch (err) {
@@ -183,6 +197,7 @@ const MealWeek = () => {
   };
 
   useEffect(() => {
+    console.log('current week wtf', currentWeek);
     dataFetch();
     planFetch();
   }, [currentWeek]);

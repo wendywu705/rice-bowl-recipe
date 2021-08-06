@@ -13,7 +13,7 @@ const Login = () => {
           />
           <div className="title-name">Rice Bowl</div>
         </div><br/><br/>
-        <a href="http://localhost:9000/auth/google">
+        <a href="https://backend-cepdewy2ta-nn.a.run.app/auth/google">
           <Button className="btn" outline color="primary">Log In using Google</Button></a>
     </div>
   );

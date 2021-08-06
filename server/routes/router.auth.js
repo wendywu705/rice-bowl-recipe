@@ -28,7 +28,7 @@ module.exports = (app) => {
     '/auth/google/callback',
     passport.authenticate('google', {
       failureRedirect: '/error',
-      successRedirect: 'http://localhost:3000/home',
+      successRedirect: 'https://frontend-cepdewy2ta-nn.a.run.app/home',
       session: true,
     }),
     (_req, _res) => {

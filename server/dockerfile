@@ -1,0 +1,20 @@
+FROM node:latest AS server
+
+LABEL version="1.0"
+LABEL description ="This is server for ricebowl-recipes"
+
+RUN mkdir /app
+WORKDIR /app
+RUN mkdir /server
+WORKDIR /app/server
+COPY . /app/server
+
+RUN ls -l
+
+RUN npm install --production
+
+EXPOSE 27017
+EXPOSE 8080
+
+CMD ["node", "app.js"]
+

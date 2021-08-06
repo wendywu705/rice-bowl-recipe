@@ -45,11 +45,21 @@ const days = [
   'Friday',
   'Saturday',
 ];
+const getThisWeek = () => {
+  const currentDate = moment().format('L');
+  const currentThing = moment().format('dddd').toLowerCase();
+  const startDate = moment(currentDate)
+    .subtract(daysMapper[currentThing], 'days')
+    .format('L');
+  const endDate = moment(startDate).add(6, 'days').format('L');
+  const thisWeek = startDate + 'to' + endDate;
+  return thisWeek;
+};
 
 const MealWeek = () => {
   const [data, setData] = useState(store);
   const [savedRecipes, setSavedRecipes] = useState([]);
-  const [currentWeek, setCurrentWeek] = useState('08/01/2021to08/07/2021');
+  const [currentWeek, setCurrentWeek] = useState(getThisWeek());
   const [currentData, setCurrentData] = useState(null);
   const [mealData, setMealData] = useState(null);
   const [loaded, setLoaded] = useState(false);
@@ -69,17 +79,6 @@ const MealWeek = () => {
     10: 'Oct',
     11: 'Nov',
     12: 'Dec',
-  };
-
-  const getThisWeek = () => {
-    const currentDate = moment().format('L');
-    const currentThing = moment().format('dddd').toLowerCase();
-    const startDate = moment(currentDate)
-      .subtract(daysMapper[currentThing], 'days')
-      .format('L');
-    const endDate = moment(startDate).add(6, 'days').format('L');
-    const thisWeek = startDate + 'to' + endDate;
-    return thisWeek;
   };
 
   const newFindWeek = (direction, currentWeek) => {
@@ -118,10 +117,34 @@ const MealWeek = () => {
     dataToSend[idx] = currentData;
 
     try {
-      const resp = await axios({
+      if (currentWeek === getThisWeek()) {
+        let listRecipe = [];
+        console.log('data to send', currentData);
+        for (let meal of currentData.lists) {
+          for (let el of meal.meals['breakfast']) {
+            listRecipe.push(el.recipeId);
+          }
+          for (let el of meal.meals['lunch']) {
+            listRecipe.push(el.recipeId);
+          }
+          for (let el of meal.meals['dinner']) {
+            listRecipe.push(el.recipeId);
+          }
+        }
+
+        const resp = await axios({
+          method: 'post',
+          timeout: 1000,
+          url: `/api/shopping/`,
+          data: {
+            shopping: listRecipe,
+          },
+        });
+      }
+      const respi = await axios({
         method: 'post',
         timeout: 1000,
-        url: `/api/mealplanner/`,
+        url: `/api/mealplanner`,
         data: {
           mealplanner: dataToSend,
         },
@@ -152,11 +175,15 @@ const MealWeek = () => {
         timeout: 1000,
         url: `/api/mealplanner/`,
       });
+      console.log('first time', resp.data[0].weeks);
+      // If the user has no saved meal plans, make a layout
+      // Set loadded to true
       if (resp.data[0].weeks.length === 0) {
         setPlan(store);
         if (!loaded) {
           setLoaded(true);
           setCurrentWeek(getThisWeek());
+          found = true;
         }
       } else {
         setPlan(resp.data[0].weeks);
@@ -167,14 +194,16 @@ const MealWeek = () => {
           }
         });
       }
+      // Okay here is the bug,
+      // Must handle case where there is no current week
       if (!found) {
         // Do this
         let newData = blank;
-        newData.dates = getThisWeek();
+        newData.dates = currentWeek;
         setCurrentData(newData);
         if (!loaded) {
           setLoaded(true);
-          setCurrentWeek(getThisWeek());
+          // setCurrentWeek(getThisWeek());
         }
       }
     } catch (err) {
@@ -183,6 +212,7 @@ const MealWeek = () => {
   };
 
   useEffect(() => {
+    console.log('current week wtf', currentWeek);
     dataFetch();
     planFetch();
   }, [currentWeek]);

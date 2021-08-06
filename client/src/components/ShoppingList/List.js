@@ -1,17 +1,17 @@
 import { React, useState, useEffect } from 'react';
 import '../Layout/Footer.css';
 import './List.css';
+import { Button } from 'antd';
+import { Link } from 'react-router-dom';
 
 const List = () => {
   const [exist, setExist] = useState(false);
-  // const [listObj, setList] = useState({})
   console.log('runs')
   let listObj = {};
-  // useEffect(() => {
-  //   listObj={}
-  // }, [])
+
   let tempobj = {
     "Greek Farro Salad": {
+      "amt": 1,
       "ingredients": [
         {
             "_id": "6108e374564967b7fc37e1f5",
@@ -128,6 +128,7 @@ const List = () => {
       ]
     },
     "Crock Pot Lasagna" : {
+      "amt": 2,
       "ingredients": [
         {
             "_id": "61089a5ebde2e753f0750394",
@@ -220,6 +221,7 @@ const List = () => {
       ]
     },
     "Chickpea Greek Salad" : {
+      "amt": 3,
       "ingredients" :[
         {
             "_id": "610935315d80dbe6d6ad228d",
@@ -364,76 +366,67 @@ const List = () => {
   // - lbs, 
   // unit of measure: amount
   // - ounce(s), oz, teaspoons, cup, tablespoon
-
+  let multiplier;
 
   for (const [recipe, ingredients] of Object.entries(tempobj)) {
     // console.log(recipe, ingredients)
+    // console.log('rounds', ingredients['amt'])
+    multiplier = ingredients['amt'];
     for (const [num, idata] of Object.entries(ingredients)) {
-      // console.log(key, val)
+      // console.log('second layer',num, idata)
       for (const [index, foodinfo] of Object.entries(idata)) {
+        // console.log('maybe it ', num)
         // console.log(key, val)
         console.log(foodinfo.unitOfMeasure)
         // if (foodinfo.unitOfMeasure)
         if (!foodinfo.quantity) {
           continue
         }
-        // if (foodinfo.description.includes('/')) {
-        //   let ind = foodinfo.description.indexOf('/');
-        //   let newString = '';
-        //   let stringStart=0;
-        //   let stringEnd=foodinfo.description.length;
-        //   if (ind !== 0) {
-        //     let newind = ind-1;
-        //     while (1) {
-        //       if (foodinfo.description[newind] === ' ') {
-        //         stringStart = newind;
-        //         break;
-        //       }
-        //       if (newind === 0) {
-        //         break;
-        //       } else {
-        //         newind -= 1;
-        //       }
-        //     }
-        //   }
-        //   if (ind !== foodinfo.description.length -1) {
-        //     let tempind = ind+1;
-        //     while (1) {
-        //       if (foodinfo.description[tempind] !== ' ') {
-        //         stringEnd = tempind;
-        //         break;
-        //       }
-        //       if (tempind === foodinfo.description.length -1) {
-        //         break;
-        //       } else {
-        //         tempind += 1;
-        //       }
-        //     }
-        //   }          
-        // }
         if (foodinfo.description in listObj){
           console.log('found')
-          listObj[foodinfo.description][0] += foodinfo.quantity
+          listObj[foodinfo.description][0] += foodinfo.quantity*multiplier
         }
         else {
-          listObj[foodinfo.description] = [foodinfo.quantity, foodinfo.unitOfMeasure]
+          listObj[foodinfo.description] = [foodinfo.quantity*multiplier, foodinfo.unitOfMeasure]
         }
       }
     }
   }
+
   console.log('listObj', listObj)
   console.log(tempobj)
   console.log(wStart)
   return (
     <div id="pageContainer" className="listContainer">
       <div>
-        <div>Shopping List</div>
-        <div>{wStart} - {wEnd}</div>
+        <div className="listTitle">Shopping List</div>
+        <div className="currWeek">{wStart} - {wEnd}</div>
       </div>
-      <div>
-         {Object.keys(listObj).map(data => {
-          return <div>{data}</div>
+      <div className="itemContainer">
+         {Object.keys(listObj).map((data, ind, arr) => {
+          return (
+            <div className="list">
+              {listObj[data][0]} {listObj[data][1]} {data} <br/>
+            </div>
+          );
         })}
+      </div>
+      <div className="buttonContainer">
+        <Link to="/home">
+          <Button
+            className="buttonClass"
+            type="primary"
+          >
+            Home
+          </Button>        
+        </Link>
+
+        <Button
+          className="buttonClass"
+        >
+          Export
+        </Button>
+
       </div>
       
     </div>
@@ -441,3 +434,4 @@ const List = () => {
 };
 
 export default List;
+

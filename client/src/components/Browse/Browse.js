@@ -23,6 +23,7 @@ class Browse extends Component {
         this.togglePublic = this.togglePublic.bind(this);
         this.sortByRate = this.sortByRate.bind(this);
         this.sortByPrepTime = this.sortByPrepTime.bind(this);
+        this.sortByTotalTime = this.sortByTotalTime.bind(this);
     }
 
     togglePublic() {
@@ -71,6 +72,13 @@ class Browse extends Component {
         console.log('sort by prep time',sortPrep);
     }
 
+    sortByTotalTime(){
+        const sortTotal = [].concat(this.state.public)
+            .sort((a,b) => b.time.prepHour*60+b.time.prepMin+b.time.cookHour*60+b.time.cookMin - a.time.prepHour*60+a.time.prepMin+a.time.cookHour*60+a.time.cookMin);
+        this.setState( {public: sortTotal} );
+        console.log('sort by total time', sortTotal);
+    }
+
     handleInputChange = e => {
         this.setState({
           [e.target.name]: e.target.value,
@@ -112,6 +120,7 @@ class Browse extends Component {
                         <DropdownMenu>
                             <DropdownItem onClick={this.sortByRate}>Rate</DropdownItem>
                             <DropdownItem onClick={this.sortByPrepTime}>Prep Time</DropdownItem>
+                            <DropdownItem onClick={this.sortByTotalTime}>Total Time</DropdownItem>
                         </DropdownMenu>
                     </ButtonDropdown>
                 </div>

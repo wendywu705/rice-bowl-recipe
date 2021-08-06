@@ -4,11 +4,7 @@ import './Sider.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-import { 
-  Layout, 
-  Menu, 
-  Button,
-} from 'antd';
+import { Layout, Menu, Button } from 'antd';
 
 import {
   HomeOutlined,
@@ -39,8 +35,8 @@ const SideBar = () => {
       case '/mealplanner':
         currkey = '3';
         break;
-      case "/list":
-        currkey = "4"
+      case '/list':
+        currkey = '4';
         break;
       default:
         currkey = '1';
@@ -101,12 +97,12 @@ const SideBar = () => {
         </a>
         <div
           style={{
-            display:'flex',
-            justifyContent:'center', 
-            paddingBottom:15, 
-            paddingTop: 10
-          }}>
-        </div>
+            display: 'flex',
+            justifyContent: 'center',
+            paddingBottom: 15,
+            paddingTop: 10,
+          }}
+        ></div>
         <Menu mode="inline" selectedKeys={key}>
           <Menu.Item
             className="itemClass"
@@ -138,9 +134,7 @@ const SideBar = () => {
             onClick={() => setKey('4')}
             icon={<ShoppingCartOutlined className="itemIcon" />}
           >
-            <Link to="/list">
-              Shopping List
-            </Link>
+            <Link to="/list">Shopping List</Link>
           </Menu.Item>
         </Menu>
         <div
@@ -159,12 +153,17 @@ const SideBar = () => {
                 Sign Out
               </Button>
             ) : (
-              <Button
-                className="signButton"
-                icon={<LoginOutlined className="BtnIcon" />}
-              >
-                Sign In
-              </Button>
+              <a href="/auth/google">
+                <Button className="btn" outline color="primary">
+                  Log In using Google
+                </Button>
+              </a>
+              // <Button
+              //   className="signButton"
+              //   icon={<LoginOutlined className="BtnIcon" />}
+              // >
+              //   Sign In
+              // </Button>
             )}
           </Link>
           {reg ? <Button className="userButton">Hi, {name}</Button> : null}

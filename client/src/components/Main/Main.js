@@ -16,7 +16,7 @@ const Main = () => {
   return (
     <div>
       <Switch>
-        <Route exact path="/" component={Login} />
+        <Route exact path="/" component={Home} />
         <Route exact path="/mealplanner" component={MealPlanner} />
         <Route exact path="/upload" component={UploadTest} />
         <Route exact path="/browse" component={Browse} />

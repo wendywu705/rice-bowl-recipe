@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const cors = require('cors');
 const https = require('https'); // for serving SSL/HTTPS (placeholder until replaced by nginx)
 const helmet = require('helmet'); // for application security
@@ -63,6 +64,8 @@ app.use(cors());
 //   next();
 // });
 
+app.use(express.static(path.join(__dirname, 'build')));
+
 // For security
 app.use(helmet());
 
@@ -89,6 +92,9 @@ require('./routes/router.mealplanner')(app);
 
 // Rest of the routes, after authentication
 app.use('/user', userRouter);
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 // Self-signed OpenSSL digitial certification for SSL/TLS/https connections
 // Note that this will be replaced with app.listen(), and SSL/TLS will be handled by Nginx

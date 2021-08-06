@@ -5,6 +5,7 @@ import NewRecipe from '../../pages/NewRecipe';
 import Login from '../../pages/Login/Login';
 import UploadTest from '../../pages/UploadTest';
 import SingleRecipePage from '../../pages/SingleRecipe';
+import MealPlanner from '../../pages/MealPlanner/MealPlanner';
 import Browse from '../../pages/Browse';
 import ParseRecipe from '../../pages/ParseRecipe';
 import EditRecipe from '../../pages/EditRecipe';
@@ -14,6 +15,7 @@ const Main = () => {
     <div>
       <Switch>
         <Route exact path="/" component={Login} />
+        <Route exact path="/mealplanner" component={MealPlanner} />
         <Route exact path="/upload" component={UploadTest} />
         <Route exact path="/browse" component={Browse} />
         <Route exact path="/home" component={Home} />

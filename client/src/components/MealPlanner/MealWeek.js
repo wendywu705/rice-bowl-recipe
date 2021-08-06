@@ -277,7 +277,7 @@ const MealWeek = () => {
       <ContextApi.Provider value={{ addMeal, removeMeal }}>
         {console.log('currentdata', currentData)}
         <div className="boxes" id="pageContainer">
-          <h1>Meal Planner</h1>
+          <h1 className="mealTitle">Meal Planner</h1>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <LeftOutlined
               style={{
@@ -305,12 +305,28 @@ const MealWeek = () => {
             }}
           >
             <Button
-              style={{ marginLeft: '1em' }}
+              style={{                 
+                fontSize: 17,
+                width:140,
+                height:40,
+                display: 'inline-flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
               onClick={handleSave}
               type="primary"
+              icon={
+                <SaveFilled 
+                  style={{
+                    fontSize:'16px',
+                    display: 'inline-block',
+                    verticalAlign: 'middle'
+                  }}
+                />
+              }
+             
             >
-              <SaveFilled />
-              Save Plan
+              SAVE PLAN
             </Button>
           </div>
           <div style={{ display: 'flex' }}>

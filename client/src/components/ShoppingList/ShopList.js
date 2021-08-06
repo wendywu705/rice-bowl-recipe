@@ -3,9 +3,9 @@ import { Button } from 'antd';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../Layout/Footer.css';
-import './List.css';
+import './ShopList.css';
 
-const List = () => {
+const ShopList = () => {
   const [listData, setListData] = useState({});
   const [load, setLoad] = useState(false)
   let listObj = {};
@@ -44,7 +44,7 @@ const List = () => {
 
 
   let multiplier;
-  console.log('listData', listData);
+
   for (const [recipe, ingredients] of Object.entries(listData)) {
     multiplier = ingredients['amt'];
     for (const [num, idata] of Object.entries(ingredients)) {
@@ -118,5 +118,5 @@ const List = () => {
   );
 };
 
-export default List;
+export default ShopList;
 

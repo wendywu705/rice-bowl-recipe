@@ -1,13 +1,13 @@
 import React from "react";
 import SideBar from "../components/Layout/Sider";
-import List from "../components/ShoppingList/List";
+import ShopList from "../components/ShoppingList/ShopList";
 import WebsiteFooter from "../components/Layout/Footer";
 
 function ShoppingList() {
     return (
         <div>
             <SideBar />
-            <List />
+            <ShopList />
             <WebsiteFooter />
         </div>
     );

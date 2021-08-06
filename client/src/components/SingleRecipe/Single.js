@@ -82,6 +82,7 @@ const SingleRecipe = () => {
           method: 'get',
           timeout: 1000,
           url: `https://backend-cepdewy2ta-nn.a.run.app/recipes/${id}`,
+          withCredentials: true
         });
         const body = recipeRes.data;
         let tempinit = {

@@ -14,7 +14,7 @@ RUN ls -l
 RUN npm install --production
 
 EXPOSE 27017
-EXPOSE 8080
+EXPOSE 443
 
 CMD ["node", "app.js"]
 

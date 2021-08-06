@@ -19,6 +19,8 @@ const ShopList = () => {
           method: 'get',
           timeout: 1000,
           url: `https://backend-cepdewy2ta-nn.a.run.app/api/shopping`,
+          withCredentials: true
+
         });
         const body = listRes.data;
         setLoad(true);

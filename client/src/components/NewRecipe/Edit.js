@@ -17,7 +17,7 @@ function Edit(props) {
   const { id } = useParams();
 
   const test = async () => {
-    const res = await axios.get('https://localhost:9000/home/');
+    const res = await axios.get('https://backend-cepdewy2ta-nn.a.run.app/home/');
     console.log('heyo', res);
   };
 
@@ -26,7 +26,8 @@ function Edit(props) {
       const editResponse = await axios({
         method: 'get',
         timeout: 1000,
-        url: `https://localhost:9000/recipes/edit/${id}`
+        url: `https://localhost:9000/recipes/edit/${id}`,
+        withCredentials: true
       });
       if( [200, 304].includes(editResponse.status)){
         console.log('mesg from edit', editResponse.data);
@@ -96,6 +97,7 @@ function Edit(props) {
         timeout: 2000,
         url: `https://localhost:9000/recipes/edit/${id}`,
         data: recipeData,
+        withCredentials: true
       });
       if ( [200, 304].includes(response.status) ){
         console.log('res',response);

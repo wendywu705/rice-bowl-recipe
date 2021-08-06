@@ -181,10 +181,11 @@ const MealWeek = () => {
         url: `https://backend-cepdewy2ta-nn.a.run.app/api/mealplanner/`,
         withCredentials: true
       });
+      console.log('resp:',resp);
       console.log('first time', resp.data[0].weeks);
       // If the user has no saved meal plans, make a layout
-      // Set loadded to true
-      if (resp.data[0].weeks.length === 0) {
+      // Set loadd to true
+      if ( resp.data===[] ||resp.data[0].weeks.length === 0) {
         setPlan(store);
         if (!loaded) {
           setLoaded(true);

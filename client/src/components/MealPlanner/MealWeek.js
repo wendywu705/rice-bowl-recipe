@@ -9,6 +9,7 @@ import ContextApi from './ContextApi';
 import { Button } from 'antd';
 import moment from 'moment';
 import { LeftOutlined, RightOutlined, SaveFilled } from '@ant-design/icons';
+import '../Layout/Footer.css';
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -311,7 +312,7 @@ const MealWeek = () => {
     return (
       <ContextApi.Provider value={{ addMeal, removeMeal }}>
         {console.log('currentdata', currentData)}
-        <div className="boxes">
+        <div className="boxes" id="pageContainer">
           <h1>Meal Planner</h1>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <LeftOutlined

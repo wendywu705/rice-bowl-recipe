@@ -26,7 +26,7 @@ function Edit(props) {
       const editResponse = await axios({
         method: 'get',
         timeout: 1000,
-        url: `https://localhost:9000/recipes/edit/${id}`,
+        url: `https://backend-cepdewy2ta-nn.a.run.app/recipes/edit/${id}`,
         withCredentials: true
       });
       if( [200, 304].includes(editResponse.status)){
@@ -75,8 +75,9 @@ function Edit(props) {
       const response = await axios({
         method: 'post',
         timeout: 1000,
-        url: `https://localhost:9000/api/imageupload`,
+        url: `https://backend-cepdewy2ta-nn.a.run.app/api/imageupload`,
         data: formData,
+        withCredentials: true
       });
       if (response.status === 200){
         console.log('res',response);
@@ -95,7 +96,7 @@ function Edit(props) {
       const response = await axios({
         method: 'post',
         timeout: 2000,
-        url: `https://localhost:9000/recipes/edit/${id}`,
+        url: `https://backend-cepdewy2ta-nn.a.run.app/recipes/edit/${id}`,
         data: recipeData,
         withCredentials: true
       });

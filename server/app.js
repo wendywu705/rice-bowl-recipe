@@ -55,13 +55,17 @@ mongoose.connection.on('error', (err) => {
 app.use(cors({ credentials: true, origin: 'https://frontend-cepdewy2ta-nn.a.run.app' }));
 // Might need this during delpoyment
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://frontend-cepdewy2ta-nn.a.run.app');
+  const allowedOrigins = ['https://frontend-cepdewy2ta-nn.a.run.app', 'https://backend-cepdewy2ta-nn.a.run.app/api/imageupload'];
+  const { origin } = req.headers;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.header(
     'Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept',
   );
-  res.cookie('cookie_token', 'test!!!', { maxAge: 900000 });
+  res.cookie('cookie_token', Math.floor(Date.now() / 16142), { maxAge: 900000 });
   next();
 });
 

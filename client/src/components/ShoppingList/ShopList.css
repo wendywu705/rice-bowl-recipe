@@ -1,0 +1,68 @@
+
+.listContainer {
+  margin-left: 280px;
+  position: relative;
+}
+
+.listTitle {
+  font-size: 40px;
+  font-family: 'Unica One', cursive;
+  text-align: center;
+  padding-top: 30px;
+  margin-bottom: 30px;
+  height: 55px;
+  left: calc(50% - 200px);
+}
+
+.currWeek {
+  text-align: center;
+  font-size: 30px;
+  font-family: 'Abel';
+  color: rgb(88, 88, 88);
+}
+
+
+.itemContainer {
+  font-size: 20px;
+  margin-top: 30px;
+  display: flex;
+  /* margin-left: auto; */
+  flex-direction: column;
+  justify-content: center; 
+  text-align: center;
+  
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 20px;
+
+}
+
+.buttonClass {
+  margin: 5px; 
+  height: 40px;
+  width: 150px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.emptyLogo {
+  height: 300px;
+  width: auto;
+  opacity: 0.5;
+}
+
+.emptyContainer {
+  margin-top: 100px;
+  text-align: center !important;
+  vertical-align: middle;  
+}
+.emptyText {
+  font-size: 30px;
+  margin-top: 20px;
+  color: #8ecafd;
+}

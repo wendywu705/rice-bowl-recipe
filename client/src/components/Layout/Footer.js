@@ -1,5 +1,4 @@
 import { Layout } from 'antd';
-import { fixControlledValue } from 'antd/lib/input/Input';
 const { Footer } = Layout;
 
 const WebsiteFooter = () => {

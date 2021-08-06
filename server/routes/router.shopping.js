@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
 const Shopping = require('../models/Shopping');
+const RecipeModel = require('../models/Recipe');
 
 let userId;
 module.exports = (app) => {
@@ -18,13 +18,35 @@ module.exports = (app) => {
   };
 
   app.get('/api/shopping', checkAuth, async (req, res) => {
-    console.log('hello');
-    res.send('hello');
+    // let resp = await Shopping.find({ userId });
+    let resp = await Shopping.find({ userId });
+    if (resp.length === 0) {
+      console.log('user has no shopping cart');
+      return res.json({});
+    }
+    let shoppingList = {};
+    let list = resp[0].recipes;
+    let reso = await RecipeModel.find().where('recipeId').in(list);
+
+    for (let obj of reso) {
+      if (obj.name in shoppingList) {
+        shoppingList[obj.name].amt++;
+      } else {
+        let sampleObj = {
+          ingredients: obj.ingredients,
+          amt: 1,
+        };
+        shoppingList[obj.name] = sampleObj;
+      }
+      console.log('hhh', shoppingList);
+    }
+
+    res.json(shoppingList);
   });
 
   app.post('/api/shopping', checkAuth, async (req, res) => {
     console.log('api shopping hit');
-    const recipes = [66, 80, 93];
+    const recipes = req.body.shopping;
     const filter = { userId };
     const update = { recipes };
     try {

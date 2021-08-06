@@ -84,6 +84,7 @@ app.use(express.json());
 require('./routes/router.auth')(app);
 require('./routes/router.gcs')(app);
 require('./routes/router.recipe')(app);
+require('./routes/router.shopping')(app);
 require('./routes/router.mealplanner')(app);
 
 // Rest of the routes, after authentication

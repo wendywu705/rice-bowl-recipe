@@ -183,7 +183,6 @@ const MealWeek = () => {
         if (!loaded) {
           setLoaded(true);
           setCurrentWeek(getThisWeek());
-          found = true;
         }
       } else {
         setPlan(resp.data[0].weeks);

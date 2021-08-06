@@ -7,6 +7,7 @@ import UploadTest from '../../pages/UploadTest';
 import SingleRecipePage from '../../pages/SingleRecipe';
 import Browse from '../../pages/Browse';
 import ParseRecipe from '../../pages/ParseRecipe';
+import SearchPage from '../../pages/SearchPage';
 
 const Main = () => {
   return (
@@ -19,6 +20,7 @@ const Main = () => {
         <Route exact path="/new_recipe" component={NewRecipe} />
         <Route exact path="/recipe/:id" component={SingleRecipePage} />
         <Route exact path="/parse" component={ParseRecipe} />
+        <Route exact path="/search/:name" component={SearchPage} />
       </Switch>
     </div>
   );

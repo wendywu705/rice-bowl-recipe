@@ -18,6 +18,7 @@ class Browse extends Component {
         this.state = {
             public: [],
             dropdownOpenPublic: false,
+            searchName: ''
         };
         this.togglePublic = this.togglePublic.bind(this);
         this.sortByRate = this.sortByRate.bind(this);
@@ -70,19 +71,37 @@ class Browse extends Component {
         console.log('sort by prep time',sortPrep);
     }
 
+    handleInputChange = e => {
+        this.setState({
+          [e.target.name]: e.target.value,
+        });
+      };
+
+    searchSubmit = e => {
+        e.preventDefault();
+        const { searchName } = this.state;
+        console.log(searchName);
+        if(searchName){
+            window.location.assign(`/search/${searchName}`)
+        } else{
+            alert('Enter some recipe name to start your search');
+        }
+    }
+
     render() {
         return (
             <div className="all-recipe" id="pageContainer">
                 <h1><b>BROWSE RECIPES</b></h1><br/>
-                <div className="search-bar">
-                    {/* TODO: search function to be design */}
+                <form method="POST" onSubmit={this.searchSubmit}>
                     <input
                         type="text"
                         id="header-search"
-                        placeholder="  Quick Find Recipe"
-                        name="quick-find"
+                        placeholder="  Quick find recipe by name"
+                        name="searchName"
+                        value={this.state.searchName}
+                        onChange={this.handleInputChange}
                     />
-                </div>
+                </form>
                 <br />
                 <div className="flex">
                     <h2>Public Recipes</h2>

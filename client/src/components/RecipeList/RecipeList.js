@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
+import { Button, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AiOutlinePushpin, AiOutlineSave } from 'react-icons/ai';
@@ -16,6 +16,7 @@ class RecipeList extends Component {
             saved: [],
             dropdownOpenSaved: false,
             dropdownOpen_new: false,
+            searchName: ''
         };
         this.toggleSaved = this.toggleSaved.bind(this);
         this.toggle_new = this.toggle_new.bind(this);
@@ -79,19 +80,39 @@ class RecipeList extends Component {
         console.log('sort by prep time', sortPrep);
     }
 
+    handleInputChange = e => {
+        this.setState({
+          [e.target.name]: e.target.value,
+        });
+      };
+
+    searchSubmit = e => {
+        e.preventDefault();
+        const { searchName } = this.state;
+        console.log(searchName);
+        if(searchName){
+            window.location.assign(`/search/${searchName}`)
+        } else{
+            alert('Enter some recipe name to start your search');
+        }
+    }
+
     render() {
         return (
             <div className="all-recipe" id="pageContainer">
                 <h1><b>YOUR RECIPES</b></h1><br/>
                 <div className="search-bar">
-                    {/* TODO: search function to be design */}
-                    <input
-                        type="text"
-                        id="header-search"
-                        placeholder="  Quick Find Recipe"
-                        name="quick-find"
-                    />
-                    <ButtonDropdown isOpen={this.state.dropdownOpen_new} toggle={this.toggle_new}>
+                    <form method="POST" onSubmit={this.searchSubmit}>
+                        <input
+                            type="text"
+                            id="header-search"
+                            placeholder="  Quick find recipe by name"
+                            name="searchName"
+                            value={this.state.searchName}
+                            onChange={this.handleInputChange}
+                        />
+                    </form>
+                    <ButtonDropdown id="drp-btn" isOpen={this.state.dropdownOpen_new} toggle={this.toggle_new}>
                         <DropdownToggle caret color="primary">
                             + New Recipe
                         </DropdownToggle>

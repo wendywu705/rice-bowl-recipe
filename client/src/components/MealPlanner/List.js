@@ -10,6 +10,7 @@ const useStyle = makeStyles((theme) => ({
     width: '260px',
     // backgroundColor: '#EBECF0',
     backgroundColor: '#fafcff',
+    // backgroundColor:'red',
 
     marginLeft: theme.spacing(1),
     marginTop: theme.spacing(1),
@@ -30,7 +31,7 @@ const List = (props) => {
   const classes = useStyle();
   return (
     <div>
-      <Paper className={classes.root}>
+      <Paper className={classes.root} style={{width:350, margin:10}}>
         <Title
           className={classes.title}
           title={props.title}

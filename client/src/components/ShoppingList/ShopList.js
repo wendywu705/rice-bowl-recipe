@@ -50,7 +50,7 @@ const ShopList = () => {
     for (const [num, idata] of Object.entries(ingredients)) {
       for (const [index, foodinfo] of Object.entries(idata)) {
         // console.log('maybe it ', num)
-        if (foodinfo.quantity === null) {
+        if (!foodinfo.quantity) {
           continue
         }
         if (foodinfo.description in listObj){

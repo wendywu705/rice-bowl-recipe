@@ -6,7 +6,7 @@ import './MPlanner.css';
 import store from '../MealPlanner/data';
 import blank from '../MealPlanner/blank';
 import ContextApi from './ContextApi';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import moment from 'moment';
 import { LeftOutlined, RightOutlined, SaveFilled } from '@ant-design/icons';
 import '../Layout/Footer.css';
@@ -150,6 +150,7 @@ const MealWeek = () => {
           mealplanner: dataToSend,
         },
       });
+      message.success('Meal Plan Successfully Saved');
     } catch (err) {
       console.log(err);
     }
@@ -328,7 +329,7 @@ const MealWeek = () => {
               SAVE PLAN
             </Button>
           </div>
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', flexDirection:'column', marginLeft:'10%' }}>
             {currentData.lists.map((list, idx) => {
               return (
                 <MPlanner

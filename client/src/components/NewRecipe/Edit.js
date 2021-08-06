@@ -126,11 +126,9 @@ function Edit(props) {
     // Create a unique imageURL for each image
     // if no image inserted
     if (!selectedFile){
-      console.log('no image, using stock apron image')
-      let defaultFileName = `c9f85699-7aae-45bf-b47e-5c1913f06d6a-no_image.jpeg`
+      console.log('no new image upload, using original image')
       tempData = {
         ...state,
-        imageUrl: `https://storage.googleapis.com/ricebowl-bucket-1/${defaultFileName}`,
       };
     }
     //image is inserted

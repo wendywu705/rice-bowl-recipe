@@ -377,6 +377,28 @@ module.exports = (app) => {
     }
   });
 
+  // search keyword in non-sensitive case
+  app.get('/search/:name', async (req, res) => {
+    const searchName  = req.params.name;
+    console.log(searchName,"Sadjaisia");
+    try {
+      const recipe = await RecipeModel.find({ name: { $regex: searchName, $options: 'i'} }).select({
+        name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1
+      });
+      if (recipe) {
+        console.log('searched recipes found');
+        res.json(recipe);
+      } else {
+        const dne = 'no such recipe with this name';
+        console.log(dne);
+        res.json({ error: dne });
+      }
+    } catch (err) {
+      console.log('no such recipe');
+      res.json({ error: err.message });
+    }
+  });
+
   app.post('/remove/:recipeId', async (req, res) => {
     const { recipeId } = req.params;
     let isOwner = false;

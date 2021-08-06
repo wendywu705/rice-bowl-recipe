@@ -34,11 +34,19 @@ module.exports = (app) => {
       } else {
         let sampleObj = {
           ingredients: obj.ingredients,
-          amt: 1,
+          amt: 0,
         };
         shoppingList[obj.name] = sampleObj;
       }
       console.log('hhh', shoppingList);
+    }
+
+    for (let meal of list) {
+      for (let [k, v] of Object.entries(reso)) {
+        if (meal === v.recipeId) {
+          shoppingList[v.name].amt = shoppingList[v.name].amt + 1;
+        }
+      }
     }
 
     res.json(shoppingList);

@@ -292,7 +292,7 @@ const SingleRecipe = () => {
           {console.log(newFoodData)}
           <Button
             type="link"
-            href={'/home'}
+            href={'/browse'}
             icon={
               <LeftOutlined
                 style={{

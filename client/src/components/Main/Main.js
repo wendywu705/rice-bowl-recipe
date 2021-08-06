@@ -9,6 +9,7 @@ import MealPlanner from '../../pages/MealPlanner/MealPlanner';
 import Browse from '../../pages/Browse';
 import ParseRecipe from '../../pages/ParseRecipe';
 import ShoppingList from '../../pages/ShoppingList';
+import SearchPage from '../../pages/SearchPage';
 import EditRecipe from '../../pages/EditRecipe';
 
 const Main = () => {
@@ -24,6 +25,7 @@ const Main = () => {
         <Route exact path="/recipe/:id" component={SingleRecipePage} />
         <Route exact path="/parse" component={ParseRecipe} />
         <Route exact path="/list" component={ShoppingList} />
+        <Route exact path="/search/:name" component={SearchPage} />
         <Route exact path="/recipe/edit/:id" component={EditRecipe} />
       </Switch>
     </div>

@@ -44,7 +44,7 @@ const List = () => {
 
 
   let multiplier;
-
+  console.log('listData', listData);
   for (const [recipe, ingredients] of Object.entries(listData)) {
     multiplier = ingredients['amt'];
     for (const [num, idata] of Object.entries(ingredients)) {

@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const { Strategy } = require('passport-google-oauth20'); // for authentication
 
 const User = mongoose.model('users');
+const MealPlanner = mongoose.model('mealplanner');
 require('dotenv').config();
 
 const config = {
@@ -39,12 +40,20 @@ const verifyCallback = async (accessToken, refreshToken, profile, done) => {
     done(null, existingUser);
     return;
   }
+  // Create user model in the database and save it
   const user = await new User({
     googleId: profile.id,
     createdAt: new Date(),
     email: profile.emails[0].value,
     displayName: profile.displayName,
   }).save();
+
+  // Create meal planner model in the database and save it
+  const mealplanner = await new MealPlanner({
+    userId: profile.id,
+    weeks: [],
+  }).save();
+
   done(null, user);
 };
 

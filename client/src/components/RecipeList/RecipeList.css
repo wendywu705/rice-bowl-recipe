@@ -8,15 +8,16 @@
     margin-right: 3em;
 }
 
-.search-bar{
-    width: 100%;
+form{
+    width: 90%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.search-bar > h1{
-    width: 23%;
+#drp-btn{
+    margin-left: -45ex;
+    margin-right: 40ex;
 }
 
 #header-search{

@@ -10,7 +10,9 @@ const userRouter = require('./routes/router.user');
 
 require('dotenv').config();
 require('./models/User');
+require('./models/MealPlanner');
 require('./models/Recipe');
+require('./models/Shopping');
 require('./services/passport');
 
 const config = {
@@ -30,11 +32,13 @@ const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}
 // local mongoDB on server
 // const uri = 'mongodb://127.0.0.1:27017/recipes';
 //
-const temp = mongoose.connect(uri, {
-  useNewUrlParser: true,
-  connectTimeoutMS: 10000,
-  useUnifiedTopology: true,
-}).then(() => console.log('i am connected'));
+const temp = mongoose
+  .connect(uri, {
+    useNewUrlParser: true,
+    connectTimeoutMS: 10000,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log('i am connected'));
 
 mongoose.connection.on('connected', () => {
   console.log(`Mongoose default connection open to ${temp}`);
@@ -71,7 +75,7 @@ app.use(
     name: 'session',
     maxAge: 24 * 60 * 60 * 1000, // 24 hour session
     keys: [config.COOKIE_KEY_1, config.COOKIE_KEY_2],
-  }),
+  })
 );
 
 app.use(passport.initialize());
@@ -82,6 +86,8 @@ app.use(express.json());
 require('./routes/router.auth')(app);
 require('./routes/router.gcs')(app);
 require('./routes/router.recipe')(app);
+require('./routes/router.shopping')(app);
+require('./routes/router.mealplanner')(app);
 
 // Rest of the routes, after authentication
 app.use('/user', userRouter);

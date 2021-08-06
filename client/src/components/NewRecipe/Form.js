@@ -1,15 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Edit from "./Edit";
+import New from "./New";
 import './Form.css';
-import '../Layout/Footer.css'
+import '../Layout/Footer.css';
 
-import { Input, Upload, Button, InputNumber, Checkbox, Row, Col, Divider } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-const { TextArea } = Input;
-
-const { v4: uuidv4 } = require('uuid');
-
-function Form() {
+const Form = (props) => {
+  const [file, setFile] = useState([]);
+  const [remove, setRemove] =  useState(false);
   const [state, setState] = useState({
     name: '',
     ingredients: '',
@@ -28,72 +26,82 @@ function Form() {
   });
   // Holds the uploaded image file in a state
   let [selectedFile, setSelectedFile] = useState(null);
-
+  
   const test = async () => {
-    const res = await axios.get('/home/');
+    const res = await axios.get('https://localhost:9000/home/');
     console.log('heyo', res);
   };
   useEffect(() => {
     test();
   }, []);
-
+  
   // Form data to be embedded in post requests
   let formData = new FormData();
   let recipeData = new FormData();
-  let newFileName = '';
 
-  // Handles the AJAX request for uploading the user image
-  const uploadRequest = async () => {
-    try{
-      const response = await axios({
-        method: 'post',
-        timeout: 1000,
-        url: `https://backend-cepdewy2ta-nn.a.run.app/imageupload`,
-        data: formData,
-        withCredentials: true
-      });
-      if (response.status === 200){
-        console.log('res',response);
-        return response.data;
+  const parseDirections = (dir) => {
+    let resDir = ""
+    for (let i=0; i<dir.length; i++) {
+      resDir += dir[i]
+      if (i < dir.length-1) {
+        resDir += "\n"
       }
-      return null;
-    } catch (err){
-      console.log('err',err);
-      return null;
     }
-  };
+    return resDir;
+  }
 
-  // Handles the AJAX request for uploading the recipe data
-  const recipeRequest = async () => {
-    try{
-      const response = await axios({
-        method: 'post',
-        timeout: 2000,
-        url: `https://backend-cepdewy2ta-nn.a.run.app/recipes/new`,
-        data: recipeData,
-        withCredentials: true
-      });
-      if (response.status === 200){
-        console.log('res',response);
-        return response.data;
-      }
-      return null;
-    } catch (err){
-      console.log('err',err);
-      return null;
-    }
-  };
+  const updateState = (
+    name, 
+    imageUrl,
+    category,
+    ingre_string,
+    prepMin,
+    prepHour,
+    cookHour,
+    cookMin,
+    servingSize,
+    rating,
+    directions,
+    url,
+    hidden,
+    recipeId
+  ) => {
+    return(
+      setState({
+        ...state,
+        name: name,
+        imageUrl: imageUrl,
+        category: category,
+        ingredients: ingre_string,
+        prepMin: prepMin,
+        prepHour: prepHour,
+        cookHour: cookHour,
+        cookMin: cookMin,
+        servingSize: servingSize,
+        rating: rating, //TODO: change so that the author cannot change rating
+        directions: parseDirections(directions),
+        url: url ? url : '',
+        hidden: hidden,
+        recipeId: recipeId
+      })
+    );
+  }
 
   // Track the uploaded image as a state
   const onChangeHandler = (e) => {
-    console.log('selected file',e.file)
-    setSelectedFile(e.file);
+    if (e.file.status === 'removed'){
+      setSelectedFile(null)
+      setRemove(true)
+    }
+    else {
+      setSelectedFile(e.file);
+    }
+    setFile(e.fileList);
   };
 
   // General handle change function to update each corresponding value in recipe state
   function handleChange(event) {
     const value = event.target.value;
-    console.log('handleChange',value)
     setState({
       ...state,
       [event.target.name]: value,
@@ -101,8 +109,6 @@ function Form() {
   }
 
   function handleCheckBox(event) {
-    console.log('checkbox', event)
-    // handleChange(event);
     setState({...state, "hidden":event.target.checked})
     const hidden = document.getElementById('hidden');
     if (hidden) {
@@ -156,295 +162,70 @@ function Form() {
       state.errors["time"] = "Time cannot be negative.";
     }
 
-    //url
-    let valid = /^(https?:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/;
-    if (state.url.length>0) {
-      if (!valid.exec(state.url)) {
-        state.errors["url"] = "Invalid youtube url";
-      }
+    // url
+    try {
+      new URL(state.url);
+    } catch (e) {
+      console.error(e);
+      state.errors["url"] = "Invalid youtube url";
+      formIsValid  = false;
     }
-
     return formIsValid;
   }
 
-  // Handles 2 AJAX request, one for uploading the image to GCS, and other for uploading the recipe data
-  const handleSubmit = async(e) => {
-    e.preventDefault();
+  const updateNum = (key, value) => {
+    setState(state=> ({
+      ...state,
+      [key]: value
+    }))    
+  }
 
-    //form validation
-    if(!handleValidation()){
-      console.log('Form validation failed');
-      console.log('errors:',state.errors);
-      let errors = JSON.stringify(state.errors).replace(/\\n/g, "\\n");
-      alert(`Form has errors. Cannot submit.\n ${errors}`)
-      return;
-    }
-    let tempData;
-    let userData;
+  const getImgName = (img) => {
+    let ind = img.lastIndexOf('-');
+    let retImg = img.substring(ind+1, img.length)
+    return retImg;
+  }
 
-    // Create a unique imageURL for each image
-    //if no image inserted
-    if (!selectedFile){
-      console.log('no image, using stock apron image')
-      let defaultFileName = `c9f85699-7aae-45bf-b47e-5c1913f06d6a-no_image.jpeg`
-      tempData = {
-        ...state,
-        imageUrl: `https://storage.googleapis.com/ricebowl-bucket-1/${defaultFileName}`,
-      };
-    }
-    //image is inserted
-    else{
-      console.log('image inserted');
-      newFileName = uuidv4() + '-' + selectedFile.name;
-      userData = {
-        imageName: newFileName,
-      };
-      tempData = {
-        ...state,
-        imageUrl: `https://storage.googleapis.com/ricebowl-bucket-1/${newFileName}`,
-      };
-      formData.append('file', selectedFile);
-      console.log('selectedFile', selectedFile)
-      formData.append('data', JSON.stringify(userData));
-      console.log('data',JSON.stringify(userData))
-      console.log('form data', formData)
-      let uploadRes = uploadRequest();
-      if (!uploadRes){
-        alert('image submission FAILED!');
+  if (file.length===0 && state.imageUrl && !remove) {
+    setFile([
+      {
+        uid: '-1',
+        name: getImgName(state.imageUrl),
+        status: 'done',
+        url: state.imageUrl,
+        thumbUrl: state.imageUrl
       }
-    }
-    recipeData.append('data', JSON.stringify(tempData));
-    let recipeResId = await recipeRequest();
-    if (recipeResId){
-      alert('Recipe submitted successfully!');
-      console.log('new recipe_id',recipeResId);
-      window.location.assign(`../recipe/${recipeResId}`);
-    }
-    else{
-      alert('Recipe submission FAILED!\nMake sure recipe has ingredients and directions');
-    }
-  };
+    ])
+  }
 
-  return (
-      <div className="Form" id="pageContainer">
-        {console.log('SELECTEDFILE', selectedFile)}
-        <div>
-          <h1 className="new-recipes-title">New Recipe:</h1>
-          <form id="recipeForm" encType="multipart/form-data" method="POST">
-            <label className="recipe-name-title">
-              Recipe Name: <br />
-              <Input
-                  className="inputBox"
-                  type="text"
-                  name="name"
-                  value={state.name}
-                  onChange={handleChange}
-                  placeholder="Enter Recipe Title"
-                  required="required"
-              />
-            </label>{' '}
-            <Divider style={{marginBottom:10}} />
-            <label className="image">
-              Image: 
-              <Upload
-                listType="picture"
-                className="upload-list-inline"
-                onChange={onChangeHandler}
-                beforeUpload={() => false}
-                maxCount={1}
-              >
-                <Button 
-                  className="uploadButton"
-                  icon={<UploadOutlined />}
-                  size="large"
-                  style={{
-                    display: 'inline-flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  Upload
-                </Button>
-              </Upload>
-            </label>
-            <Divider style={{marginBottom:10}} />
-            <label className="Category">
-              Categories: <br />
-              <Input
-                  className="inputBox"
-                  type="text"
-                  name="category"
-                  value={state.category}
-                  onChange={handleChange}
-                  placeholder="Enter Categories seperated by commas. eg) Chinese, Cake, Fish"
-              />
-            </label>{' '}
-            <Divider style={{marginBottom:10}} />
-            <label className="Ingredients">
-              Recipe Ingredients: <br />
-              <TextArea
-                  className="inputArea"
-                  name="ingredients"
-                  id="ingredientsId"
-                  // value={"1 item\n2 item\n3 items"}
-                  value={state.ingredients}
-                  onChange={handleChange}
-                  placeholder="quantity/unit/ingredient&#13;3 cups carrots &#13;2 eggs &#13;5 cloves garlic &#13;etc..."
-                  required
-              />
-            </label>{' '}
-            <br />
-            {console.log('state', state)}
-            <Divider style={{marginBottom:10}} />
-            <Row gutter={[10, 8]} className="numClass">
-            <Col span={8} className="col">
-                <label className="Prep" id="numLabel">
-                  Prep Hours:
-                  <InputNumber
-                      className="inputNumber"
-                      type="number"
-                      name="prepHour"
-                      value={state.prepHour}
-                      onChange={(value) => setState({...state, "prepHour" : value})}
-                      min={0}
-                      defaultValue={0}
-                  />
-                </label>
-              </Col>
+  let fullData = {
+    valid: handleValidation,
+    update: handleChange,
+    check: handleCheckBox,
+    handle: onChangeHandler,
+    num: updateNum,
+    data: state,
+    form: formData,
+    recipe: recipeData,
+    selected: selectedFile,
+    pic: file,
+    fill: updateState
+  }
 
-              <Col span={8} className="col">
-                <label className="Cook" id="numLabel">
-                  Cook Hours:
-                  <InputNumber
-                      className="inputNumber"
-                      type="number"
-                      name="cookHour"
-                      value={state.cookHour}
-                      // onChange={handleChange}
-                      onChange={(value) => setState({...state, "cookHour" : value})}
-                      min={0}
-                      defaultValue={0}
-                  />
-                </label>
-              </Col>
-              <Col span={8} className="col">
-                <label className="Serving-Size" id="numLabel">
-                  Serving Size:
-                  <InputNumber
-                      className="inputNumber"
-                      type="number"
-                      name="servingSize"
-                      value={state.servingSize}
-                      onChange={(value) => setState({...state, "servingSize" : value})}
-                      // onChange={handleChange}
-                      min={1}
-                      defaultValue={1}
-                  />
-                </label>
-              </Col>
-
-              <Col span={8} className="col">
-                <label className="Prep" id="numLabel">
-                  Prep Mins:
-                  <InputNumber
-                      className="inputNumber"
-                      type="number"
-                      name="prepMin"
-                      value={state.prepMin}
-                      onChange={(value) => setState({...state, "prepMin" : value})}
-                      // onChange={handleChange}
-                      min={0}
-                      max={59}
-                      defaultValue={0}
-                  />
-                </label>{' '}
-              </Col>
-              <Col span={8} className="col">
-                <label className="Cook" id="numLabel">
-                  Cook Mins:
-                  <InputNumber
-                      className="inputNumber"
-                      type="number"
-                      name="cookMin"
-                      value={state.cookMin}
-                      onChange={(value) => setState({...state, "cookMin" : value})}
-                      // onChange={handleChange}
-                      min={0}
-                      max={59}
-                      defaultValue={0}
-                  />
-                </label>{' '}
-              </Col>
-              <Col span={8} className="col">
-                <label className="Rating" id="numLabel">
-                  Rating:
-                  <InputNumber
-                      className="inputNumber"
-                      type="number"
-                      name="rating"
-                      value={state.rating}
-                      onChange={(value) => setState({...state, "rating" : value})}
-                      // onChange={handleChange}
-                      min={0}
-                      max={5}
-                      defaultValue={5}
-                  />
-                </label>{' '}
-              </Col>
-            </Row>
-            <Divider style={{marginBottom:10}} />
-            <label>
-              Recipe Steps: <br />
-              <TextArea
-                  className="inputArea"
-                  name="directions"
-                  value={state.directions}
-                  onChange={handleChange}
-                  placeholder="Chop up all carrots and garlic. &#13;&#13;Pour water over the carrots and add along the chopped garlic."
-                  required
-              />
-            </label>{' '}
-            <Divider style={{marginBottom:10}} />
-            <label className="url">
-              Video Clip: <br />
-              <Input
-                  className="inputBox"
-                  type="text"
-                  name="url"
-                  value={state.url}
-                  onChange={handleChange}
-                  placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-              />
-            </label>{' '}
-            {/* <br /> */}
-            <Divider style={{marginBottom:10}} />
-
-            <label className="hidden">
-              Only Private View?
-              <Checkbox
-                  className="checkBox"
-                  type="checkbox"
-                  name="hidden"
-                  // value="true"
-                  onChange={handleCheckBox}
-                  defaultValue={false}
-              />
-            </label>{' '}
-            <br />
-            <div className="align-center">
-              <Button 
-                className="Submit" 
-                type="primary" 
-                htmlType="submit" 
-                onClick={handleSubmit}
-              >
-                Submit
-              </Button>
-            </div>
-          </form>
-        </div>
-      </div>
+  let partialData = Object.assign(
+    {}, 
+    fullData, 
+    {pic: undefined, fill:undefined}
   );
-}
+  return(
+    <div>
+      { (props.type==="edit") ?
+        <Edit {...fullData}/>    
+        : 
+        <New {...partialData}/>  
+      }
+    </div>
+  );
+};
 
 export default Form;

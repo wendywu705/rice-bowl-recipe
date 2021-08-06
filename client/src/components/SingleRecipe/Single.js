@@ -11,11 +11,12 @@ import App from '../PDF/genPDF';
 import axios from 'axios';
 import './Single.css';
 import '../Layout/Footer.css'
+import { Link } from 'react-router-dom';
+
 
 import { Divider, InputNumber, Button } from 'antd';
 
 import {
-  DeleteOutlined,
   EditOutlined,
   LeftOutlined,
   SaveOutlined,
@@ -35,7 +36,6 @@ const SingleRecipe = () => {
   const { id } = useParams();
 
   useEffect(() => {
-
     console.log('recipeId:', id);
     const checkSaved= async() =>{
       try{
@@ -299,7 +299,7 @@ const SingleRecipe = () => {
           {console.log(newFoodData)}
           <Button
             type="link"
-            href={'/home'}
+            href={'/browse'}
             icon={
               <LeftOutlined
                 style={{
@@ -383,29 +383,31 @@ const SingleRecipe = () => {
               {"@"+printUrl(newFoodData)}
             </Button>
             <div className="editContainer">
-              <Button
-                type="link"
-                icon={<EditOutlined />}
-                style={{
-                  fontSize: '17px',
-                  lineHeight: '17px',
-                }}
-              >
-                Edit
-              </Button>
-              <Button
-                  type = "button"
-                  icon={<DeleteOutlined />}
+              <Link to= {`edit/${newFoodData.recipeId}`}>
+                <Button
+                  type="link"
+                  icon={<EditOutlined />}
                   style={{
                     fontSize: '17px',
                     lineHeight: '17px',
                   }}
-                  onClick = {() => {
-                    const confirmBox = window.confirm("Are you sure you want to delete this recipe?")
-                    if (confirmBox === true){
-                      handleDelete()
-                    }
-                  }}
+                >
+                  Edit
+                </Button>
+              </Link>
+              <Button
+                danger
+                style={{
+                  fontSize: '17px', 
+                  display: 'inline-flex',
+                  alignItems: 'center'
+                }}
+                onClick = {() => {
+                  const confirmBox = window.confirm("Are you sure you want to delete this recipe?")
+                  if (confirmBox === true){
+                    handleDelete()
+                  }
+                }}
               >
                 Delete
               </Button>
@@ -431,6 +433,7 @@ const SingleRecipe = () => {
                 <InputNumber
                   min={1}
                   max={10000}
+                  disabled={newFoodData && !newFoodData.servingSize}
                   defaultValue={(newFoodData && newFoodData.servingSize)}
                   onChange={(value) => {
                     updateRatio(value);

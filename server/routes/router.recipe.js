@@ -20,7 +20,12 @@ module.exports = (app) => {
   // fetch Recipe names from db to Home page.
   app.get('/home', async (req, res) => {
     const query = await RecipeModel.find({ hidden: false }).select({
-      name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1, time: 1
+      name: 1,
+      _id: 0,
+      imageUrl: 1,
+      meta: 1,
+      recipeId: 1,
+      time: 1,
     });
     res.json(query);
   });
@@ -67,8 +72,14 @@ module.exports = (app) => {
     }
     const recipeIds = user.recipesPinned;
 
-    const query = await RecipeModel.find({ recipeId: { $in: recipeIds } }).select({
-      name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1,
+    const query = await RecipeModel.find({
+      recipeId: { $in: recipeIds },
+    }).select({
+      name: 1,
+      _id: 0,
+      imageUrl: 1,
+      meta: 1,
+      recipeId: 1,
     });
     // console.log('pinned:', query);
     res.json(query);
@@ -101,8 +112,16 @@ module.exports = (app) => {
     }
     const recipeIds = user.recipesStarred;
 
-    const query = await RecipeModel.find({ recipeId: { $in: recipeIds } }).select({
-      name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1, time: 1
+    const query = await RecipeModel.find({
+      recipeId: { $in: recipeIds },
+    }).select({
+      name: 1,
+      _id: 0,
+      imageUrl: 1,
+      meta: 1,
+      recipeId: 1,
+      time: 1,
+      category: 1,
     });
     // console.log('saved:', query);
     res.json(query);
@@ -117,7 +136,10 @@ module.exports = (app) => {
       if (user) {
         const updateDoc = { $addToSet: { recipesStarred: recipeId } };
         try {
-          const response = await UserModel.updateOne({ _id: userId }, updateDoc);
+          const response = await UserModel.updateOne(
+            { _id: userId },
+            updateDoc
+          );
           if (response) {
             console.log('starred successfully');
             res.json(recipeId);
@@ -142,7 +164,10 @@ module.exports = (app) => {
       if (user) {
         const updateDoc = { $pull: { recipesStarred: recipeId } };
         try {
-          const response = await UserModel.updateOne({ _id: userId }, updateDoc);
+          const response = await UserModel.updateOne(
+            { _id: userId },
+            updateDoc
+          );
           if (response) {
             console.log('unstarred successfully');
             res.json(recipeId);
@@ -167,7 +192,10 @@ module.exports = (app) => {
       if (user) {
         const updateDoc = { $addToSet: { recipesPinned: recipeId } };
         try {
-          const response = await UserModel.updateOne({ _id: userId }, updateDoc);
+          const response = await UserModel.updateOne(
+            { _id: userId },
+            updateDoc
+          );
           if (response) {
             console.log('starred successfully');
             res.json(recipeId);
@@ -192,7 +220,10 @@ module.exports = (app) => {
       if (user) {
         const updateDoc = { $pull: { recipesPinned: recipeId } };
         try {
-          const response = await UserModel.updateOne({ _id: userId }, updateDoc);
+          const response = await UserModel.updateOne(
+            { _id: userId },
+            updateDoc
+          );
           if (response) {
             console.log('unstarred successfully');
             res.json(recipeId);
@@ -216,7 +247,8 @@ module.exports = (app) => {
       const maxIdRecipe = await RecipeModel.find()
         .sort({ recipeId: -1 })
         .limit(1); // returns array
-      if (maxIdRecipe.length > 0) { // if db has at least 1 recipe, else sets newId to 1
+      if (maxIdRecipe.length > 0) {
+        // if db has at least 1 recipe, else sets newId to 1
         newId = +maxIdRecipe[0].recipeId + 1;
       }
       const query = JSON.parse(req.body.data);
@@ -260,13 +292,20 @@ module.exports = (app) => {
 
       if (recipe && userId) {
         try {
-          const userRes = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
+          const userRes = await UserModel.find({ _id: ObjectId(userId) }).limit(
+            1
+          );
           const user = userRes[0];
           console.log('userRes:', userRes);
           if (user) {
-            const updateDoc = { $addToSet: { recipesOwned: newId, recipesStarred: newId } };
+            const updateDoc = {
+              $addToSet: { recipesOwned: newId, recipesStarred: newId },
+            };
             try {
-              const response = await UserModel.updateOne({ _id: ObjectId(userId) }, updateDoc);
+              const response = await UserModel.updateOne(
+                { _id: ObjectId(userId) },
+                updateDoc
+              );
               if (response) {
                 addedToUser = true;
                 console.log('added recipe to recipesOwned successfully');
@@ -318,6 +357,26 @@ module.exports = (app) => {
     }
   });
 
+  app.get('/recipes/edit/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+      // faster to use find().limit(1) instead of findOne()
+      const results = await RecipeModel.find({ recipeId: +id }).limit(1);
+      const recipe = results[0];
+      if (recipe) {
+        console.log('parse content of recipe to edit page');
+        res.send(recipe);
+      } else {
+        const dne = 'no such recipe with this id';
+        console.log(dne);
+        res.json({ error: dne });
+      }
+    } catch (err) {
+      console.log('fail to go to edit page');
+      res.json({ error: err.message });
+    }
+  });
+
   // search keyword in non-sensitive case
   app.get('/search/:name', async (req, res) => {
     const searchName  = req.params.name;
@@ -359,12 +418,17 @@ module.exports = (app) => {
           },
         };
         try {
-          const response = await UserModel.updateOne({ _id: userId }, updateDoc);
+          const response = await UserModel.updateOne(
+            { _id: userId },
+            updateDoc
+          );
           if (response) {
             console.log('recipe removed from user successfully');
             if (isOwner) {
-              const hiddenResponse = await RecipeModel.updateOne({ recipeId },
-                { $set: { hidden: true } });
+              const hiddenResponse = await RecipeModel.updateOne(
+                { recipeId },
+                { $set: { hidden: true } }
+              );
               if (hiddenResponse) {
                 console.log('recipe hidden successfully');
                 res.json({ recipeId, hidden: true });
@@ -412,7 +476,8 @@ module.exports = (app) => {
       const maxIdRecipe = await RecipeModel.find()
         .sort({ recipeId: -1 })
         .limit(1); // returns array
-      if (maxIdRecipe.length > 0) { // if db has at least 1 recipe, else sets newId to 1
+      if (maxIdRecipe.length > 0) {
+        // if db has at least 1 recipe, else sets newId to 1
         newId = +maxIdRecipe[0].recipeId + 1;
       }
     } catch (e) {
@@ -452,7 +517,9 @@ module.exports = (app) => {
       }
       postReq.directions = newInstruct;
 
-      function isNumber(n) { return !Number.isNaN(parseFloat(n)) && !Number.isNaN(n - 0); }
+      function isNumber(n) {
+        return !Number.isNaN(parseFloat(n)) && !Number.isNaN(n - 0);
+      }
 
       // https://stackoverflow.com/questions/17885850/how-to-parse-a-string-containing-text-for-a-number-float-in-javascript
       // parses string for num
@@ -462,10 +529,11 @@ module.exports = (app) => {
       }
 
       // http://www.4codev.com/javascript/convert-seconds-to-time-value-hours-minutes-seconds-idpx6943853585885165320.html
-      function convertHMS(value) { // convert seconds to hours and minutes
+      function convertHMS(value) {
+        // convert seconds to hours and minutes
         const sec = parseInt(value, 10);
         const hours = Math.floor(sec / 3600);
-        const minutes = Math.floor((sec - (hours * 3600)) / 60);
+        const minutes = Math.floor((sec - hours * 3600) / 60);
         return { hours, minutes };
       }
 
@@ -482,11 +550,12 @@ module.exports = (app) => {
           hours: 60 * 60 * 1000,
           hrs: 60 * 60 * 1000,
         };
-        const regex = /(\d+)\s*(second|min|mins|minute|minutes|hr|hours|hour|hrs)/g;
+        const regex =
+          /(\d+)\s*(second|min|mins|minute|minutes|hr|hours|hour|hrs)/g;
         let ms = 0;
         let m;
         let x;
-        while (m = regex.exec(s)) {
+        while ((m = regex.exec(s))) {
           x = Number(m[1]) * (tMillis[m[2]] || 0);
           ms += x;
         }
@@ -501,19 +570,23 @@ module.exports = (app) => {
         cookHour = timespanMillis(recipe.time.cook).hours;
         cookMin = timespanMillis(recipe.time.cook).minutes;
       } else if (recipe.time.total && recipe.time.prep) {
-        cookHour = timespanMillis(recipe.time.total).hours
-            - timespanMillis(recipe.time.prep).hours;
-        cookMin = timespanMillis(recipe.time.total).minutes
-            - timespanMillis(recipe.time.prep).minutes;
+        cookHour =
+          timespanMillis(recipe.time.total).hours -
+          timespanMillis(recipe.time.prep).hours;
+        cookMin =
+          timespanMillis(recipe.time.total).minutes -
+          timespanMillis(recipe.time.prep).minutes;
       }
       if (recipe.time.prep) {
         prepHour = timespanMillis(recipe.time.prep).hours;
         prepMin = timespanMillis(recipe.time.prep).minutes;
       } else if (recipe.time.total && recipe.time.cook) {
-        prepHour = timespanMillis(recipe.time.total).hours
-            - timespanMillis(recipe.time.cook).hours;
-        prepMin = timespanMillis(recipe.time.total).minutes
-            - timespanMillis(recipe.time.cook).minutes;
+        prepHour =
+          timespanMillis(recipe.time.total).hours -
+          timespanMillis(recipe.time.cook).hours;
+        prepMin =
+          timespanMillis(recipe.time.total).minutes -
+          timespanMillis(recipe.time.cook).minutes;
       }
 
       console.log('time', cookHour, cookMin, prepHour, prepMin);
@@ -549,13 +622,20 @@ module.exports = (app) => {
       console.log(userId);
       if (userId && parseRecipe) {
         try {
-          const userRes = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
+          const userRes = await UserModel.find({ _id: ObjectId(userId) }).limit(
+            1
+          );
           const user = userRes[0];
           console.log('userRes:', userRes);
           if (user) {
-            const updateDoc = { $addToSet: { recipesOwned: newId, recipesStarred: newId } };
+            const updateDoc = {
+              $addToSet: { recipesOwned: newId, recipesStarred: newId },
+            };
             try {
-              const response = await UserModel.updateOne({ _id: ObjectId(userId) }, updateDoc);
+              const response = await UserModel.updateOne(
+                { _id: ObjectId(userId) },
+                updateDoc
+              );
               if (response) {
                 addedToUser = true;
                 console.log('added recipe to recipesOwned successfully');
@@ -576,5 +656,68 @@ module.exports = (app) => {
       }
       res.json(newId);
     });
+  });
+
+  app.post('/recipes/edit/:recipeId', multer.single('file'), async (req, res) => {
+    console.log('in post')
+    const resId = req.params.recipeId;
+    console.log('req params', req.params)
+    if (userId) {
+      console.log('Updating recipe', resId);
+      console.log('user ', userId, ' is updating the recipe');
+    }
+    try {
+      const filter = { recipeId: req.params.recipeId };
+      // console.log('filter', filter);
+      // console.log('req', JSON.parse(JSON.stringify(req.body)));
+      const query = JSON.parse(req.body.data);
+      console.log('q::::', query);
+      const postReq = {};
+      if (query.category) {
+        console.log(query.category);
+        if (query.category.includes(',')) {
+          postReq.category = query.category
+            .replace(', ', ',')
+            .replace(' ,', ',')
+            .split(',');
+        } else {
+          postReq.category = query.category;
+        }
+      }
+      if (query.ingredients) {
+        postReq.ingredients = parseIngredient(query.ingredients.toLowerCase());
+      }
+      if (query.directions) {
+        postReq.directions = query.directions
+          .replace(/[\r]/g, '')
+          .split('\n')
+          .filter((T) => T.length > 0)
+          .map((item) => item.trim());
+      }
+      postReq.hidden = !!query.hidden;
+      postReq.name = query.name;
+      postReq.votes = +1;
+      postReq.time = {
+        prepHour: query.prepHour,
+        prepMin: query.prepMin,
+        cookHour: query.cookHour,
+        cookMin: query.cookMin,
+      };
+      postReq.meta = { votes: 1, rating: query.rating };
+      postReq.url = query.url;
+      postReq.imageUrl = query.imageUrl; // Embed the Google Cloud Storage image URL
+      postReq.servingSize = +query.servingSize;
+      await RecipeModel.findOneAndUpdate(filter, postReq, {
+        upsert: true,
+        returnOriginal: false,
+      },function (err, result) {
+        if (err) res.send(500, {error: err})
+        console.log('recipe updated successfully', result);
+        res.json(resId);
+      })
+    } catch (err3) {
+      console.log('error, cant update the recipe');
+      console.log(err3);
+    }
   });
 };

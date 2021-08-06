@@ -16,38 +16,38 @@ import {
   CalendarOutlined,
   ShoppingCartOutlined,
   LogoutOutlined,
-  LoginOutlined
+  LoginOutlined,
 } from '@ant-design/icons';
 
 const { Sider } = Layout;
 
 const SideBar = () => {
-  const [ reg, setReg ] = useState(false);
-  const [ name, setName ] = useState('');
-  const [ key, setKey] = useState(null);
+  const [reg, setReg] = useState(false);
+  const [name, setName] = useState('');
+  const [key, setKey] = useState(null);
   useEffect(() => {
     fetchUser();
     let pos = window.location.pathname;
     let currkey;
-    switch(pos) {
-      case "/home":
-        currkey = "1"
+    switch (pos) {
+      case '/home':
+        currkey = '1';
         break;
-      case "/browse":
-        currkey = "2"
+      case '/browse':
+        currkey = '2';
         break;
-      case "/planner":
-        currkey = "3"
+      case '/planner':
+        currkey = '3';
         break;
-      case "/cart":
-        currkey = "4"
+      case '/cart':
+        currkey = '4';
         break;
       default:
-        currkey = "1"
+        currkey = '1';
     }
     setKey(currkey);
   }, []);
-  
+
   const fetchUser = async () => {
     try {
       const userRes = await axios({
@@ -57,9 +57,9 @@ const SideBar = () => {
       });
       const data = userRes.data;
       setName(data.displayName.split(' ')[0]);
-      setReg(true)
+      setReg(true);
     } catch (err) {
-      setReg(false)
+      setReg(false);
       console.log(err);
     }
   };
@@ -80,7 +80,7 @@ const SideBar = () => {
   return (
     <Layout>
       <Sider
-        width = '280'
+        width="280"
         style={{
           overflow: 'auto',
           height: '100vh',
@@ -89,19 +89,17 @@ const SideBar = () => {
           left: 0,
         }}
       >
-          <a href={'/home'}>
-        <div className="logo">
-          <img 
-            className='riceimage' 
-            src={process.env.PUBLIC_URL + '/logo-blue.png'} 
-            alt="rice logo" 
-          />
-          <div className="title">
-            Rice Bowl
+        <a href={'/home'}>
+          <div className="logo">
+            <img
+              className="riceimage"
+              src={process.env.PUBLIC_URL + '/logo-blue.png'}
+              alt="rice logo"
+            />
+            <div className="title">Rice Bowl</div>
           </div>
-        </div>
-          </a>
-        <div 
+        </a>
+        <div
           style={{
             display:'flex',
             justifyContent:'center', 
@@ -109,86 +107,65 @@ const SideBar = () => {
             paddingTop: 10
           }}>
         </div>
-        <Menu  
-          mode="inline"
-          selectedKeys={key}
-        >
-          <Menu.Item 
-            className='itemClass'
-            key="1" 
+        <Menu mode="inline" selectedKeys={key}>
+          <Menu.Item
+            className="itemClass"
+            key="1"
             onClick={() => setKey('1')}
-            icon={<HomeOutlined className='itemIcon'/>}
-          ><Link to="/home">
-            Home
-            </Link>
+            icon={<HomeOutlined className="itemIcon" />}
+          >
+            <Link to="/home">Home</Link>
           </Menu.Item>
-          <Menu.Item 
-            className='itemClass' 
-            key="2" 
+          <Menu.Item
+            className="itemClass"
+            key="2"
             onClick={() => setKey('2')}
-            icon={<GlobalOutlined className='itemIcon' />}
+            icon={<GlobalOutlined className="itemIcon" />}
           >
-            <Link to="/browse">
-              Browse
-            </Link>
+            <Link to="/browse">Browse</Link>
           </Menu.Item>
-          <Menu.Item 
-            className='itemClass' 
-            key="3" 
+          <Menu.Item
+            className="itemClass"
+            key="3"
             onClick={() => setKey('3')}
-            icon={<CalendarOutlined className='itemIcon' />}
+            icon={<CalendarOutlined className="itemIcon" />}
           >
-            <Link to= "#">
-              Meal Planner
-            </Link>
+            <Link to="/mealplanner">Meal Planner</Link>
           </Menu.Item>
-          <Menu.Item 
-            className='itemClass' 
-            key="4" 
+          <Menu.Item
+            className="itemClass"
+            key="4"
             onClick={() => setKey('4')}
-            icon={<ShoppingCartOutlined className='itemIcon' />}
+            icon={<ShoppingCartOutlined className="itemIcon" />}
           >
-            <Link to="#">
-              Cart
-            </Link>
+            <Link to="#">Cart</Link>
           </Menu.Item>
         </Menu>
-        <div 
+        <div
           style={{
-            position:'absolute', 
-            bottom:0
+            position: 'absolute',
+            bottom: 0,
           }}
         >
           <Link to="/">
-          {reg ?
-          <Button
-          className='signButton'
-          onClick={signOut}
-          icon={<LogoutOutlined  
-            className='BtnIcon'
-          />}
-        >
-          Sign Out
-        </Button>
-          :
-          <Button
-            className='signButton'
-            icon={<LoginOutlined 
-              className='BtnIcon'
-            />}
-          >
-            Sign In
-          </Button>
-          }
+            {reg ? (
+              <Button
+                className="signButton"
+                onClick={signOut}
+                icon={<LogoutOutlined className="BtnIcon" />}
+              >
+                Sign Out
+              </Button>
+            ) : (
+              <Button
+                className="signButton"
+                icon={<LoginOutlined className="BtnIcon" />}
+              >
+                Sign In
+              </Button>
+            )}
           </Link>
-          {reg ?
-            <Button
-              className='userButton'
-            >
-              Hi, {name}
-            </Button>
-            : null
-          }
+          {reg ? <Button className="userButton">Hi, {name}</Button> : null}
         </div>
       </Sider>
     </Layout>

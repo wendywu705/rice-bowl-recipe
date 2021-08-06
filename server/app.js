@@ -20,7 +20,8 @@ const config = {
 
 const PORT = process.env.PORT || 9000;
 const app = express();
-app.enable('trust proxy');
+// app.enable('trust proxy');
+app.set('trust proxy', 1);
 
 console.log('started app.js');
 // cloud mongoDB
@@ -50,15 +51,15 @@ mongoose.connection.on('error', (err) => {
 app.use(cors());
 
 // Might need this during delpoyment
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', '*');
-//   res.header(
-//     'Access-Control-Allow-Headers',
-//     'Origin, X-Requested-With, Content-Type, Accept',
-//     'Access-Control-Allow-Credentials', true,
-//   );
-//   next();
-// });
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://frontend-cepdewy2ta-nn.a.run.app');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept',
+  );
+  next();
+});
 
 // For security
 app.use(helmet());

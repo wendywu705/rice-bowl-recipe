@@ -43,6 +43,7 @@ const SingleRecipe = () => {
           method: 'get',
           timeout: 1000,
           url: `https://backend-cepdewy2ta-nn.a.run.app/saved/${id}`,
+          withCredentials: true
         });
         if ( [200, 304].includes(savedResponse.status) ){
           if (savedResponse.data === id){
@@ -61,6 +62,7 @@ const SingleRecipe = () => {
           method: 'get',
           timeout: 1000,
           url: `https://backend-cepdewy2ta-nn.a.run.app/pinned/${id}`,
+          withCredentials: true
         });
         if ( [200, 304].includes(savedResponse.status) ){
           if (savedResponse.data === id){
@@ -107,6 +109,7 @@ const SingleRecipe = () => {
         method: 'post',
         timeout: 1000,
         url: `https://backend-cepdewy2ta-nn.a.run.app/remove/${id}`,
+        withCredentials: true
       });
       if (response.status === 200) {
         console.log(response.data);
@@ -136,6 +139,7 @@ const SingleRecipe = () => {
           method: 'post',
           timeout: 1000,
           url: `https://backend-cepdewy2ta-nn.a.run.app/star/remove/${id}`,
+          withCredentials: true
         });
         if (response.status === 200) {
           console.log('ok starred!');
@@ -150,6 +154,7 @@ const SingleRecipe = () => {
           method: 'post',
           timeout: 1000,
           url: `https://backend-cepdewy2ta-nn.a.run.app/star/add/${id}`,
+          withCredentials: true
         });
         if (response.status === 200) {
           console.log('ok un-starred!');
@@ -176,6 +181,7 @@ const SingleRecipe = () => {
           method: 'post',
           timeout: 1000,
           url: `https://backend-cepdewy2ta-nn.a.run.app/pin/remove/${id}`,
+          withCredentials: true
         });
         if (response.status === 200) {
           console.log('ok un-pinned!');
@@ -190,6 +196,7 @@ const SingleRecipe = () => {
           method: 'post',
           timeout: 1000,
           url: `https://backend-cepdewy2ta-nn.a.run.app/pin/add/${id}`,
+          withCredentials: true
         });
         if (response.status === 200) {
           console.log('ok pinned!');

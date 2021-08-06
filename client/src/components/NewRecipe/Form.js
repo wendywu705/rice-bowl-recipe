@@ -50,6 +50,7 @@ function Form() {
         timeout: 1000,
         url: `https://backend-cepdewy2ta-nn.a.run.app/imageupload`,
         data: formData,
+        withCredentials: true
       });
       if (response.status === 200){
         console.log('res',response);
@@ -70,6 +71,7 @@ function Form() {
         timeout: 2000,
         url: `https://backend-cepdewy2ta-nn.a.run.app/recipes/new`,
         data: recipeData,
+        withCredentials: true
       });
       if (response.status === 200){
         console.log('res',response);

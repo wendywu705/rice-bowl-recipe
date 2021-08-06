@@ -1,12 +1,11 @@
-const fs = require('fs');
 const cors = require('cors');
-const https = require('https'); // for serving SSL/HTTPS (placeholder until replaced by nginx)
 const helmet = require('helmet'); // for application security
 const logger = require('morgan');
 const express = require('express');
 const passport = require('passport'); // for authentication
 const cookieSession = require('cookie-session');
 const mongoose = require('mongoose');
+const http = require('http');
 const userRouter = require('./routes/router.user');
 
 require('dotenv').config();
@@ -21,6 +20,7 @@ const config = {
 
 const PORT = process.env.PORT || 9000;
 const app = express();
+app.enable('trust proxy');
 
 console.log('started app.js');
 // cloud mongoDB
@@ -50,11 +50,12 @@ mongoose.connection.on('error', (err) => {
 app.use(cors());
 
 // Might need this during delpoyment
-// app.use(function (req, res, next) {
+// app.use((req, res, next) => {
 //   res.header('Access-Control-Allow-Origin', '*');
 //   res.header(
 //     'Access-Control-Allow-Headers',
-//     'Origin, X-Requested-With, Content-Type, Accept'
+//     'Origin, X-Requested-With, Content-Type, Accept',
+//     'Access-Control-Allow-Credentials', true,
 //   );
 //   next();
 // });
@@ -87,12 +88,8 @@ app.use('/user', userRouter);
 // Self-signed OpenSSL digitial certification for SSL/TLS/https connections
 // Note that this will be replaced with app.listen(), and SSL/TLS will be handled by Nginx
 // once the application is fully deployed on the Google Cloud VM
-https
+http
   .createServer(
-    {
-      key: fs.readFileSync('key.pem'),
-      cert: fs.readFileSync('cert.pem'),
-    },
     app,
   )
   .listen(PORT, () => {

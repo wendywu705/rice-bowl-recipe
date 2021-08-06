@@ -6,6 +6,7 @@ module.exports = (app) => {
   // Otherwise, it will call next() so that the user can access the restricted API route.
   const checkAuth = (req, res, next) => {
     console.log('Current user is:', req.user);
+    console.log('CHECK AUTH:', req.isAuthenticated());
     const isLoggedIn = req.isAuthenticated() && req.user;
     if (!isLoggedIn) {
       return res.status(401).json({

@@ -20,14 +20,15 @@ module.exports = (app) => {
   // fetch Recipe names from db to Home page.
   app.get('/home', async (req, res) => {
     const query = await RecipeModel.find({ hidden: false }).select({
-      name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1, time: 1
+      name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1, time: 1,
     });
     res.json(query);
   });
 
   // eslint-disable-next-line consistent-return
   const checkAuth = (req, res, next) => {
-    // console.log('Current user is:', req.user);
+    console.log('Current user is:', req.user);
+    console.log('CHECK AUTH:', req.isAuthenticated());
     const isLoggedIn = req.isAuthenticated() && req.user;
     if (!isLoggedIn) {
       return res.status(401).json({
@@ -102,7 +103,7 @@ module.exports = (app) => {
     const recipeIds = user.recipesStarred;
 
     const query = await RecipeModel.find({ recipeId: { $in: recipeIds } }).select({
-      name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1, time: 1
+      name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1, time: 1,
     });
     // console.log('saved:', query);
     res.json(query);

@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://localhost:9000/",
+  "proxy": "http://localhost:9000/",
   "dependencies": {
     "@react-pdf/renderer": "^2.0.17",
     "@testing-library/jest-dom": "^5.11.4",

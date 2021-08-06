@@ -47,7 +47,7 @@ class Browse extends Component {
             publicResponse = await axios({
                 method: 'get',
                 timeout: 1000,
-                url: `https://backend-cepdewy2ta-nn.a.run.app/`,
+                url: `https://backend-cepdewy2ta-nn.a.run.app/home`,
                 withCredentials: true
             });
             if ( [200, 304].includes(publicResponse.status)){

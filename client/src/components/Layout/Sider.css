@@ -65,3 +65,14 @@
 .ant-layout-sider-children {
   z-index: 1000 !important;
 }
+
+#loginBtn {
+  height: 100px;
+  width: 280px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: #1c94fc;
+  color: white;
+  font-weight:500;
+}

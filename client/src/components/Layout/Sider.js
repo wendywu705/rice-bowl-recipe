@@ -73,6 +73,16 @@ const SideBar = () => {
     }
   };
 
+  let btn = document.getElementById("loginBtn")
+  window.addEventListener('load', ()=> {
+    if (btn) {
+      btn.addEventListener('click', function() {
+        console.log('button',btn)
+        window.location.href = "https://localhost:9000/auth/google"
+      })      
+    }
+  })
+
   return (
     <Layout>
       <Sider
@@ -153,17 +163,24 @@ const SideBar = () => {
                 Sign Out
               </Button>
             ) : (
-              <a href="/auth/google">
-                <Button className="btn" outline color="primary">
-                  Log In using Google
-                </Button>
-              </a>
-              // <Button
-              //   className="signButton"
-              //   icon={<LoginOutlined className="BtnIcon" />}
-              // >
-              //   Sign In
-              // </Button>
+              <Button 
+                className="btn" 
+                id="loginBtn" 
+                outline 
+                color="primary"
+                icon={<LoginOutlined style={{verticalAlign:'center', display:'inline-block' }}/>}
+                style={{              
+                  marginTop: 10,
+                  textAlign: 'left',
+                  paddingLeft:10,
+                  fontSize: 20,
+                  display: 'inline-flex',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                Log In using Google
+              </Button>
             )}
           </Link>
           {reg ? <Button className="userButton">Hi, {name}</Button> : null}

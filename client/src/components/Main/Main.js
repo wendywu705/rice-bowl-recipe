@@ -8,6 +8,7 @@ import SingleRecipePage from '../../pages/SingleRecipe';
 import MealPlanner from '../../pages/MealPlanner/MealPlanner';
 import Browse from '../../pages/Browse';
 import ParseRecipe from '../../pages/ParseRecipe';
+import EditRecipe from '../../pages/EditRecipe';
 
 const Main = () => {
   return (
@@ -21,6 +22,7 @@ const Main = () => {
         <Route exact path="/new_recipe" component={NewRecipe} />
         <Route exact path="/recipe/:id" component={SingleRecipePage} />
         <Route exact path="/parse" component={ParseRecipe} />
+        <Route exact path="/recipe/edit/:id" component={EditRecipe} />
       </Switch>
     </div>
   );

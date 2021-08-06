@@ -18,7 +18,7 @@ const ShopList = () => {
         const listRes = await axios({
           method: 'get',
           timeout: 1000,
-          url: `/api/shopping`,
+          url: `https://backend-cepdewy2ta-nn.a.run.app/api/shopping`,
         });
         const body = listRes.data;
         setLoad(true);
@@ -29,7 +29,6 @@ const ShopList = () => {
       } catch (err) {
         console.log(err);
       }
-      
     }
     getShoppingList();
     

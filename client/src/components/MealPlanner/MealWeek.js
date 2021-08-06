@@ -136,7 +136,8 @@ const MealWeek = () => {
         const resp = await axios({
           method: 'post',
           timeout: 1000,
-          url: `/api/shopping/`,
+          url: `https://backend-cepdewy2ta-nn.a.run.app/api/shopping/`,
+          withCredentials: true,
           data: {
             shopping: listRecipe,
           },
@@ -145,7 +146,8 @@ const MealWeek = () => {
       const respi = await axios({
         method: 'post',
         timeout: 1000,
-        url: `/api/mealplanner`,
+        url: `https://backend-cepdewy2ta-nn.a.run.app/api/mealplanner`,
+        withCredentials: true,
         data: {
           mealplanner: dataToSend,
         },
@@ -161,7 +163,8 @@ const MealWeek = () => {
       const resp = await axios({
         method: 'get',
         timeout: 1000,
-        url: `/saved/`,
+        url: `https://backend-cepdewy2ta-nn.a.run.app/saved/`,
+        withCredentials: true,
       });
       setSavedRecipes(resp.data);
     } catch (err) {
@@ -175,7 +178,8 @@ const MealWeek = () => {
       const resp = await axios({
         method: 'get',
         timeout: 1000,
-        url: `/api/mealplanner/`,
+        url: `https://backend-cepdewy2ta-nn.a.run.app/api/mealplanner/`,
+        withCredentials: true
       });
       console.log('first time', resp.data[0].weeks);
       // If the user has no saved meal plans, make a layout

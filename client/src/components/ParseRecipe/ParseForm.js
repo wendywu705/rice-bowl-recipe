@@ -32,7 +32,7 @@ class ParseForm extends Component{
           method: 'post',
           timeout: 1000,
           url: `https://backend-cepdewy2ta-nn.a.run.app/parse`,
-          body: parseInfo,
+          data: parseInfo,
           withCredentials: true
         });
         if (response.status === 200) {

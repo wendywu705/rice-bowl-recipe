@@ -56,7 +56,7 @@ app.use(cors());
 
 // Might need this during delpoyment
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://frontend-cepdewy2ta-nn.a.run.app');
+  res.header('Access-Control-Allow-Origin', 'https://frontend-cepdewy2ta-nn.a.run.app, https://frontend-cepdewy2ta-nn.a.run.app/parse, https://frontend-cepdewy2ta-nn.a.run.app/mealplanner');
   res.header('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.header(

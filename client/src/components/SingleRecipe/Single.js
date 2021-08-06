@@ -23,13 +23,13 @@ import {
   PushpinOutlined
 } from '@ant-design/icons';
 
-// window.onload = function() {
-//   console.log('location',window.location);
-//   if(!window.location.hash && window.location.pathname.includes('/recipe/')) {
-//     window.location = window.location + '#loaded';
-//     window.location.reload();
-//   }
-// }
+window.onload = function() {
+  console.log('location',window.location);
+  if(!window.location.hash && window.location.pathname.includes('/recipe/')) {
+    window.location = window.location + '#loaded';
+    window.location.reload();
+  }
+}
 
 const SingleRecipe = () => {
   const [newFoodData, setNewFoodData] = useState(null);
@@ -77,7 +77,7 @@ const SingleRecipe = () => {
 
     const fetchSingleRecipe = async () => {
       try {
-        // window.onload();
+        window.onload();
         const recipeRes = await axios({
           method: 'get',
           timeout: 1000,

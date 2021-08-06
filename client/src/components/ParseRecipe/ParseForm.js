@@ -19,35 +19,36 @@ class ParseForm extends Component{
     console.log(e.target.value);
   };
   
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault();
 
-    const { url } = this.state;
+    const {url} = this.state;
     console.log(url);
-    const parseInfo = { url };
+    const parseInfo = {url};
 
-    if(url){
-      axios.post('https://backend-cepdewy2ta-nn.a.run.app/parse', parseInfo,{withCredentials: true})
-        .then(response => {
-          console.log('res',response);
-          if(response.status === 200){
-            const recipeId = response.data;
-            window.location.assign(`/recipe/${recipeId}`)
-            console.log('res', response);
-          }
-          else{
-            alert('Error: Failed to parse domain, please entry a correct domain URL');
-          }
-        })
-        .catch(err => {
-          alert('Error: Failed to parse domain, please entry a correct domain URL');
-          console.error(err);
+    if (url) {
+      try {
+        const response = await axios({
+          method: 'post',
+          timeout: 1000,
+          url: `https://backend-cepdewy2ta-nn.a.run.app/parse`,
+          body: parseInfo,
+          withCredentials: true
         });
-    } else{
-      alert('Please enter a valid URL domain.');
+        if (response.status === 200) {
+          const recipeId = response.data;
+          window.location.assign(`/recipe/${recipeId}`)
+          console.log('res', response);
+        }
+      } catch (err) {
+        alert('Error: Failed to parse domain, please entry a correct domain URL');
+        console.log('err', err);
+      }
     }
-
-  };
+    else {
+      alert('Error: Failed to parse domain, please entry a correct domain URL');
+    }
+  }
 
   render() {
     return (

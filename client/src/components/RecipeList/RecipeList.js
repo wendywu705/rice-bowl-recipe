@@ -50,7 +50,7 @@ class RecipeList extends Component {
             const pinnedResponse = await axios({
                 method: 'get',
                 timeout: 1000,
-                url: `http://localhost:9000/pinned`,
+                url: `https://backend-cepdewy2ta-nn.a.run.app/pinned`,
                 withCredentials: true
             });
 

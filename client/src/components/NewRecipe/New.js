@@ -19,8 +19,9 @@ function New(props) {
       const response = await axios({
         method: 'post',
         timeout: 1000,
-        url: `https://localhost:9000/api/imageupload`,
+        url: `https://backend-cepdewy2ta-nn.a.run.app/api/imageupload`,
         data: formData,
+        withCredentials: true
       });
       if (response.status === 200){
         console.log('res',response);
@@ -39,8 +40,9 @@ function New(props) {
       const response = await axios({
         method: 'post',
         timeout: 2000,
-        url: `https://localhost:9000/recipes/new`,
+        url: `https://backend-cepdewy2ta-nn.a.run.app/recipes/new`,
         data: recipeData,
+        withCredentials: true
       });
       if (response.status === 200){
         console.log('res',response);

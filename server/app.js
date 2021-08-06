@@ -58,9 +58,9 @@ app.use(cors());
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'https://frontend-cepdewy2ta-nn.a.run.app');
   res.header('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept',
+    'Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept',
   );
   next();
 });
@@ -75,7 +75,7 @@ app.use(
     name: 'session',
     maxAge: 24 * 60 * 60 * 1000, // 24 hour session
     keys: [config.COOKIE_KEY_1, config.COOKIE_KEY_2],
-  })
+  }),
 );
 
 app.use(passport.initialize());

@@ -28,7 +28,7 @@ const Form = (props) => {
   let [selectedFile, setSelectedFile] = useState(null);
   
   const test = async () => {
-    const res = await axios.get('https://localhost:9000/home/');
+    const res = await axios.get('https://backend-cepdewy2ta-nn.a.run.app/home');
     console.log('heyo', res);
   };
   useEffect(() => {

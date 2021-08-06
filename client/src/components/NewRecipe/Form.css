@@ -8,8 +8,10 @@
   margin-bottom: 40px;
 }
 
-.new-recipes-title {
-  text-align: center;
+.new-recipes-title,
+.edit-recipes-title{
+    margin-top: 6vh;
+    margin-bottom: 2vh;
 }
 
 .upload-list-inline .ant-upload-list-item {
@@ -22,10 +24,22 @@
   margin-left: 15px;
 }
 
+label{
+    margin-top: 1em;
+}
+
+.new-recipes-title,
+.edit-recipes-title {
+    text-align: center;
+    color: black;
+    font-size: xx-large;
+}
 
 .inputBox,
 .inputArea {
   width: 650px;
+  font-size: 17px;
+  font-family: 'Abel';
 }
 .inputBox {
   height: 40px;
@@ -84,6 +98,11 @@ label {
   margin-left: 15px;
   /* font-size: 100px; */
   transform: scale(1.3)
+}
+
+#exist-image{
+    width: auto !important;
+    height: 150px;
 }
 
 .Submit {

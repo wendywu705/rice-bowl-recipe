@@ -50,9 +50,10 @@ const days = [
 const MealWeek = () => {
   const [data, setData] = useState(store);
   const [savedRecipes, setSavedRecipes] = useState([]);
-  const [currentWeek, setCurrentWeek] = useState('08012021to08072021');
+  const [currentWeek, setCurrentWeek] = useState('08/01/2021to08/07/2021');
   const [currentData, setCurrentData] = useState(null);
   const [mealData, setMealData] = useState(null);
+  const [loaded, setLoaded] = useState(false);
   const classes = useStyle();
   const [plan, setPlan] = useState([]);
 
@@ -71,106 +72,37 @@ const MealWeek = () => {
     12: 'Dec',
   };
 
-  const testWeek = () => {
-    console.log('testweek');
+  const getThisWeek = () => {
     const currentDate = moment().format('L');
     const currentThing = moment().format('dddd').toLowerCase();
-    // const startDate = moment(currentDate)
-    //   .subtract(daysMapper[currentThing], 'days')
-    //   .format('L');
-    const startDate = moment(currentDate).subtract(8, 'days').format('L');
-    console.log('cur date', currentDate);
-    console.log('subed date', startDate);
+    const startDate = moment(currentDate)
+      .subtract(daysMapper[currentThing], 'days')
+      .format('L');
+    const endDate = moment(startDate).add(6, 'days').format('L');
+    const thisWeek = startDate + 'to' + endDate;
+    return thisWeek;
+  };
+
+  const newFindWeek = (direction, currentWeek) => {
+    let parsedDates = currentWeek.split('to');
+    let startDate = parsedDates[0];
+    let endDate = parsedDates[1];
+    let newStartDate;
+    let newEndDate;
+    if (direction === 'right') {
+      newStartDate = moment(startDate).add(7, 'days').format('L');
+      newEndDate = moment(endDate).add(7, 'days').format('L');
+    } else {
+      newStartDate = moment(startDate).subtract(7, 'days').format('L');
+      newEndDate = moment(endDate).subtract(7, 'days').format('L');
+    }
+
+    return newStartDate + 'to' + newEndDate;
   };
 
   const parseWeek = (currentWeek) => {
     let parsedDates = currentWeek.split('to');
-    // Starting Month
-    let sm = parsedDates[0].slice(0, 2);
-    // Starting Day
-    let sd = parsedDates[0].slice(2, 4);
-    // Starting Year
-    let sy = parsedDates[0].slice(4, 8);
-
-    // Ending Month, Day, Year
-    let em = parsedDates[1].slice(0, 2);
-    let ed = parsedDates[1].slice(2, 4);
-    let ey = parsedDates[1].slice(4, 8);
-    let smonth = months[sm];
-    let emonth = months[em];
-    let sdate = `${smonth} ${sd}, ${sy} - ${emonth} ${ed}, ${ey}`;
-    return sdate;
-  };
-
-  const findThisWeek = () => {
-    const today = moment().format('dddd').toLowerCase();
-    const startyear = moment().format('YYYY');
-    const startmonth = moment().format('MM');
-    let startdate = moment().format('DD');
-    startdate = parseInt(startdate) - daysMapper[today];
-    if (startdate < 10) {
-      startdate = '0' + startdate;
-    }
-    const start = startmonth + startdate + startyear;
-    let enddate = parseInt(startdate) + 7;
-    if (enddate < 10) {
-      enddate = '0' + enddate;
-    }
-
-    const end = startmonth + enddate + startyear;
-    return start + 'to' + end;
-  };
-
-  const printableDate = (currentWeek) => {
-    let parsedDates = currentWeek.split('to');
-    let startDate = moment(parsedDates[0]).format('DD-MM-YYYY');
-  };
-
-  const findWeek = (direction, currentWeek) => {
-    let parsedDates = currentWeek.split('to');
-    // Starting Month
-    let sm = parsedDates[0].slice(0, 2);
-    // Starting Day
-    let sd = parsedDates[0].slice(2, 4);
-    // Starting Year
-    let sy = parsedDates[0].slice(4, 8);
-
-    // Ending Month, Day, Year
-    let em = parsedDates[1].slice(0, 2);
-    let ed = parsedDates[1].slice(2, 4);
-    let ey = parsedDates[1].slice(4, 8);
-
-    // New Starting Month Day, Year
-    let nsm = sm;
-    let nsd;
-    if (direction === 'right') {
-      nsd = parseInt(sd) + 7;
-    } else {
-      nsd = parseInt(sd) - 7;
-    }
-    let nsy = sy;
-
-    if (nsd < 10) {
-      nsd = '0' + nsd;
-    }
-
-    // New Ending Month Day, Year
-    let nem = em;
-    let ned;
-    if (direction === 'right') {
-      ned = parseInt(ed) + 7;
-    } else {
-      ned = parseInt(ed) - 7;
-    }
-    let ney = ey;
-
-    if (ned < 10) {
-      ned = '0' + ned;
-    }
-
-    let newParsedDate = nsm + nsd + nsy + 'to' + nem + ned + ney;
-
-    return newParsedDate;
+    return parsedDates[0] + ' to ' + parsedDates[1];
   };
 
   const handleSave = async () => {
@@ -207,7 +139,6 @@ const MealWeek = () => {
         timeout: 1000,
         url: `/saved/`,
       });
-      console.log('first data', resp.data);
       setSavedRecipes(resp.data);
     } catch (err) {
       console.log(err);
@@ -224,12 +155,14 @@ const MealWeek = () => {
       });
       if (resp.data[0].weeks.length === 0) {
         setPlan(store);
-        setCurrentWeek(findThisWeek());
+        if (!loaded) {
+          setLoaded(true);
+          setCurrentWeek(getThisWeek());
+        }
       } else {
         setPlan(resp.data[0].weeks);
         resp.data[0].weeks.find((value, idx) => {
           if (value.dates === currentWeek) {
-            console.log('current val', value);
             setCurrentData(value);
             found = true;
           }
@@ -238,9 +171,12 @@ const MealWeek = () => {
       if (!found) {
         // Do this
         let newData = blank;
-        newData.dates = findThisWeek();
+        newData.dates = getThisWeek();
         setCurrentData(newData);
-        setCurrentWeek(findThisWeek());
+        if (!loaded) {
+          setLoaded(true);
+          setCurrentWeek(getThisWeek());
+        }
       }
     } catch (err) {
       console.log(err);
@@ -248,11 +184,9 @@ const MealWeek = () => {
   };
 
   useEffect(() => {
-    testWeek();
     dataFetch();
     planFetch();
-    printableDate(currentWeek);
-  }, [plan, currentWeek]);
+  }, [currentWeek]);
 
   const addMeal = (meal, listId, title) => {
     const newMeal = {
@@ -297,12 +231,12 @@ const MealWeek = () => {
   };
 
   const handleOnClickRight = () => {
-    const newDate = findWeek('right', currentWeek);
+    const newDate = newFindWeek('right', currentWeek);
     setCurrentWeek(newDate);
   };
 
   const handleOnClickLeft = () => {
-    const newDate = findWeek('left', currentWeek);
+    const newDate = newFindWeek('left', currentWeek);
     setCurrentWeek(newDate);
   };
 

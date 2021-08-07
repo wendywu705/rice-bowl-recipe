@@ -5,8 +5,8 @@ import axios from "axios";
 import { withRouter } from "react-router";
 import '../RecipeList/RecipeList.css';
 
-class SearchResult extends Component{
-    constructor(props){
+class SearchResult extends Component {
+    constructor(props) {
         super(props);
         this.state = {
             search: [],
@@ -14,12 +14,14 @@ class SearchResult extends Component{
         };
     }
 
-    async componentDidMount(){
+    async componentDidMount() {
         const name = this.props.match.params.name;
-        document.getElementById('search-name').innerText="Search for: "+ name;
-        try{
+        document.getElementById('search-name').innerText = "Search for: " + name;
+        try {
             const res = await this.callApi(name);
-            this.setState({ search: res.searchRes});
+            if (res) {
+                this.setState({ search: res.searchRes });
+            }
         } catch (e) {
             throw e;
         }
@@ -27,19 +29,17 @@ class SearchResult extends Component{
 
     callApi = async (name) => {
         console.log(name);
-        try{
+        try {
             const searchResponse = await axios({
                 method: 'get',
                 timeout: 1000,
-                url: `/search/${name}`,
-                withCredentials: true
-
+                url: `https://backend-cepdewy2ta-nn.a.run.app/search/${name}`,
             });
-            if( [200, 304].includes(searchResponse.status)){
+            if ([200, 304].includes(searchResponse.status)) {
                 console.log('Found recipes by name', searchResponse.data);
-                return {searchRes: searchResponse.data}
+                return { searchRes: searchResponse.data }
             }
-        } catch (err){
+        } catch (err) {
             console.log('Could not search recipe', err);
         }
     }
@@ -54,18 +54,18 @@ class SearchResult extends Component{
         e.preventDefault();
         const { searchName } = this.state;
         console.log(searchName);
-        if(searchName){
+        if (searchName) {
             window.location.assign(`/search/${searchName}`)
-        } else{
+        } else {
             alert('Enter some recipe name to start your search');
         }
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <div className="all-recipe" id="pageContainer">
                 <h1 id="search-name"></h1>
-                <br/>
+                <br />
                 <div className="search-bar">
                     <form method="POST" onSubmit={this.searchSubmit}>
                         <input
@@ -78,7 +78,7 @@ class SearchResult extends Component{
                         />
                     </form>
                 </div>
-                <br/>
+                <br />
                 <div className="recipe-card">
                     <RecipeTiles data={this.state.search} />
                 </div>

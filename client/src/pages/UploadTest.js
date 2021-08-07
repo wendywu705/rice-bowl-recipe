@@ -25,7 +25,7 @@ const UploadTest = () => {
   const uploadRequest = async () => {
     const uploadRes = await axios({
       method: 'post',
-      url: `/imageupload`,
+      url: `https://backend-cepdewy2ta-nn.a.run.app/imageupload`,
       data: formData,
     });
   };

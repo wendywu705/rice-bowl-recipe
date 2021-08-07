@@ -33,13 +33,13 @@ const ShopList = () => {
       }
     }
     getShoppingList();
-    
-  },[])
+
+  }, [])
 
   // get curr week
   let today = new Date();
-  let start = today.getDate() - today.getDay(); 
-  let end = start + 6; 
+  let start = today.getDate() - today.getDay();
+  let end = start + 6;
   let wStart = new Date(today.setDate(start)).toLocaleDateString();
   let wEnd = new Date(today.setDate(end)).toLocaleDateString();
 
@@ -54,11 +54,11 @@ const ShopList = () => {
         if (!foodinfo.quantity) {
           continue
         }
-        if (foodinfo.description in listObj){
-          listObj[foodinfo.description][0] += foodinfo.quantity*multiplier
+        if (foodinfo.description in listObj) {
+          listObj[foodinfo.description][0] += foodinfo.quantity * multiplier
         }
         else {
-          listObj[foodinfo.description] = [foodinfo.quantity*multiplier, foodinfo.unitOfMeasure]
+          listObj[foodinfo.description] = [foodinfo.quantity * multiplier, foodinfo.unitOfMeasure]
         }
       }
     }
@@ -76,20 +76,20 @@ const ShopList = () => {
               {Object.keys(listObj).map((data, ind, arr) => {
                 return (
                   <div className="list">
-                    {listObj[data][0]} {listObj[data][1]} {data} <br/>
+                    {listObj[data][0]} {listObj[data][1]} {data} <br />
                   </div>
                 );
               })}
             </div>
-            : 
+            :
             <div className="emptyContainer">
-              <img 
-                src={process.env.PUBLIC_URL + '/logo-blue.png'} 
-                alt="rice bowl" 
+              <img
+                src={process.env.PUBLIC_URL + '/logo-blue.png'}
+                alt="rice bowl"
                 className="emptyLogo"
               />
               <div className="emptyText">
-                You're Rice Bowl is empty.<br/>
+                You're Rice Bowl is empty.<br />
                 Add some food from 'Meal Planner'
               </div>
             </div>
@@ -101,9 +101,9 @@ const ShopList = () => {
                 type="primary"
               >
                 Home
-              </Button>        
+              </Button>
             </Link>
-            <Link to= "/mealplanner">
+            <Link to="/mealplanner">
               <Button
                 ghost
                 type="primary"

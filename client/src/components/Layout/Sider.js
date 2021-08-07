@@ -103,9 +103,9 @@ const SideBar = () => {
         </a>
         <div
           style={{
-            display:'flex',
-            justifyContent:'center',
-            paddingBottom:15,
+            display: 'flex',
+            justifyContent: 'center',
+            paddingBottom: 15,
             paddingTop: 10
           }}>
         </div>

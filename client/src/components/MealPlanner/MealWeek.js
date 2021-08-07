@@ -309,10 +309,10 @@ const MealWeek = () => {
             }}
           >
             <Button
-              style={{                 
+              style={{
                 fontSize: 17,
-                width:140,
-                height:40,
+                width: 140,
+                height: 40,
                 display: 'inline-flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -320,20 +320,20 @@ const MealWeek = () => {
               onClick={handleSave}
               type="primary"
               icon={
-                <SaveFilled 
+                <SaveFilled
                   style={{
-                    fontSize:'16px',
+                    fontSize: '16px',
                     display: 'inline-block',
                     verticalAlign: 'middle'
                   }}
                 />
               }
-             
+
             >
               SAVE PLAN
             </Button>
           </div>
-          <div style={{ display: 'flex', flexDirection:'column', marginLeft:'10%' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10%' }}>
             {currentData.lists.map((list, idx) => {
               return (
                 <MPlanner

@@ -26,7 +26,12 @@ module.exports = (app) => {
       meta: 1,
       recipeId: 1,
       time: 1,
-      name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1, time: 1,
+      name: 1,
+      _id: 0,
+      imageUrl: 1,
+      meta: 1,
+      recipeId: 1,
+      time: 1,
     });
     res.json(query);
   });
@@ -129,7 +134,7 @@ module.exports = (app) => {
     res.json(query);
   });
 
-  app.post('/star/add/:recipeId', async (req, res) => {
+  app.post('/star/add/:recipeId', checkAuth, async (req, res) => {
     const { recipeId } = req.params;
     try {
       const results = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
@@ -140,7 +145,7 @@ module.exports = (app) => {
         try {
           const response = await UserModel.updateOne(
             { _id: userId },
-            updateDoc
+            updateDoc,
           );
           if (response) {
             console.log('starred successfully');
@@ -157,7 +162,7 @@ module.exports = (app) => {
     }
   });
 
-  app.post('/star/remove/:recipeId', async (req, res) => {
+  app.post('/star/remove/:recipeId', checkAuth, async (req, res) => {
     const { recipeId } = req.params;
     try {
       const results = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
@@ -168,7 +173,7 @@ module.exports = (app) => {
         try {
           const response = await UserModel.updateOne(
             { _id: userId },
-            updateDoc
+            updateDoc,
           );
           if (response) {
             console.log('unstarred successfully');
@@ -185,7 +190,7 @@ module.exports = (app) => {
     }
   });
 
-  app.post('/pin/add/:recipeId', async (req, res) => {
+  app.post('/pin/add/:recipeId', checkAuth, async (req, res) => {
     const { recipeId } = req.params;
     try {
       const results = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
@@ -196,7 +201,7 @@ module.exports = (app) => {
         try {
           const response = await UserModel.updateOne(
             { _id: userId },
-            updateDoc
+            updateDoc,
           );
           if (response) {
             console.log('starred successfully');
@@ -213,7 +218,7 @@ module.exports = (app) => {
     }
   });
 
-  app.post('/pin/remove/:recipeId', async (req, res) => {
+  app.post('/pin/remove/:recipeId', checkAuth, async (req, res) => {
     const { recipeId } = req.params;
     try {
       const results = await UserModel.find({ _id: ObjectId(userId) }).limit(1);
@@ -224,7 +229,7 @@ module.exports = (app) => {
         try {
           const response = await UserModel.updateOne(
             { _id: userId },
-            updateDoc
+            updateDoc,
           );
           if (response) {
             console.log('unstarred successfully');
@@ -241,7 +246,7 @@ module.exports = (app) => {
     }
   });
 
-  app.post('/recipes/new', multer.single('file'), async (req, res) => {
+  app.post('/recipes/new', checkAuth, multer.single('file'), checkAuth, async (req, res) => {
     console.log('adding new recipe');
     let newId = 1;
     console.log('user', userId);
@@ -304,7 +309,7 @@ module.exports = (app) => {
             try {
               const response = await UserModel.updateOne(
                 { _id: ObjectId(userId) },
-                updateDoc
+                updateDoc,
               );
               if (response) {
                 addedToUser = true;
@@ -379,11 +384,11 @@ module.exports = (app) => {
 
   // search keyword in non-sensitive case
   app.get('/search/:name', async (req, res) => {
-    const searchName  = req.params.name;
-    console.log(searchName,"Sadjaisia");
+    const searchName = req.params.name;
+    console.log(searchName, 'Sadjaisia');
     try {
-      const recipe = await RecipeModel.find({ name: { $regex: searchName, $options: 'i'} }).select({
-        name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1
+      const recipe = await RecipeModel.find({ name: { $regex: searchName, $options: 'i' } }).select({
+        name: 1, _id: 0, imageUrl: 1, meta: 1, recipeId: 1,
       });
       if (recipe) {
         console.log('searched recipes found');
@@ -399,7 +404,7 @@ module.exports = (app) => {
     }
   });
 
-  app.post('/remove/:recipeId', async (req, res) => {
+  app.post('/remove/:recipeId', checkAuth, async (req, res) => {
     const { recipeId } = req.params;
     let isOwner = false;
     try {
@@ -424,7 +429,7 @@ module.exports = (app) => {
             if (isOwner) {
               const hiddenResponse = await RecipeModel.updateOne(
                 { recipeId },
-                { $set: { hidden: true } }
+                { $set: { hidden: true } },
               );
               if (hiddenResponse) {
                 console.log('recipe hidden successfully');
@@ -466,7 +471,7 @@ module.exports = (app) => {
     }
   });
 
-  app.post('/parse', async (req, res) => {
+  app.post('/parse', checkAuth, async (req, res) => {
     console.log('Parse the URL to recipe');
     let newId = 1;
     try {
@@ -547,8 +552,7 @@ module.exports = (app) => {
           hours: 60 * 60 * 1000,
           hrs: 60 * 60 * 1000,
         };
-        const regex =
-          /(\d+)\s*(second|min|mins|minute|minutes|hr|hours|hour|hrs)/g;
+        const regex = /(\d+)\s*(second|min|mins|minute|minutes|hr|hours|hour|hrs)/g;
         let ms = 0;
         let m;
         let x;
@@ -567,23 +571,19 @@ module.exports = (app) => {
         cookHour = timespanMillis(recipe.time.cook).hours;
         cookMin = timespanMillis(recipe.time.cook).minutes;
       } else if (recipe.time.total && recipe.time.prep) {
-        cookHour =
-          timespanMillis(recipe.time.total).hours -
-          timespanMillis(recipe.time.prep).hours;
-        cookMin =
-          timespanMillis(recipe.time.total).minutes -
-          timespanMillis(recipe.time.prep).minutes;
+        cookHour = timespanMillis(recipe.time.total).hours
+          - timespanMillis(recipe.time.prep).hours;
+        cookMin = timespanMillis(recipe.time.total).minutes
+          - timespanMillis(recipe.time.prep).minutes;
       }
       if (recipe.time.prep) {
         prepHour = timespanMillis(recipe.time.prep).hours;
         prepMin = timespanMillis(recipe.time.prep).minutes;
       } else if (recipe.time.total && recipe.time.cook) {
-        prepHour =
-          timespanMillis(recipe.time.total).hours -
-          timespanMillis(recipe.time.cook).hours;
-        prepMin =
-          timespanMillis(recipe.time.total).minutes -
-          timespanMillis(recipe.time.cook).minutes;
+        prepHour = timespanMillis(recipe.time.total).hours
+          - timespanMillis(recipe.time.cook).hours;
+        prepMin = timespanMillis(recipe.time.total).minutes
+          - timespanMillis(recipe.time.cook).minutes;
       }
 
       console.log('time', cookHour, cookMin, prepHour, prepMin);
@@ -620,7 +620,7 @@ module.exports = (app) => {
       if (userId && parseRecipe) {
         try {
           const userRes = await UserModel.find({ _id: ObjectId(userId) }).limit(
-            1
+            1,
           );
           const user = userRes[0];
           console.log('userRes:', userRes);
@@ -631,7 +631,7 @@ module.exports = (app) => {
             try {
               const response = await UserModel.updateOne(
                 { _id: ObjectId(userId) },
-                updateDoc
+                updateDoc,
               );
               if (response) {
                 addedToUser = true;
@@ -655,10 +655,10 @@ module.exports = (app) => {
     });
   });
 
-  app.post('/recipes/edit/:recipeId', multer.single('file'), async (req, res) => {
-    console.log('in post')
+  app.post('/recipes/edit/:recipeId', checkAuth, multer.single('file'), async (req, res) => {
+    console.log('in post');
     const resId = req.params.recipeId;
-    console.log('req params', req.params)
+    console.log('req params', req.params);
     if (userId) {
       console.log('Updating recipe', resId);
       console.log('user ', userId, ' is updating the recipe');
@@ -707,11 +707,11 @@ module.exports = (app) => {
       await RecipeModel.findOneAndUpdate(filter, postReq, {
         upsert: true,
         returnOriginal: false,
-      },function (err, result) {
-        if (err) res.send(500, {error: err})
+      }, (err, result) => {
+        if (err) res.send(500, { error: err });
         console.log('recipe updated successfully', result);
         res.json(resId);
-      })
+      });
     } catch (err3) {
       console.log('error, cant update the recipe');
       console.log(err3);

@@ -36,17 +36,17 @@ class RecipeList extends Component {
     async componentDidMount() {
         try {
             const res = await this.callApi();
-            if (Object.keys(res).length>1){
+            if (Object.keys(res).length > 1) {
                 this.setState({ saved: res.savedRes });
                 this.setState({ pinned: res.pinnedRes });
             }
-        } catch(e){
-            console.log('err',e);
+        } catch (e) {
+            console.log('err', e);
         }
     }
 
     callApi = async () => {
-        try{
+        try {
             const pinnedResponse = await axios({
                 method: 'get',
                 timeout: 1000,
@@ -60,49 +60,49 @@ class RecipeList extends Component {
                 url: `https://backend-cepdewy2ta-nn.a.run.app/saved`,
                 withCredentials: true
             });
-            if ( [200, 304].includes(savedResponse.status) && [200, 304].includes(pinnedResponse.status)){
+            if ([200, 304].includes(savedResponse.status) && [200, 304].includes(pinnedResponse.status)) {
                 console.log('approved');
-                return {savedRes: savedResponse.data, pinnedRes: pinnedResponse.data};
+                return { savedRes: savedResponse.data, pinnedRes: pinnedResponse.data };
             }
-        } catch (err){
-            console.log('err',err);
+        } catch (err) {
+            console.log('err', err);
         }
     };
 
-    sortByRate(){
+    sortByRate() {
         const sortRate = [].concat(this.state.saved)
-            .sort((a,b) => b.meta.rating - a.meta.rating);
-        this.setState( {saved: sortRate} );
+            .sort((a, b) => b.meta.rating - a.meta.rating);
+        this.setState({ saved: sortRate });
         console.log('sort by rate', sortRate);
     }
 
-    sortByPrepTime(){
+    sortByPrepTime() {
         const sortPrep = [].concat(this.state.saved)
-            .sort((a,b) => b.time.prepHour*60+b.time.prepMin - a.time.prepHour*60+a.time.prepMin);
-        this.setState( {saved: sortPrep} );
+            .sort((a, b) => b.time.prepHour * 60 + b.time.prepMin - a.time.prepHour * 60 + a.time.prepMin);
+        this.setState({ saved: sortPrep });
         console.log('sort by prep time', sortPrep);
     }
 
-    sortByTotalTime(){
+    sortByTotalTime() {
         const sortTotal = [].concat(this.state.saved)
-            .sort((a,b) => b.time.prepHour*60+b.time.prepMin+b.time.cookHour*60+b.time.cookMin - a.time.prepHour*60+a.time.prepMin+a.time.cookHour*60+a.time.cookMin);
-        this.setState( {saved: sortTotal} );
+            .sort((a, b) => b.time.prepHour * 60 + b.time.prepMin + b.time.cookHour * 60 + b.time.cookMin - a.time.prepHour * 60 + a.time.prepMin + a.time.cookHour * 60 + a.time.cookMin);
+        this.setState({ saved: sortTotal });
         console.log('sort by total time', sortTotal);
     }
 
     handleInputChange = e => {
         this.setState({
-          [e.target.name]: e.target.value,
+            [e.target.name]: e.target.value,
         });
-      };
+    };
 
     searchSubmit = e => {
         e.preventDefault();
         const { searchName } = this.state;
         console.log(searchName);
-        if(searchName){
+        if (searchName) {
             window.location.assign(`/search/${searchName}`)
-        } else{
+        } else {
             alert('Enter some recipe name to start your search');
         }
     }
@@ -110,7 +110,7 @@ class RecipeList extends Component {
     render() {
         return (
             <div className="all-recipe" id="pageContainer">
-                <h1><b>YOUR RECIPES</b></h1><br/>
+                <h1><b>YOUR RECIPES</b></h1><br />
                 <div className="search-bar">
                     <form method="POST" onSubmit={this.searchSubmit}>
                         <input
@@ -141,7 +141,7 @@ class RecipeList extends Component {
                 </div>
                 <hr></hr>
                 <div className="recipe-card">
-                  <RecipeTiles data={this.state.pinned} />
+                    <RecipeTiles data={this.state.pinned} />
                 </div>
                 <br />
                 <div className="flex">
@@ -162,7 +162,7 @@ class RecipeList extends Component {
                 </div>
                 <hr></hr>
                 <div className="recipe-card">
-                  <RecipeTiles data={this.state.saved} />
+                    <RecipeTiles data={this.state.saved} />
                 </div>
             </div>
         );

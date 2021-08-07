@@ -22,46 +22,46 @@ function Edit(props) {
   };
 
   const editRequest = async () => {
-    try{
+    try {
       const editResponse = await axios({
         method: 'get',
         timeout: 1000,
         url: `https://backend-cepdewy2ta-nn.a.run.app/recipes/edit/${id}`,
         withCredentials: true
       });
-      if( [200, 304].includes(editResponse.status)){
+      if ([200, 304].includes(editResponse.status)) {
         console.log('mesg from edit', editResponse.data);
         // Object.values(editResponse.data).map((res) => {
-          let res = editResponse.data;
-          let ingre_string = '';
-          if (res.ingredients !== null && res.ingredients !== undefined){
-            Object.values(res.ingredients).map((ing) => {
-              let quantity = ing.quantity ? ing.quantity : 0;
-              let description = ing.description ? ing.description : '';
-              let unit = ing.unitOfMeasure ? ing.unitOfMeasure : '';
-              ingre_string += quantity + ' ' + unit + ' ' + description + '\n';
-            })
-          }
-          console.log('res',res)
-          props.fill(
-            res.name,
-            res.imageUrl,
-            res.category, 
-            ingre_string,
-            res.time.prepMin,
-            res.time.prepHour,
-            res.time.cookHour,
-            res.time.cookMin, 
-            res.servingSize, 
-            res.meta.rating,
-            res.directions,
-            res.url,
-            res.hidden,
-            res.recipeId
-          )
+        let res = editResponse.data;
+        let ingre_string = '';
+        if (res.ingredients !== null && res.ingredients !== undefined) {
+          Object.values(res.ingredients).map((ing) => {
+            let quantity = ing.quantity ? ing.quantity : 0;
+            let description = ing.description ? ing.description : '';
+            let unit = ing.unitOfMeasure ? ing.unitOfMeasure : '';
+            ingre_string += quantity + ' ' + unit + ' ' + description + '\n';
+          })
+        }
+        console.log('res', res)
+        props.fill(
+          res.name,
+          res.imageUrl,
+          res.category,
+          ingre_string,
+          res.time.prepMin,
+          res.time.prepHour,
+          res.time.cookHour,
+          res.time.cookMin,
+          res.servingSize,
+          res.meta.rating,
+          res.directions,
+          res.url,
+          res.hidden,
+          res.recipeId
+        )
       }
-    } catch (err){
-      console.log('err',err);
+    } catch (err) {
+      console.log('err', err);
     }
   }
   useEffect(() => {
@@ -71,7 +71,7 @@ function Edit(props) {
 
   // Handles the AJAX request for uploading the user image
   const uploadRequest = async () => {
-    try{
+    try {
       const response = await axios({
         method: 'post',
         timeout: 1000,
@@ -79,20 +79,22 @@ function Edit(props) {
         data: formData,
         withCredentials: true
       });
-      if (response.status === 200){
-        console.log('res',response);
+      if (response.status === 200) {
+        console.log('res', response);
         return response.data;
+      } else {
+        console.log('err with image upload');
       }
       return null;
-    } catch (err){
-      console.log('err',err);
+    } catch (err) {
+      console.log('err', err);
       return null;
     }
   };
 
   // Handles the AJAX request for uploading the recipe data
   const recipeEdit = async () => {
-    try{
+    try {
       const response = await axios({
         method: 'post',
         timeout: 2000,
@@ -100,25 +102,25 @@ function Edit(props) {
         data: recipeData,
         withCredentials: true
       });
-      if ( [200, 304].includes(response.status) ){
-        console.log('res',response);
+      if ([200, 304].includes(response.status)) {
+        console.log('res', response);
         return response.data;
       }
       return null;
-    } catch (err){
-      console.log('err',err);
+    } catch (err) {
+      console.log('err', err);
       return null;
     }
   };
 
   // Handles 2 AJAX request, one for uploading the image to GCS, and other for uploading the recipe data
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // form validation
-    if(!props.valid()){
+    if (!props.valid()) {
       console.log('Form validation failed');
-      console.log('errors:',state.errors);
+      console.log('errors:', state.errors);
       let errors = JSON.stringify(state.errors).replace(/\\n/g, "\\n");
       alert(`Form has errors. Cannot submit.\n ${errors}`)
       return;
@@ -128,14 +130,14 @@ function Edit(props) {
 
     // Create a unique imageURL for each image
     // if no image inserted
-    if (!selectedFile){
+    if (!selectedFile) {
       console.log('no new image upload, using original image')
       tempData = {
         ...state,
       };
     }
     //image is inserted
-    else{
+    else {
       console.log('image inserted');
       newFileName = uuidv4() + '-' + selectedFile.name;
       userData = {
@@ -149,18 +151,18 @@ function Edit(props) {
       formData.append('file', selectedFile);
       formData.append('data', JSON.stringify(userData));
       let uploadRes = uploadRequest();
-      if (!uploadRes){
+      if (!uploadRes) {
         alert('image submission FAILED!');
       }
     }
     recipeData.append('data', JSON.stringify(tempData));
     let recipeResId = await recipeEdit();
-    if (recipeResId){
+    if (recipeResId) {
       alert('Recipe submitted successfully!');
-      console.log('edited recipe_id',recipeResId);
-      window.location.assign(`../${recipeResId}`);
+      console.log('edited recipe_id', recipeResId);
+      window.location.assign(`../recipe/${recipeResId}`);
     }
-    else{
+    else {
       alert('Recipe submission FAILED!\nMake sure recipe has ingredients and directions');
     }
   };
@@ -169,7 +171,7 @@ function Edit(props) {
       <div>
         <h1 className="edit-recipes-title">Edit Recipe:</h1>
         <form id="editForm" encType="multipart/form-data" method="PUT">
-          <FormTemplate 
+          <FormTemplate
             type="edit"
             data={state}
             update={props.update}

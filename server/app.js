@@ -1,5 +1,5 @@
-const cors = require('cors');
-const helmet = require('helmet'); // for application security
+// const cors = require('cors');
+// const helmet = require('helmet'); // for application security
 const logger = require('morgan');
 const express = require('express');
 const passport = require('passport'); // for authentication
@@ -52,25 +52,21 @@ mongoose.connection.on('error', (err) => {
   console.log('error', err);
 });
 
-app.use(cors({ credentials: true, origin: 'https://frontend-cepdewy2ta-nn.a.run.app' }));
-// Might need this during delpoyment
+const CLIENT_URL = 'https://frontend-cepdewy2ta-nn.a.run.app';
+
 app.use((req, res, next) => {
-  const allowedOrigins = ['https://frontend-cepdewy2ta-nn.a.run.app', 'https://backend-cepdewy2ta-nn.a.run.app/api/imageupload'];
-  const { origin } = req.headers;
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.header(
-    'Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept',
-  );
-  res.cookie('cookie_token', Math.floor(Date.now() / 16142), { maxAge: 900000 });
+  res.setHeader('Access-Control-Allow-Origin', CLIENT_URL);
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.cookie('cookie_token', Math.floor(Date.now() / 16142), {
+    maxAge: 900000,
+  });
+  console.log(res.getHeaders());
   next();
 });
-
 // For security
-app.use(helmet());
+// app.use(helmet());
 
 // For development logging
 app.use(logger('dev'));
@@ -99,10 +95,6 @@ app.use('/user', userRouter);
 // Self-signed OpenSSL digitial certification for SSL/TLS/https connections
 // Note that this will be replaced with app.listen(), and SSL/TLS will be handled by Nginx
 // once the application is fully deployed on the Google Cloud VM
-http
-  .createServer(
-    app,
-  )
-  .listen(PORT, () => {
-    console.log(`[Server]: Listening on port: ${PORT}`);
-  });
+http.createServer(app).listen(PORT, () => {
+  console.log(`[Server]: Listening on port: ${PORT}`);
+});

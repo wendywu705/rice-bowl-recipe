@@ -17,16 +17,16 @@ const Main = () => {
     <div>
       <Switch>
         <Route exact path="/" component={Login} />
-        <Route exact path="/mealplanner" component={MealPlanner} />
-        <Route exact path="/upload" component={UploadTest} />
-        <Route exact path="/browse" component={Browse} />
-        <Route exact path="/home" component={Home} />
-        <Route exact path="/new_recipe" component={NewRecipe} />
-        <Route exact path="/recipe/:id" component={SingleRecipePage} />
-        <Route exact path="/parse" component={ParseRecipe} />
-        <Route exact path="/list" component={ShoppingList} />
-        <Route exact path="/search/:name" component={SearchPage} />
-        <Route exact path="/recipe/edit/:id" component={EditRecipe} />
+        <Route path="/mealplanner" component={MealPlanner} />
+        <Route path="/upload" component={UploadTest} />
+        <Route path="/browse" component={Browse} />
+        <Route path="/home" component={Home} />
+        <Route path="/new_recipe" component={NewRecipe} />
+        <Route path="/recipe/:id" component={SingleRecipePage} />
+        <Route path="/parse" component={ParseRecipe} />
+        <Route path="/list" component={ShoppingList} />
+        <Route path="/search/:name" component={SearchPage} />
+        <Route path="/edit/:id" component={EditRecipe} />
       </Switch>
     </div>
   );

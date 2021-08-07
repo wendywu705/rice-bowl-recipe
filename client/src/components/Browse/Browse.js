@@ -5,10 +5,10 @@ import RecipeTiles from '../Layout/RecipeTiles';
 import './Browse.css';
 import '../Layout/Footer.css'
 import {
-  ButtonDropdown, 
-  DropdownItem, 
-  DropdownMenu, 
-  DropdownToggle
+    ButtonDropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle
 } from 'reactstrap';
 
 
@@ -33,66 +33,66 @@ class Browse extends Component {
     async componentDidMount() {
         try {
             const res = await this.callApi();
-            if (Object.keys(res).length===1){
+            if (Object.keys(res).length === 1) {
                 this.setState({ public: res.publicRes });
             }
-        } catch(e){
-            console.log('err',e);
+        } catch (e) {
+            console.log('err', e);
         }
     }
 
     callApi = async () => {
-        let publicResponse=[];
-        try{
+        let publicResponse = [];
+        try {
             publicResponse = await axios({
                 method: 'get',
                 timeout: 1000,
                 url: `https://backend-cepdewy2ta-nn.a.run.app/home`,
                 withCredentials: true
             });
-            if ( [200, 304].includes(publicResponse.status)){
+            if ([200, 304].includes(publicResponse.status)) {
                 console.log('approved');
-                return {publicRes: publicResponse.data};
+                return { publicRes: publicResponse.data };
             }
-        } catch (err){
-            console.log('err',err);
+        } catch (err) {
+            console.log('err', err);
         }
     };
 
-    sortByRate(){
+    sortByRate() {
         const sortRate = [].concat(this.state.public)
-            .sort((a,b) => b.meta.rating - a.meta.rating);
-        this.setState( {public: sortRate} );
+            .sort((a, b) => b.meta.rating - a.meta.rating);
+        this.setState({ public: sortRate });
         console.log('sort by rating', sortRate);
     }
 
-    sortByPrepTime(){
+    sortByPrepTime() {
         const sortPrep = [].concat(this.state.public)
-            .sort((a,b) => b.time.prepHour*60+b.time.prepMin - a.time.prepHour*60+a.time.prepMin);
-        this.setState( {public: sortPrep} );
-        console.log('sort by prep time',sortPrep);
+            .sort((a, b) => b.time.prepHour * 60 + b.time.prepMin - a.time.prepHour * 60 + a.time.prepMin);
+        this.setState({ public: sortPrep });
+        console.log('sort by prep time', sortPrep);
     }
 
-    sortByTotalTime(){
+    sortByTotalTime() {
         const sortTotal = [].concat(this.state.public)
-            .sort((a,b) => b.time.prepHour*60+b.time.prepMin+b.time.cookHour*60+b.time.cookMin - a.time.prepHour*60+a.time.prepMin+a.time.cookHour*60+a.time.cookMin);
-        this.setState( {public: sortTotal} );
+            .sort((a, b) => b.time.prepHour * 60 + b.time.prepMin + b.time.cookHour * 60 + b.time.cookMin - a.time.prepHour * 60 + a.time.prepMin + a.time.cookHour * 60 + a.time.cookMin);
+        this.setState({ public: sortTotal });
         console.log('sort by total time', sortTotal);
     }
 
     handleInputChange = e => {
         this.setState({
-          [e.target.name]: e.target.value,
+            [e.target.name]: e.target.value,
         });
-      };
+    };
 
     searchSubmit = e => {
         e.preventDefault();
         const { searchName } = this.state;
         console.log(searchName);
-        if(searchName){
+        if (searchName) {
             window.location.assign(`/search/${searchName}`)
-        } else{
+        } else {
             alert('Enter some recipe name to start your search');
         }
     }
@@ -100,7 +100,7 @@ class Browse extends Component {
     render() {
         return (
             <div className="all-recipe" id="pageContainer">
-                <h1><b>BROWSE RECIPES</b></h1><br/>
+                <h1><b>BROWSE RECIPES</b></h1><br />
                 <form method="POST" onSubmit={this.searchSubmit}>
                     <input
                         type="text"
@@ -128,7 +128,7 @@ class Browse extends Component {
                 <hr></hr>
 
                 <div className="recipe-card">
-                  <RecipeTiles data={this.state.public} />
+                    <RecipeTiles data={this.state.public} />
                 </div>
             </div>
         );

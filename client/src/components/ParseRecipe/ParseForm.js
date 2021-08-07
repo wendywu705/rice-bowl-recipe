@@ -4,8 +4,8 @@ import axios from 'axios';
 import '../RecipeList/RecipeList.css';
 import '../Layout/Footer.css';
 
-class ParseForm extends Component{
-  constructor(){
+class ParseForm extends Component {
+  constructor() {
     super();
     this.state = {
       url: ''
@@ -18,13 +18,13 @@ class ParseForm extends Component{
     });
     console.log(e.target.value);
   };
-  
+
   handleSubmit = async e => {
     e.preventDefault();
 
-    const {url} = this.state;
+    const { url } = this.state;
     console.log(url);
-    const parseInfo = {url};
+    const parseInfo = { url };
 
     if (url) {
       try {
@@ -53,19 +53,19 @@ class ParseForm extends Component{
   render() {
     return (
       <div className="all-recipe" id="pageContainer">
-        <h1>Parse Recipe From URL</h1><br/>
+        <h1>Parse Recipe From URL</h1><br />
         <Form className="search-bar" method="POST" onSubmit={this.handleSubmit}>
           <span className="span">URL: </span>
           <Input
-              type="text"
-              id="parse-url"
-              placeholder="URL address"
-              name="url"
-              value={this.state.url}
-              onChange={this.handleInputChange}
+            type="text"
+            id="parse-url"
+            placeholder="URL address"
+            name="url"
+            value={this.state.url}
+            onChange={this.handleInputChange}
           />
           <Button id="btn" color="primary" type="submit">Parse</Button>
-        </Form><hr/>
+        </Form><hr />
         <div className="supported-web">
           <h5>We supported most recipe websites on the below list:</h5>
           <ul>
@@ -99,7 +99,7 @@ class ParseForm extends Component{
           </ul>
         </div>
       </div>
-  );
+    );
   }
 }
 

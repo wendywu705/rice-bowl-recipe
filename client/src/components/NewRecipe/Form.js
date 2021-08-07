@@ -7,7 +7,7 @@ import '../Layout/Footer.css';
 
 const Form = (props) => {
   const [file, setFile] = useState([]);
-  const [remove, setRemove] =  useState(false);
+  const [remove, setRemove] = useState(false);
   const [state, setState] = useState({
     name: '',
     ingredients: '',
@@ -26,7 +26,7 @@ const Form = (props) => {
   });
   // Holds the uploaded image file in a state
   let [selectedFile, setSelectedFile] = useState(null);
-  
+
   const test = async () => {
     const res = await axios.get('https://backend-cepdewy2ta-nn.a.run.app/home');
     console.log('heyo', res);
@@ -34,16 +34,16 @@ const Form = (props) => {
   useEffect(() => {
     test();
   }, []);
-  
+
   // Form data to be embedded in post requests
   let formData = new FormData();
   let recipeData = new FormData();
 
   const parseDirections = (dir) => {
     let resDir = ""
-    for (let i=0; i<dir.length; i++) {
+    for (let i = 0; i < dir.length; i++) {
       resDir += dir[i]
-      if (i < dir.length-1) {
+      if (i < dir.length - 1) {
         resDir += "\n"
       }
     }
@@ -51,7 +51,7 @@ const Form = (props) => {
   }
 
   const updateState = (
-    name, 
+    name,
     imageUrl,
     category,
     ingre_string,
@@ -66,7 +66,7 @@ const Form = (props) => {
     hidden,
     recipeId
   ) => {
-    return(
+    return (
       setState({
         ...state,
         name: name,
@@ -89,7 +89,7 @@ const Form = (props) => {
 
   // Track the uploaded image as a state
   const onChangeHandler = (e) => {
-    if (e.file.status === 'removed'){
+    if (e.file.status === 'removed') {
       setSelectedFile(null)
       setRemove(true)
     }
@@ -109,7 +109,7 @@ const Form = (props) => {
   }
 
   function handleCheckBox(event) {
-    setState({...state, "hidden":event.target.checked})
+    setState({ ...state, "hidden": event.target.checked })
     const hidden = document.getElementById('hidden');
     if (hidden) {
       hidden.value = hidden !== true;
@@ -121,74 +121,74 @@ const Form = (props) => {
     state.errors = {};
 
     //Name
-    if(state.name.length<1){
+    if (state.name.length < 1) {
       formIsValid = false;
       state.errors["name"] = "Cannot be empty";
     }
 
     //category
-    if (state.category.length<1){
+    if (state.category.length < 1) {
       formIsValid = false;
       state.errors["category"] = "Cannot be empty";
     }
 
     //ingredients
-    if (state.ingredients.length<1){
+    if (state.ingredients.length < 1) {
       formIsValid = false;
       state.errors["ingredients"] = "Cannot be empty";
     }
 
     //instructions
-    if (state.directions.length<1){
+    if (state.directions.length < 1) {
       formIsValid = false;
       state.errors["directions"] = "Cannot be empty";
     }
 
     //ServingSize
-    if (state.servingSize<1){
+    if (state.servingSize < 1) {
       formIsValid = false;
       state.errors["servingSize"] = "Cannot be less than 1";
     }
 
     //rating
-    if (state.rating<0 || state.rating>5){
+    if (state.rating < 0 || state.rating > 5) {
       formIsValid = false;
       state.errors["rating"] = "Must be between 0 and 5";
     }
 
     //time
-    if (state.prepHour<0 || state.prepMin<0 || state.cookHour<0 || state.cookMin<0){
+    if (state.prepHour < 0 || state.prepMin < 0 || state.cookHour < 0 || state.cookMin < 0) {
       formIsValid = false;
       state.errors["time"] = "Time cannot be negative.";
     }
 
     // url
-    if (state.url!==""){
+    if (state.url !== "") {
       try {
         new URL(state.url);
       } catch (e) {
         console.error(e);
         state.errors["url"] = "Invalid url";
-        formIsValid  = false;
+        formIsValid = false;
       }
     }
     return formIsValid;
   }
 
   const updateNum = (key, value) => {
-    setState(state=> ({
+    setState(state => ({
       ...state,
       [key]: value
-    }))    
+    }))
   }
 
   const getImgName = (img) => {
     let ind = img.lastIndexOf('-');
-    let retImg = img.substring(ind+1, img.length)
+    let retImg = img.substring(ind + 1, img.length)
     return retImg;
   }
 
-  if (file.length===0 && state.imageUrl && !remove) {
+  if (file.length === 0 && state.imageUrl && !remove) {
     setFile([
       {
         uid: '-1',
@@ -215,16 +215,16 @@ const Form = (props) => {
   }
 
   let partialData = Object.assign(
-    {}, 
-    fullData, 
-    {pic: undefined, fill:undefined}
+    {},
+    fullData,
+    { pic: undefined, fill: undefined }
   );
-  return(
+  return (
     <div>
-      { (props.type==="edit") ?
-        <Edit {...fullData}/>    
-        : 
-        <New {...partialData}/>  
+      {(props.type === "edit") ?
+        <Edit {...fullData} />
+        :
+        <New {...partialData} />
       }
     </div>
   );

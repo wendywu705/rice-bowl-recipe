@@ -4,7 +4,7 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Ratings from 'react-ratings-declarative';
 import InappTimer from '../Timer/DisplayTimer';
-import DisplayTimes  from './DisplayTime';
+import DisplayTimes from './DisplayTime';
 import ListDirections from './Directions';
 import ListIngredients from './ListIngredients';
 import App from '../PDF/genPDF';
@@ -23,9 +23,9 @@ import {
   PushpinOutlined
 } from '@ant-design/icons';
 
-window.onload = function() {
-  console.log('location',window.location);
-  if(!window.location.hash && window.location.pathname.includes('/recipe/')) {
+window.onload = function () {
+  console.log('location', window.location);
+  if (!window.location.hash && window.location.pathname.includes('/recipe/')) {
     window.location = window.location + '#loaded';
     window.location.reload();
   }
@@ -37,40 +37,40 @@ const SingleRecipe = () => {
 
   useEffect(() => {
     console.log('recipeId:', id);
-    const checkSaved= async() =>{
-      try{
+    const checkSaved = async () => {
+      try {
         const savedResponse = await axios({
           method: 'get',
           timeout: 1000,
           url: `https://backend-cepdewy2ta-nn.a.run.app/saved/${id}`,
           withCredentials: true
         });
-        if ( [200, 304].includes(savedResponse.status) ){
-          if (savedResponse.data === id){
+        if ([200, 304].includes(savedResponse.status)) {
+          if (savedResponse.data === id) {
             return true;
           }
         }
-      } catch(err){
-        console.log('err',err);
+      } catch (err) {
+        console.log('err', err);
       }
       return false;
     }
 
-    const checkPinned= async() =>{
-      try{
+    const checkPinned = async () => {
+      try {
         const savedResponse = await axios({
           method: 'get',
           timeout: 1000,
           url: `https://backend-cepdewy2ta-nn.a.run.app/pinned/${id}`,
           withCredentials: true
         });
-        if ( [200, 304].includes(savedResponse.status) ){
-          if (savedResponse.data === id){
+        if ([200, 304].includes(savedResponse.status)) {
+          if (savedResponse.data === id) {
             return true;
           }
         }
-      } catch(err){
-        console.log('err',err);
+      } catch (err) {
+        console.log('err', err);
       }
       return false;
     }
@@ -99,13 +99,13 @@ const SingleRecipe = () => {
         console.log(err);
       }
     };
-    fetchSingleRecipe().then(recipeObj => console.log('done fetch for recipeId = ',recipeObj.recipeId));
+    fetchSingleRecipe();
   }, [id]);
 
   const handleDelete = async () => {
     let response;
     console.log('try to delete');
-    try{
+    try {
       response = await axios({
         method: 'post',
         timeout: 1000,
@@ -114,18 +114,19 @@ const SingleRecipe = () => {
       });
       if (response.status === 200) {
         console.log(response.data);
-        if (Object.keys(response.data).length>1) {
+        if (Object.keys(response.data).length > 1) {
           console.log('ok removed and hidden!');
           window.alert('Success, recipe deleted!');
           window.location.replace('/home');
-        } else if (Object.keys(response.data).length === 1){
+        } else if (Object.keys(response.data).length === 1) {
           console.log('ok removed!');
           window.alert('Success, recipe removed from lists!');
           window.location.replace('/home');
-        } else{
+        } else {
           window.alert('Failed to delete recipe');
         }
-      }} catch (e) {
+      }
+    } catch (e) {
       console.log('err', e);
       window.alert('Failed to delete recipe')
     }
@@ -227,11 +228,11 @@ const SingleRecipe = () => {
   const newAvg = (newValue) => {
     if (newFoodData && newFoodData.meta) {
       return (
-          (
-              newFoodData.meta.rating +
-              (newValue - newFoodData.meta.rating) / (newFoodData.meta.votes + 1)
-          )
-              .toFixed(2)
+        (
+          newFoodData.meta.rating +
+          (newValue - newFoodData.meta.rating) / (newFoodData.meta.votes + 1)
+        )
+          .toFixed(2)
       );
     }
   };
@@ -247,7 +248,7 @@ const SingleRecipe = () => {
   };
 
   const printUrl = (data) => {
-    if (data && data.url){
+    if (data && data.url) {
       return data.url;
     }
     else return null;
@@ -279,8 +280,8 @@ const SingleRecipe = () => {
       return null;
     }
     if (
-        (type === 'fav' && newFoodData.isFavourite === true) ||
-        (type === 'pin' && newFoodData.isPinned === true)
+      (type === 'fav' && newFoodData.isFavourite === true) ||
+      (type === 'pin' && newFoodData.isPinned === true)
     ) {
       return '#1C94FC';
     } else {
@@ -339,7 +340,7 @@ const SingleRecipe = () => {
                     className="circleIcon"
                     style={{
                       color: determineColor('fav'),
-                      fontSize:20
+                      fontSize: 20
                     }}
                   />
                 }
@@ -353,7 +354,7 @@ const SingleRecipe = () => {
                   display: 'inline-flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  marginLeft:10
+                  marginLeft: 10
                 }}
                 onClick={(value) => updatePinned(value)}
                 icon={
@@ -361,7 +362,7 @@ const SingleRecipe = () => {
                     className="circleIcon"
                     style={{
                       color: determineColor('pin'),
-                      fontSize:20
+                      fontSize: 20
                     }}
                   />
                 }
@@ -381,10 +382,10 @@ const SingleRecipe = () => {
                 fontStyle: 'italic'
               }}
             >
-              {"@"+printUrl(newFoodData)}
+              {"@" + printUrl(newFoodData)}
             </Button>
             <div className="editContainer">
-              <Link to= {`edit/${newFoodData.recipeId}`}>
+              <Link to={`../../edit/${newFoodData.recipeId}`}>
                 <Button
                   type="link"
                   icon={<EditOutlined />}
@@ -399,13 +400,13 @@ const SingleRecipe = () => {
               <Button
                 danger
                 style={{
-                  fontSize: '17px', 
+                  fontSize: '17px',
                   display: 'inline-flex',
                   alignItems: 'center'
                 }}
-                onClick = {() => {
+                onClick={() => {
                   const confirmBox = window.confirm("Are you sure you want to delete this recipe?")
-                  if (confirmBox === true){
+                  if (confirmBox === true) {
                     handleDelete()
                   }
                 }}
@@ -423,7 +424,7 @@ const SingleRecipe = () => {
                 </div>
               ))} */}
             <div>
-              <img src={newFoodData ? newFoodData.imageUrl :  null} alt={newFoodData ? newFoodData.name : null} />
+              <img src={newFoodData ? newFoodData.imageUrl : null} alt={newFoodData ? newFoodData.name : null} />
               <p className="legend">{newFoodData ? newFoodData.name : null}</p>
             </div>
           </Carousel>
@@ -481,21 +482,21 @@ const SingleRecipe = () => {
               />
             </div>
             <div className="rightContainer">
-              <div style={{display:'flex', paddingBottom:10}}>
+              <div style={{ display: 'flex', paddingBottom: 10 }}>
                 <DisplayTimes time={newFoodData && newFoodData.time} />
                 <App
                   data={newFoodData}
                   name={newFoodData && newFoodData.name}
                 />
               </div>
-                <InappTimer directions={newFoodData && newFoodData.directions}/>
-                <h3 className="subHeader">Directions</h3>
-                <ListDirections
-                  directions= {
-                    newFoodData &&
-                    newFoodData.directions
-                  }
-                />
+              <InappTimer directions={newFoodData && newFoodData.directions} />
+              <h3 className="subHeader">Directions</h3>
+              <ListDirections
+                directions={
+                  newFoodData &&
+                  newFoodData.directions
+                }
+              />
             </div>
           </div>
         </div>

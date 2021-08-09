@@ -36,8 +36,8 @@ Rice bowl app collects the world's food recipes, provides a wealth of home recip
 - Photos and videos recipes
 - Categorization of recipes
 - Pinned recipes
-<!-- - User-customized settings -->
 - Search bar and sorting
+<!-- - User-customized settings -->
 <!-- - Export to MyFitnessPal and calorie tracker site -->
 
 ## ⚡️ Quick start

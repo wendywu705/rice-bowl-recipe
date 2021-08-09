@@ -9,14 +9,14 @@
   <p align="center">
     Built for Simon Fraser University course CMPT 470.
     <br />
-    <a href="https://csil-git1.cs.surrey.sfu.ca/xza172/rice-bowl-recipe/-/blob/master/README.md"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/wendywu705/rice-bowl-recipe/blob/master/README.md"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://csil-git1.cs.surrey.sfu.ca/xza172/rice-bowl-recipe/-/blob/master/README.md">View Demo</a>
+    <a href="https://frontend-cepdewy2ta-nn.a.run.app/">View Demo</a>
     ·
-    <a href="https://csil-git1.cs.surrey.sfu.ca/xza172/rice-bowl-recipe/-/issues">Report Bug</a>
+    <a href="https://github.com/wendywu705/rice-bowl-recipe/issues">Report Bug</a>
     ·
-    <a href="https://csil-git1.cs.surrey.sfu.ca/xza172/rice-bowl-recipe/-/issues">Request Feature</a>
+    <a href="https://github.com/wendywu705/rice-bowl-recipe/issues">Request Feature</a>
   </p>
 </div>
 
@@ -47,7 +47,7 @@ First of all, [download](https://nodejs.org/en/) and install **Node.js**. Versio
 **Clone directory:**
 
 ```bash
-$ git clone https://csil-git1.cs.surrey.sfu.ca/xza172/rice-bowl-recipe.git
+$ git clone https://github.com/wendywu705/rice-bowl-recipe.git
 ```
 
 **Frontend:**
@@ -59,7 +59,7 @@ $ cd rice-bowl-recipe/client/
 # Installation:
 $ npm install
 
-# Start client server:
+# Start React client server:
 $ npm start
 ```
 
@@ -72,14 +72,16 @@ $ cd rice-bowl-recipe/server/
 # Installation:
 $ npm install
 
-# Start backend server:
-$ npm start
+# Start NodeJS backend server:
+$ node app.js
 ```
 
 Then navigate to **[http://localhost:3000/](http://localhost:3000/)** on your browser.
 
 ## 🐳 Docker-way to quick start
 
+Docker has not been updated yet
+<!-- 
 Make sure you have [installed docker and docker-compose](https://docs.docker.com/compose/install/) on your computer
 
 **Clone directory:**
@@ -90,32 +92,23 @@ $ git clone https://csil-git1.cs.surrey.sfu.ca/xza172/rice-bowl-recipe.git
 
 **Run:**
 
+
 ```bash
 # Change directory:
 $ cd rice-bowl-recipe/
 
 # Run:
-$ ./start.sh
+$ docker-compose up
 
 # Or if you need sudo previleges:
-$ sudo bash ./start.sh
+$ sudo docker-compose up 
 ```
 
-Then navigate to **[http://localhost:3000/](http://localhost:3000/)** on your browser.
 
+Then navigate to **[http://localhost:3000/](http://localhost:3000/)** on your browser. -->
+<!-- 
 ## Linting with ESLINT
 
 To run linting on the `client` directory, call `npm run lint` in the root directory.
-This will ensure a consistent code style for this project.
+This will ensure a consistent code style for this project. -->
 
-## CI/CD with Auto DevOps
-
-This template is compatible with [Auto DevOps](https://docs.gitlab.com/ee/topics/autodevops/).
-
-If Auto DevOps is not already enabled for this project, you can [turn it on](https://docs.gitlab.com/ee/topics/autodevops/#enabling-auto-devops) in the project settings.
-
-## Developing with Gitpod
-
-This template has a fully-automated dev setup for [Gitpod](https://docs.gitlab.com/ee/integration/gitpod.html).
-
-If you open this project in Gitpod, you'll get all Node dependencies pre-installed and Express will open a web preview.

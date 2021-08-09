@@ -12,7 +12,7 @@
     <a href="https://github.com/wendywu705/rice-bowl-recipe/blob/master/README.md"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://frontend-cepdewy2ta-nn.a.run.app/">View Demo</a>
+    <a href="https://frontend-cepdewy2ta-nn.a.run.app/home">View Demo</a>
     ·
     <a href="https://github.com/wendywu705/rice-bowl-recipe/issues">Report Bug</a>
     ·
